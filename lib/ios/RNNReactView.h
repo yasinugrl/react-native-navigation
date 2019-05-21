@@ -1,6 +1,12 @@
 #import "RNNEventEmitter.h"
 #import "UIView+Utils.h"
+#ifdef RN_FABRIC_ENABLED
+>>>>>>> feature flag fabric
 #import <React/RCTFabricSurfaceHostingProxyRootView.h>
+#else
+#import <React/RCTRootView.h>
+#endif
+
 #import <React/RCTRootViewDelegate.h>
 #import <React/RCTUIManager.h>
 
@@ -11,8 +17,12 @@
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
+#ifdef RN_FABRIC_ENABLED
 @interface RNNReactView
     : RCTFabricSurfaceHostingProxyRootView <RCTRootViewDelegate>
+#else
+@interface RNNReactView : RCTRootView <RCTRootViewDelegate>
+#endif
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge
                     moduleName:(NSString *)moduleName
