@@ -230,7 +230,7 @@ Navigation.setDefaultOptions({
 });
 ```
 
-We need to add this snippet before registering the `registerAppLaunchedListener`. This way we ensure our theme is applied when our root is set. Our code should now look like this:
+We need to add this snippet when registering the `registerAppLaunchedListener`. This way we ensure our theme is applied when our root is set. Our code should now look like this:
 
 ```jsx
 // In index.js of a new project
@@ -279,35 +279,26 @@ HomeScreen.options = {
   }
 };
 
-const SettingsScreen = () => {
-  return (
-    <View style={styles.root}>
-      <Text>Settings Screen</Text>
-    </View>
-  );
-}
-
 Navigation.registerComponent('Home', () => HomeScreen);
 Navigation.registerComponent('Settings', () => SettingsScreen);
 
-
-Navigation.setDefaultOptions({
-  statusBar: {
-    backgroundColor: '#4d089a'
-  },
-  topBar: {
-    title: {
-      color: 'white'
-    },
-    backButton: {
-      color: 'white'
-    },
-    background: {
-      color: '#4d089a'
-    }
-  }
-});
 Navigation.events().registerAppLaunchedListener(async () => {
+  Navigation.setDefaultOptions({
+    statusBar: {
+      backgroundColor: '#4d089a'
+    },
+    topBar: {
+      title: {
+        color: 'white'
+      },
+      backButton: {
+        color: 'white'
+      },
+      background: {
+        color: '#4d089a'
+      }
+    }
+  });
   Navigation.setRoot({
     root: {
       stack: {
