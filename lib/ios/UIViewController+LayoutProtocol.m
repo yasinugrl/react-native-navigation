@@ -134,6 +134,10 @@
     return 0;
 }
 
+- (void)screenPopped {
+    
+}
+
 - (void)onChildWillAppear {
 	[self.presenter applyOptions:self.resolveOptions];
 	[self.parentViewController onChildWillAppear];
