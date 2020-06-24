@@ -4,7 +4,7 @@
 
 @interface ModalTransitionDelegate : TransitionDelegate
 
-- (instancetype)initWithContentTransition:(TransitionOptions *)contentTransition bridge:(RCTBridge *)bridge;
+- (instancetype)initWithContentTransition:(TransitionOptions *)contentTransitionOptions bridge:(RCTBridge *)bridge fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC;
 
 @property (nonatomic, strong) TransitionOptions* contentTransitionOptions;
 

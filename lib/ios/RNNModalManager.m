@@ -44,7 +44,7 @@
 	}
 	    
 	if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
-        _modalTransitionDelegate = [[ModalTransitionDelegate alloc] initWithContentTransition:viewController.resolveOptionsWithDefault.animations.showModal bridge:_bridge];
+        _modalTransitionDelegate = [[ModalTransitionDelegate alloc] initWithContentTransition:viewController.resolveOptionsWithDefault.animations.showModal bridge:_bridge fromVC:topVC toVC:viewController];
         viewController.transitioningDelegate = _modalTransitionDelegate;
         viewController.modalPresentationStyle = UIModalPresentationCustom;
 	}
@@ -100,7 +100,7 @@
 	UIViewController* topPresentedVC = [self topPresentedVC];
 	
 	if (optionsWithDefault.animations.dismissModal.hasAnimation) {
-        _modalTransitionDelegate = [[ModalDismissTransitionDelegate alloc] initWithContentTransition:modalToDismiss.resolveOptionsWithDefault.animations.dismissModal bridge:_bridge];
+        _modalTransitionDelegate = [[ModalDismissTransitionDelegate alloc] initWithContentTransition:modalToDismiss.resolveOptionsWithDefault.animations.dismissModal bridge:_bridge fromVC:modalToDismiss toVC:topPresentedVC];
 		[self topViewControllerParent:modalToDismiss].transitioningDelegate = _modalTransitionDelegate;
 	}
 

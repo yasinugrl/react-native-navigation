@@ -2,14 +2,14 @@
 
 @implementation ModalTransitionDelegate
 
-- (instancetype)initWithContentTransition:(TransitionOptions *)contentTransitionOptions bridge:(RCTBridge *)bridge {
-    self = [super initWithBridge:bridge];
+- (instancetype)initWithContentTransition:(TransitionOptions *)contentTransitionOptions bridge:(RCTBridge *)bridge fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC {
+    self = [super initWithBridge:bridge fromVC:fromVC toVC:toVC];
     _contentTransitionOptions = contentTransitionOptions;
     return self;
 }
 
-- (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
-    ContentTransitionCreator* contentTransition = [ContentTransitionCreator createTransition:_contentTransitionOptions view:toVC.view fromVC:fromVC toVC:toVC containerView:containerView];
+- (NSArray *)prepareTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC {
+    ContentTransitionCreator* contentTransition = [ContentTransitionCreator createTransition:_contentTransitionOptions view:toVC.view fromVC:fromVC toVC:toVC];
     
     return @[contentTransition];
 }

@@ -1,5 +1,5 @@
 #import "StackControllerDelegate.h"
-#import "StackTransitionDelegate.h"
+#import "StackTransitionManager.h"
 #import "UIViewController+LayoutProtocol.h"
 
 @implementation StackControllerDelegate {
@@ -26,9 +26,10 @@
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
 	if (operation == UINavigationControllerOperationPush && toVC.resolveOptions.animations.push.hasCustomAnimation) {
-		return [[StackTransitionDelegate alloc] initWithScreenTransition:toVC.resolveOptions.animations.push bridge:_eventEmitter.bridge];
+		return [[StackTransitionManager alloc] initWithScreenTransition:toVC.resolveOptions.animations.push bridge:_eventEmitter.bridge fromVC:fromVC toVC:toVC];
 	} else if (operation == UINavigationControllerOperationPop && fromVC.resolveOptions.animations.pop.hasCustomAnimation) {
-		return [[StackTransitionDelegate alloc] initWithScreenTransition:fromVC.resolveOptions.animations.pop bridge:_eventEmitter.bridge];
+        StackTransitionManager* d = [[StackTransitionManager alloc] initWithScreenTransition:fromVC.resolveOptions.animations.pop bridge:_eventEmitter.bridge fromVC:fromVC toVC:toVC];
+        return [d isValid] ? d : nil;
 	} else {
 		return nil;
 	}

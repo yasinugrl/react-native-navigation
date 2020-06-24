@@ -6,8 +6,8 @@
     return self;
 }
 
-- (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
-    ContentTransitionCreator* contentTransition = [ContentTransitionCreator createTransition:self.contentTransitionOptions view:fromVC.view fromVC:fromVC toVC:toVC containerView:containerView];
+- (NSArray *)prepareTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
+    ContentTransitionCreator* contentTransition = [ContentTransitionCreator createTransition:self.contentTransitionOptions view:fromVC.view fromVC:fromVC toVC:toVC];
     
     return @[contentTransition];
 }

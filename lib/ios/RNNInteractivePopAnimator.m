@@ -1,5 +1,5 @@
 #import "RNNInteractivePopAnimator.h"
-#import "StackTransitionDelegate.h"
+#import "StackTransitionManager.h"
 #import "RNNElementView.h"
 #import "RNNComponentViewController.h"
 #import "VICMAImageView.h"

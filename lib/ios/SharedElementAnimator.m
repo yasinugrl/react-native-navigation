@@ -14,19 +14,15 @@
     UIViewController* _fromVC;
     UIView* _fromView;
     UIView* _toView;
-    UIView* _containerView;
 }
 
-- (instancetype)initWithTransitionOptions:(SharedElementTransitionOptions *)transitionOptions fromView:(UIView *)fromView toView:(UIView *)toView fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
+- (instancetype)initWithTransitionOptions:(SharedElementTransitionOptions *)transitionOptions fromView:(UIView *)fromView toView:(UIView *)toView fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC {
     self = [super init];
     _transitionOptions = transitionOptions;
     _fromVC = fromVC;
     _toVC = toVC;
     _fromView = fromView;
     _toView = toView;
-    _containerView = containerView;
-    self.view = [self createAnimatedView:transitionOptions fromView:fromView toView:toView];
-    self.animations = [self createAnimations];
     return self;
 }
 
@@ -34,8 +30,14 @@
     return [AnimatedViewFactory createFromElement:fromView toElement:toView transitionOptions:transitionOptions];
 }
 
-- (NSMutableArray<id<DisplayLinkAnimation>> *)createAnimations {
-    NSMutableArray* animations = [super createAnimations:_transitionOptions];
+- (void)prepareAnimations {
+    [self createAnimations];
+}
+
+- (void)createAnimations {
+    self.view = [self createAnimatedView:_transitionOptions fromView:_fromView toView:_toView];
+    [super createAnimations];
+    NSMutableArray* animations = NSMutableArray.new;
     CGFloat startDelay = [_transitionOptions.startDelay getWithDefaultValue:0];
     CGFloat duration = [_transitionOptions.duration getWithDefaultValue:300];
     Text* interpolation = [_transitionOptions.interpolation getWithDefaultValue:@"accelerateDecelerate"];
@@ -56,7 +58,7 @@
         [animations addObject:[[TextStorageTransition alloc] initWithView:self.view from:((AnimatedTextView *)self.view).fromTextStorage to:((AnimatedTextView *)self.view).toTextStorage startDelay:startDelay duration:duration interpolation:interpolation]];
     }
     
-    return animations;
+    self.animations = [self.animations arrayByAddingObjectsFromArray:animations];
 }
 
 - (void)end {

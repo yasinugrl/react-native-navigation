@@ -3,27 +3,25 @@
 
 @implementation ElementTransitionsCreator
 
-+ (NSArray<DisplayLinkAnimatorDelegate> *)create:(NSArray<ElementTransitionOptions *> *)elementTransitions fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
++ (NSArray<DisplayLinkAnimatorDelegate> *)create:(NSArray<ElementTransitionOptions *> *)elementTransitions fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC {
     NSMutableArray<DisplayLinkAnimatorDelegate>* transitions = [NSMutableArray<DisplayLinkAnimatorDelegate> new];
     for (ElementTransitionOptions* transitionOptions in elementTransitions) {
         UIView* element = [self findElementById:transitionOptions.elementId fromVC:fromVC toVC:toVC];
         ElementAnimator* elementAnimator = [[ElementAnimator alloc] initWithTransitionOptions:transitionOptions
                                                                                          view:element
                                                                                        fromVC:fromVC
-                                                                                         toVC:toVC
-                                                                                containerView:containerView];
+                                                                                         toVC:toVC];
         [transitions addObject:elementAnimator];
     }
     
     return transitions;
 }
 
-+ (id<DisplayLinkAnimatorDelegate>)createTransition:(ElementTransitionOptions *)transitionOptions view:(UIView *)view fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
++ (id<DisplayLinkAnimatorDelegate>)createTransition:(ElementTransitionOptions *)transitionOptions view:(UIView *)view fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC {
     ElementAnimator* elementAnimator = [[ElementAnimator alloc] initWithTransitionOptions:transitionOptions
                                                                                      view:view
                                                                                    fromVC:fromVC
-                                                                                     toVC:toVC
-                                                                            containerView:containerView];
+                                                                                     toVC:toVC];
     
     return elementAnimator;
 }

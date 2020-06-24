@@ -7,7 +7,7 @@
     BOOL _animate;
 }
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge {
+- (instancetype)initWithBridge:(RCTBridge *)bridge fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC {
     self = [super init];
     _bridge = bridge;
     return self;
@@ -38,7 +38,7 @@
             id<UIViewControllerContextTransitioning> transitionContext = self->_transitionContext;
             UIViewController* fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
             UIViewController* toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-            NSArray* transitions = [self createTransitionsFromVC:fromVC toVC:toVC containerView:transitionContext.containerView];
+            NSArray* transitions = [self prepareTransitionsFromVC:fromVC toVC:toVC containerView:transitionContext.containerView];
             [self animateTransitions:transitions andTransitioningContext:transitionContext];
         });
     }
@@ -56,7 +56,7 @@
     [displayLinkAnimator start];
 }
 
-- (NSArray *)createTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
+- (NSArray *)prepareTransitionsFromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC containerView:(UIView *)containerView {
     @throw [NSException exceptionWithName:@"Unimplemented method" reason:@"createTransitionFromVC:fromVC:toVC:containerView must be overridden by subclass" userInfo:nil];
     return @[];
 }
