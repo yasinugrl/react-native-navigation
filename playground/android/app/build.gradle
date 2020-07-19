@@ -5,13 +5,14 @@ project.ext.react = [
         entryFile: "index.js",
         bundleAssetName: "index.android.bundle",
         bundleInAlpha: true,
-        bundleInBeta: true
+        bundleInBeta: true,
+        enableHermes: true,
 ]
 
 apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     ndkVersion "20.1.5948944"
 
     compileOptions {
@@ -22,7 +23,7 @@ android {
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         ndk {
