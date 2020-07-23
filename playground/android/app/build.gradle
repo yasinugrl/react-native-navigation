@@ -61,10 +61,12 @@ dependencies {
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.facebook.soloader:soloader:0.9.0'
+    def hermesPath = '../../../node_modules/hermes-engine/android/'
+    debugImplementation files(hermesPath + "hermes-debug.aar")
+    releaseImplementation files(hermesPath + "hermes-release.aar")
+
 
     //noinspection GradleDynamicVersion
-    implementation 'org.webkit:android-jsc-intl:+'
     implementation project(':react-native-navigation')
 
     androidTestImplementation('com.wix:detox:+') { transitive = true }
