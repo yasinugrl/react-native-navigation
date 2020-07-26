@@ -123,6 +123,7 @@ export class NavigationRoot {
   /**
    * Utility helper function like registerComponent,
    * wraps the provided component with a react-redux Provider with the passed redux store
+   * @deprecated
    */
   public registerComponentWithRedux(
     componentName: string | number,
@@ -130,6 +131,9 @@ export class NavigationRoot {
     ReduxProvider: any,
     reduxStore: any
   ): ComponentProvider {
+    console.warn(
+      'registerComponentWithRedux is deprecated and will be removed in the next version! Please use Navigation.registerComponent instead. Visit the docs for more information https://wix.github.io/react-native-navigation/api/component#registering-a-component-wrapped-with-providers'
+    );
     return this.componentRegistry.registerComponent(
       componentName,
       getComponentClassFunc,
