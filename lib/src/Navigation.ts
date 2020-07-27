@@ -23,12 +23,16 @@ import { AssetService } from './adapters/AssetResolver';
 import { AppRegistryService } from './adapters/AppRegistryService';
 import { Deprecations } from './commands/Deprecations';
 import { ProcessorSubscription } from './interfaces/ProcessorSubscription';
+import { LayoutProcessor } from './processors/LayoutProcessor';
+import { LayoutProcessorsStore } from './processors/LayoutProcessorsStore';
+import { CommandName } from './interfaces/CommandName';
 
 export class NavigationRoot {
   public readonly TouchablePreview = TouchablePreview;
 
   private readonly store: Store;
   private readonly optionProcessorsStore: OptionProcessorsStore;
+  private readonly layoutProcessorsStore: LayoutProcessorsStore;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
   private readonly componentRegistry: ComponentRegistry;
@@ -45,6 +49,7 @@ export class NavigationRoot {
     this.componentWrapper = new ComponentWrapper();
     this.store = new Store();
     this.optionProcessorsStore = new OptionProcessorsStore();
+    this.layoutProcessorsStore = new LayoutProcessorsStore();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
     this.componentEventsObserver = new ComponentEventsObserver(
@@ -67,6 +72,7 @@ export class NavigationRoot {
       new AssetService(),
       new Deprecations()
     );
+    const layoutProcessor = new LayoutProcessor(this.layoutProcessorsStore);
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.store, optionsProcessor);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver(this.uniqueIdProvider);
@@ -77,7 +83,8 @@ export class NavigationRoot {
       this.layoutTreeCrawler,
       this.commandsObserver,
       this.uniqueIdProvider,
-      optionsProcessor
+      optionsProcessor,
+      layoutProcessor
     );
     this.eventsRegistry = new EventsRegistry(
       this.nativeEventsReceiver,
@@ -109,9 +116,18 @@ export class NavigationRoot {
    */
   public addOptionProcessor<T>(
     optionPath: string,
-    processor: (value: T, commandName: string) => T
+    processor: (value: T, commandName: CommandName) => T
   ): ProcessorSubscription {
     return this.optionProcessorsStore.addProcessor(optionPath, processor);
+  }
+
+  /**
+   * Method to be invoked when a layout is processed and is about to be created. This can be used to change layout options or even inject props to components.
+   */
+  public addLayoutProcessor(
+    processor: (layout: Layout, commandName: CommandName) => Layout
+  ): ProcessorSubscription {
+    return this.layoutProcessorsStore.addProcessor(processor);
   }
 
   public setLazyComponentRegistrator(
