@@ -15,6 +15,7 @@ const Screens = {
   FullScreenModal: 'FullScreenModal',
   Layouts: 'Layouts',
   Modal: 'Modal',
+  ModalCommands: 'ModalCommands',
   Options: 'Options',
   Pushed: 'Pushed',
   SharedElement: 'SharedElement',

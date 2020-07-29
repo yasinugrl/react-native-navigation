@@ -34,6 +34,10 @@ function registerScreens() {
   Navigation.registerComponent(Screens.Lifecycle, () => require('./LifecycleScreen').default);
   Navigation.registerComponent(Screens.Modal, () => require('./ModalScreen').default);
   Navigation.registerComponent(
+    Screens.ModalCommands,
+    () => require('./ModalCommandsScreen').default
+  );
+  Navigation.registerComponent(
     Screens.FullScreenModal,
     () => require('./FullScreenModalScreen').default
   );
