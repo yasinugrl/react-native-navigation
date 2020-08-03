@@ -79,7 +79,7 @@
     "@typescript-eslint/eslint-plugin": "3.3.0",
     "@typescript-eslint/parser": "3.3.0",
     "babel-jest": "26.1.0",
-    "detox": "17.3.1",
+    "detox": "17.3.3",
     "eslint": "7.3.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",
@@ -167,7 +167,7 @@
       },
       "ios.sim.release": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app",
-        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
+        "build": "ENTRY_FILE=../index.js RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
         "type": "ios.simulator",
         "name": "iPhone 11"
       },
