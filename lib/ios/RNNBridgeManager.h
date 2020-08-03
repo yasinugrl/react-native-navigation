@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
+#import "RNNEventEmitter.h"
 
 typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props,
                                                      RCTBridge *bridge);
@@ -18,5 +19,6 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props,
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge;
 
 @property(readonly, nonatomic, strong) RCTBridge *bridge;
+@property(readonly, nonatomic, strong) RNNEventEmitter *eventEmitter;
 
 @end

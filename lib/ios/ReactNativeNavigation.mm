@@ -5,16 +5,22 @@
 #import "RNNBridgeManager.h"
 #import "RNNSplashScreen.h"
 #import "RNNLayoutManager.h"
-
+#import "RNNTurboModule.h"
 @interface ReactNativeNavigation()
 
 @property (nonatomic, strong) RNNBridgeManager *bridgeManager;
+@property (nonatomic, strong) UIWindow *mainWindow;
 
 @end
 
 @implementation ReactNativeNavigation
 
 # pragma mark - public API
+
+
++ (RNNTurboModule *)createTurboModule {
+    return [[ReactNativeNavigation sharedInstance] createTurboModule];
+}
 
 + (void)bootstrapWithlaunchOptions:(NSDictionary *)launchOptions {
 	[[ReactNativeNavigation sharedInstance] bootstrapWithDelegate:nil launchOptions:launchOptions];
@@ -34,6 +40,10 @@
 
 + (RCTBridge *)getBridge {
 	return [[ReactNativeNavigation sharedInstance].bridgeManager bridge];
+}
+
++ (id)getEventEmitter {
+    return [[ReactNativeNavigation sharedInstance].bridgeManager eventEmitter];
 }
 
 + (UIViewController *)findViewController:(NSString *)componentId {
@@ -56,11 +66,15 @@
 }
 
 - (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
-	UIWindow* mainWindow = [self initializeKeyWindow];
+	_mainWindow = [self initializeKeyWindow];
 	
-	self.bridgeManager = [[RNNBridgeManager alloc] initWithlaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:mainWindow];
+	self.bridgeManager = [[RNNBridgeManager alloc] initWithlaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:_mainWindow];
     [self.bridgeManager initializeBridge];
-	[RNNSplashScreen showOnWindow:mainWindow];
+	[RNNSplashScreen showOnWindow:_mainWindow];
+}
+
+- (RNNTurboModule *)createTurboModule {
+    return [[RNNTurboModule alloc] initWithBridge:[ReactNativeNavigation getBridge] mainWindow:_mainWindow];
 }
 
 - (UIWindow *)initializeKeyWindow {

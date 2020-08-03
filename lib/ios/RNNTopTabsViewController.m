@@ -1,6 +1,5 @@
 #import "RNNTopTabsViewController.h"
 #import "RNNSegmentedControl.h"
-#import "ReactNativeNavigation.h"
 #import "RNNComponentViewController.h"
 #import "UIViewController+LayoutProtocol.h"
 

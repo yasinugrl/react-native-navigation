@@ -2,6 +2,7 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
+#import "RNNEventEmitter.h"
 
 typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBridge* bridge);
 
@@ -11,6 +12,8 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBri
 
 + (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions;
 
++ (id)createTurboModule;
+
 + (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge;
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
@@ -18,5 +21,7 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBri
 + (UIViewController *)findViewController:(NSString *)componentId;
 
 + (RCTBridge *)getBridge;
+
++ (RNNEventEmitter *)getEventEmitter;
 
 @end

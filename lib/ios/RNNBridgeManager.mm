@@ -7,7 +7,6 @@
 #import <React/RCTSurfacePresenter.h>
 #endif
 
-#import "RNNEventEmitter.h"
 #import "RNNSplashScreen.h"
 #import "RNNBridgeModule.h"
 #import "RNNComponentViewCreator.h"
@@ -79,18 +78,8 @@
 }
 
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
-	RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
-    RNNModalManagerEventHandler* modalManagerEventHandler = [[RNNModalManagerEventHandler alloc] initWithEventEmitter:eventEmitter];
-    _modalManager = [[RNNModalManager alloc] initWithBridge:bridge eventHandler:modalManagerEventHandler];
-    
-	id<RNNComponentViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge eventEmitter:eventEmitter];
-	_componentRegistry = [[RNNReactComponentRegistry alloc] initWithCreator:rootViewCreator];
-	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator eventEmitter:eventEmitter store:_store componentRegistry:_componentRegistry andBridge:bridge bottomTabsAttachModeFactory:[BottomTabsAttachModeFactory new]];
-
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmitter modalManager:_modalManager overlayManager:_overlayManager mainWindow:_mainWindow];
-	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
-
-	return @[bridgeModule,eventEmitter];
+	_eventEmitter = [[RNNEventEmitter alloc] init];
+	return @[_eventEmitter];
 }
 
 # pragma mark - JavaScript & Bridge Notifications
