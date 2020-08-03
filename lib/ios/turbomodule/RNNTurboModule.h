@@ -12,6 +12,6 @@
 
 @interface RNNTurboModule : NSObject<NativeRNNTurboModuleSpec>
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge mainWindow:(UIWindow *)mainWindow;
+- (instancetype)initWithBridge:(RCTBridge *)bridge mainWindow:(UIWindow *)mainWindow nativeComponentStore:(id)nativeComponentStore;
 
 @end

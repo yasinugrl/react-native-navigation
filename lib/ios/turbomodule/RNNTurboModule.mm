@@ -27,9 +27,9 @@ using namespace facebook::react;
     RNNOverlayManager *_overlayManager;
 }
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge mainWindow:(UIWindow *)mainWindow {
+- (instancetype)initWithBridge:(RCTBridge *)bridge mainWindow:(UIWindow *)mainWindow nativeComponentStore:(id)nativeComponentStore {
     self = [super init];
-    _store = [RNNExternalComponentStore new];
+    _store = nativeComponentStore;
     RNNEventEmitter* eventEmitter = [ReactNativeNavigation getEventEmitter];
     RNNModalManagerEventHandler* modalManagerEventHandler = [[RNNModalManagerEventHandler alloc] initWithEventEmitter:eventEmitter];
     _modalManager = [[RNNModalManager alloc] initWithBridge:bridge eventHandler:modalManagerEventHandler];
@@ -40,6 +40,19 @@ using namespace facebook::react;
 
     _commandsHandler = [[RNNCommandsHandler alloc] initWithControllerFactory:controllerFactory eventEmitter:eventEmitter modalManager:_modalManager overlayManager:_overlayManager mainWindow:mainWindow];
     [_commandsHandler setReadyToReceiveCommands:true];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onJavaScriptLoaded)
+                                                 name:RCTJavaScriptDidLoadNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onJavaScriptWillLoad)
+                                                 name:RCTJavaScriptWillStartLoadingNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onBridgeWillReload)
+                                                 name:RCTBridgeWillReloadNotification
+                                               object:nil];
     return self;
 }
 
@@ -162,6 +175,24 @@ RCT_EXPORT_METHOD(getNavigationConstants:(RCTPromiseResolveBlock)resolve rejecte
     RCTExecuteOnMainQueue(^{
         resolve([Constants getConstants]);
     });
+}
+
+# pragma mark - JavaScript & Bridge Notifications
+
+- (void)onJavaScriptWillLoad {
+    [_componentRegistry clear];
+}
+
+- (void)onJavaScriptLoaded {
+    [_commandsHandler setReadyToReceiveCommands:true];
+    [[[ReactNativeNavigation getBridge] moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
+}
+
+- (void)onBridgeWillReload {
+    [_overlayManager dismissAllOverlays];
+    [_modalManager dismissAllModalsSynchronosly];
+    [_componentRegistry clear];
+    UIApplication.sharedApplication.delegate.window.rootViewController = nil;
 }
 
 @end

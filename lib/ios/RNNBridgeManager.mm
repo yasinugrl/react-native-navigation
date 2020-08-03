@@ -12,6 +12,7 @@
 #import "RNNComponentViewCreator.h"
 #import "RNNReactRootViewCreator.h"
 #import "RNNReactComponentRegistry.h"
+#import "RNNTurboModule.h"
 
 @interface RNNBridgeManager() {
 #ifdef RN_FABRIC_ENABLED
@@ -22,8 +23,6 @@
 @property (nonatomic, strong, readwrite) RCTBridge *bridge;
 @property (nonatomic, strong, readwrite) RNNExternalComponentStore *store;
 @property (nonatomic, strong, readwrite) RNNReactComponentRegistry *componentRegistry;
-@property (nonatomic, strong, readonly) RNNOverlayManager *overlayManager;
-@property (nonatomic, strong, readonly) RNNModalManager *modalManager;
 
 @end
 
@@ -44,22 +43,7 @@
 		_launchOptions = launchOptions;
 		_delegate = delegate;
 		
-		_overlayManager = [RNNOverlayManager new];
-		
 		_store = [RNNExternalComponentStore new];
-		
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(onJavaScriptLoaded)
-													 name:RCTJavaScriptDidLoadNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(onJavaScriptWillLoad)
-													 name:RCTJavaScriptWillStartLoadingNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(onBridgeWillReload)
-													 name:RCTBridgeWillReloadNotification
-												   object:nil];
 	}
 	return self;
 }
@@ -73,6 +57,10 @@
     #endif
 }
 
+- (RNNTurboModule *)createTurboModule {
+    return [[RNNTurboModule alloc] initWithBridge:_bridge mainWindow:_mainWindow nativeComponentStore:_store];
+}
+
 - (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
 	[_store registerExternalComponent:name callback:callback];
 }
@@ -80,24 +68,6 @@
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
 	_eventEmitter = [[RNNEventEmitter alloc] init];
 	return @[_eventEmitter];
-}
-
-# pragma mark - JavaScript & Bridge Notifications
-
-- (void)onJavaScriptWillLoad {
-	[_componentRegistry clear];
-}
-
-- (void)onJavaScriptLoaded {
-	[_commandsHandler setReadyToReceiveCommands:true];
-	[[_bridge moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
-}
-
-- (void)onBridgeWillReload {
-	[_overlayManager dismissAllOverlays];
-	[_modalManager dismissAllModalsSynchronosly];
-	[_componentRegistry clear];
-	UIApplication.sharedApplication.delegate.window.rootViewController = nil;
 }
 
 @end

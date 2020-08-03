@@ -19,7 +19,7 @@
 
 
 + (RNNTurboModule *)createTurboModule {
-    return [[ReactNativeNavigation sharedInstance] createTurboModule];
+    return [[ReactNativeNavigation sharedInstance].bridgeManager createTurboModule];
 }
 
 + (void)bootstrapWithlaunchOptions:(NSDictionary *)launchOptions {
@@ -71,10 +71,6 @@
 	self.bridgeManager = [[RNNBridgeManager alloc] initWithlaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:_mainWindow];
     [self.bridgeManager initializeBridge];
 	[RNNSplashScreen showOnWindow:_mainWindow];
-}
-
-- (RNNTurboModule *)createTurboModule {
-    return [[RNNTurboModule alloc] initWithBridge:[ReactNativeNavigation getBridge] mainWindow:_mainWindow];
 }
 
 - (UIWindow *)initializeKeyWindow {

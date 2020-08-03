@@ -18,6 +18,8 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary *props,
 
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge;
 
+- (id)createTurboModule;
+
 @property(readonly, nonatomic, strong) RCTBridge *bridge;
 @property(readonly, nonatomic, strong) RNNEventEmitter *eventEmitter;
 
