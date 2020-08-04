@@ -86,8 +86,8 @@ static facebook::jsi::Value __hostFunction_NativeRNNTurboModuleSpecJSI_getNaviga
          .invokeObjCMethod(rt, PromiseKind, "getNavigationConstants", @selector(getNavigationConstants:rejecter:), args, count);
 }
 
-NativeRNNTurboModuleSpecJSI::NativeRNNTurboModuleSpecJSI(const ObjCTurboModule::InitParams &params)
-  : ObjCTurboModule(params) {
+NativeRNNTurboModuleSpecJSI::NativeRNNTurboModuleSpecJSI(id<RCTTurboModule> instance, std::shared_ptr<CallInvoker> jsInvoker)
+  : ObjCTurboModule("RNNTurboModule", instance, jsInvoker) {
       methodMap_["setRoot"] = MethodMetadata {2, __hostFunction_NativeRNNTurboModuleSpecJSI_setRoot};
       methodMap_["mergeOptions"] = MethodMetadata {2, __hostFunction_NativeRNNTurboModuleSpecJSI_mergeOptions};
       methodMap_["setDefaultOptions"] = MethodMetadata {2, __hostFunction_NativeRNNTurboModuleSpecJSI_setDefaultOptions};

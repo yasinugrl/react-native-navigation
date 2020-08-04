@@ -19,9 +19,9 @@ Class RNNTurboModuleClassProvider(const char *name);
  * Provide an instance of a ObjCTurboModule, given the ObjC instance, specific
  * to this app.
  */
-std::shared_ptr<TurboModule>
-RNNTurboModuleProvider(const std::string &name,
-                       const ObjCTurboModule::InitParams &params);
+std::shared_ptr<TurboModule> RNNTurboModuleProvider(const std::string &name,
+                                                    id<RCTTurboModule> instance,
+                                                    std::shared_ptr<CallInvoker> jsInvoker);
 
 } // namespace react
 } // namespace facebook

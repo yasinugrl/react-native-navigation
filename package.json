@@ -93,7 +93,7 @@
     "metro-react-native-babel-preset": "0.59.0",
     "prettier": "2.0.5",
     "react": "16.13.1",
-    "react-native": "0.0.0-1ae76bf0d",
+    "react-native": "0.62.2",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-keyboard-tracking-view": "5.x.x",
     "react-native-reanimated": "^1.9.0",
@@ -167,7 +167,7 @@
       },
       "ios.sim.release": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app",
-        "build": "ENTRY_FILE=../index.js RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
+        "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -workspace playground/ios/playground.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
         "type": "ios.simulator",
         "name": "iPhone 11"
       },

@@ -56,10 +56,8 @@ using namespace facebook::react;
     return self;
 }
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-  return std::make_shared<NativeRNNTurboModuleSpecJSI>(params);
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModuleWithJsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker {
+    return std::make_shared<NativeRNNTurboModuleSpecJSI>(self, jsInvoker);
 }
 
 RCT_EXPORT_METHOD(setRoot:(NSString*)commandId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {

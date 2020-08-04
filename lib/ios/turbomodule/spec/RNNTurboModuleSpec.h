@@ -108,7 +108,7 @@ namespace react {
 
 class JSI_EXPORT NativeRNNTurboModuleSpecJSI : public ObjCTurboModule {
 public:
-  NativeRNNTurboModuleSpecJSI(const ObjCTurboModule::InitParams &params);
+  NativeRNNTurboModuleSpecJSI(id<RCTTurboModule> instance, std::shared_ptr<CallInvoker> jsInvoker);
 };
 
 } // namespace react

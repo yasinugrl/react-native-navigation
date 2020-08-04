@@ -19,11 +19,13 @@ Class RNNTurboModuleClassProvider(const char *name) {
   return RCTCoreModulesClassProvider(name);
 }
 
-std::shared_ptr<TurboModule> RNNTurboModuleProvider(const std::string &name, const ObjCTurboModule::InitParams &params) {
-  if (name == "RNNTurboModule") {
-    return std::make_shared<NativeRNNTurboModuleSpecJSI>(params);
-  }
-  return nullptr;
+std::shared_ptr<TurboModule> RNNTurboModuleProvider(const std::string &name,
+                                                 id<RCTTurboModule> instance,
+                                                 std::shared_ptr<CallInvoker> jsInvoker) {
+    if (name == "RNNTurboModule") {
+      return std::make_shared<NativeRNNTurboModuleSpecJSI>(instance, jsInvoker);
+    }
+    return nullptr;
 }
 
 } // namespace react

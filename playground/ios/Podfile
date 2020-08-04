@@ -27,7 +27,7 @@ def all_pods
   pod 'React-jsi', :path => '../../node_modules/react-native/ReactCommon/jsi'
   pod 'React-jsiexecutor', :path => '../../node_modules/react-native/ReactCommon/jsiexecutor'
   pod 'React-jsinspector', :path => '../../node_modules/react-native/ReactCommon/jsinspector'
-  pod 'React-callinvoker', :path => "../../node_modules/react-native/ReactCommon/callinvoker"
+  pod 'ReactCommon/callinvoker', :path => "../../node_modules/react-native/ReactCommon"
   pod 'ReactCommon/turbomodule/core', :path => "../../node_modules/react-native/ReactCommon"
   pod 'Yoga', :path => '../../node_modules/react-native/ReactCommon/yoga', :modular_headers => true
 
@@ -37,9 +37,6 @@ def all_pods
   
   pod 'ReactNativeNavigation', :path => '../../'
   pod 'ReactNativeKeyboardTrackingView', :path => '../../node_modules/react-native-keyboard-tracking-view'
-
-  pod 'React-runtimeexecutor', :path => "../../node_modules/react-native/ReactCommon/runtimeexecutor"
-  pod 'React-perflogger', :path => "../../node_modules/react-native/ReactCommon/reactperflogger"
 
   use_native_modules!
 end
