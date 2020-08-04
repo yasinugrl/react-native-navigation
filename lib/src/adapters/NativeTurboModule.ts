@@ -30,5 +30,9 @@ export interface NativeCommandsModule {
   getLaunchArgs(commandId: string): Promise<any>;
 }
 
-const NativeTurboModule = TurboModuleRegistry.getEnforcing('RNNTurboModule');
+let NativeTurboModule;
+// Temp fix for unit tests
+try {
+  NativeTurboModule = TurboModuleRegistry.getEnforcing('RNNTurboModule');
+} catch (error) {}
 export default NativeTurboModule as NativeCommandsModule;
