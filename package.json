@@ -23,6 +23,7 @@
   "typings": "lib/dist/index.d.ts",
   "scripts": {
     "build": "node ./scripts/build",
+    "codegen": "react-native-tscodegen ./react-native-tscodegen.json",
     "watch": "node ./scripts/watch",
     "xcode": "open playground/ios/playground.xcworkspace",
     "install-android": "node ./scripts/install-android",
@@ -106,7 +107,9 @@
     "shell-utils": "1.x.x",
     "ts-mockito": "^2.3.1",
     "typedoc": "0.x.x",
-    "typescript": "3.9.5"
+    "typescript": "3.9.5",
+    "react-native-tscodegen": "^0.65.3",
+    "react-native-tscodegen-types": "^0.65.3"
   },
   "jest": {
     "preset": "react-native",

@@ -1,0 +1,14 @@
+{
+  "libraryName": "RNNTurboModule",
+  "outputDirectory": "./lib/cpp-generated",
+  "moduleSpecName": "RNNTurboModuleSpec",
+  "generators": [
+    "descriptors",
+    "events",
+    "props",
+    "tests",
+    "shadow-nodes",
+    "modules"
+  ],
+  "inputFile": "./lib/src/turboModule.ts"
+}
