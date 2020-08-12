@@ -1,11 +1,12 @@
-package com.reactnativenavigation.viewcontrollers.viewcontroller;
+package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.content.Context;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.CommandListener;
-import com.reactnativenavigation.viewcontrollers.stack.StackAnimator;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.LayoutDirectionApplier;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.BehaviourDelegate;
 
 import androidx.annotation.VisibleForTesting;
@@ -14,7 +15,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import static com.reactnativenavigation.utils.CoordinatorLayoutUtils.matchParentWithBehaviour;
 
 public class RootPresenter {
-    private StackAnimator animator;
+    private RootAnimator animator;
     private CoordinatorLayout rootLayout;
     private LayoutDirectionApplier layoutDirectionApplier;
 
@@ -23,11 +24,11 @@ public class RootPresenter {
     }
 
     public RootPresenter(Context context) {
-        this(new StackAnimator(context), new LayoutDirectionApplier());
+        this(new RootAnimator(context), new LayoutDirectionApplier());
     }
 
     @VisibleForTesting
-    public RootPresenter(StackAnimator animator, LayoutDirectionApplier layoutDirectionApplier) {
+    public RootPresenter(RootAnimator animator, LayoutDirectionApplier layoutDirectionApplier) {
         this.animator = animator;
         this.layoutDirectionApplier = layoutDirectionApplier;
     }
