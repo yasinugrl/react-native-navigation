@@ -6,7 +6,6 @@ import android.animation.AnimatorSet
 import android.content.Context
 import android.view.View
 import androidx.annotation.RestrictTo
-import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.FadeAnimation
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.Options
@@ -21,20 +20,6 @@ open class StackAnimator @JvmOverloads constructor(
 ) : BaseAnimator(context) {
     private val runningPushAnimations: MutableMap<View, Animator> = HashMap()
 
-    open fun setRoot(root: View, setRoot: AnimationOptions, onAnimationEnd: Runnable) {
-        root.visibility = View.INVISIBLE
-        val set = setRoot.getAnimation(root)
-        set.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                root.visibility = View.VISIBLE
-            }
-
-            override fun onAnimationEnd(animation: Animator) {
-                onAnimationEnd.run()
-            }
-        })
-        set.start()
-    }
 
     fun push(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, onAnimationEnd: Runnable) {
         val set = createPushAnimator(appearing, onAnimationEnd)
