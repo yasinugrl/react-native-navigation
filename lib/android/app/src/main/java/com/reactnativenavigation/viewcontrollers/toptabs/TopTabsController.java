@@ -74,6 +74,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
         super.onViewDisappear();
         performOnCurrentTab(ViewController::onViewDisappear);
         performOnParentController(ParentController::clearTopTabs);
+
     }
 
     @Override
@@ -106,5 +107,13 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
 
     private void performOnCurrentTab(Func1<ViewController> task) {
         task.run(tabs.get(getView().getCurrentItem()));
+    }
+
+    @Override
+    public void onChildDestroyed(ViewController child) {
+        super.onChildDestroyed(child);
+        //fix topTabs crash when reload
+        tabs.clear();
+        if(null!=view) view.destroy();
     }
 }

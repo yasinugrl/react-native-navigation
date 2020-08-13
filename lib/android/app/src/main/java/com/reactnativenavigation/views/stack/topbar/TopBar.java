@@ -26,6 +26,7 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +58,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         context.setTheme(R.style.TopBar);
         setId(CompatUtils.generateViewId());
         collapsingBehavior = new TopBarCollapseBehavior(this);
-        topTabs = new TopTabs(getContext());
         createLayout();
     }
 
@@ -86,8 +86,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     @NonNull
     private TopTabs createTopTabs() {
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-        lp.addRule(RelativeLayout.BELOW, titleBar.getId());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
         TopTabs topTabs = new TopTabs(getContext());
         topTabs.setLayoutParams(lp);
         topTabs.setVisibility(GONE);
@@ -111,10 +110,19 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setHeight(int height) {
         int pixelHeight = UiUtils.dpToPx(getContext(), height);
+        setPxHeight(pixelHeight);
+    }
+
+    public void setPxHeight(int pixelHeight){
         if (pixelHeight == getLayoutParams().height) return;
         ViewGroup.LayoutParams lp = getLayoutParams();
         lp.height = pixelHeight;
         setLayoutParams(lp);
+    }
+
+    public void addTabsHeightPx(int pixelHeight){
+        int height= titleBar.getLayoutParams().height + pixelHeight;
+        setPxHeight(height);
     }
 
     public void setTitleHeight(int height) {
@@ -205,6 +213,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         topTabs.setLayoutParams(topTabs.getLayoutParams());
     }
 
+    public void setTopTabsMode(@TabLayout.Mode int tabsMode){
+        topTabs.setTabMode(tabsMode);
+    }
+
     public void setBackButton(ButtonController backButton) {
         titleBar.setBackButton(backButton);
     }
@@ -244,8 +256,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void initTopTabs(ViewPager viewPager) {
-        topTabs.setVisibility(VISIBLE);
         topTabs.init(viewPager);
+        addTabsHeightPx(topTabs.getLayoutParams().height);
     }
 
     public void enableCollapse(ScrollEventListener scrollEventListener) {
@@ -267,6 +279,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void clearTopTabs() {
         topTabs.clear();
+        addTabsHeightPx(0);
     }
 
     @VisibleForTesting
@@ -300,5 +313,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public boolean containsRightButton(ButtonController button) {
         return titleBar.containsRightButton(button);
+    }
+
+    public void addTabs(TopTabs topTabs) {
+        ((LinearLayout)titleBar.getParent()).addView(topTabs);
     }
 }
