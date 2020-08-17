@@ -62,6 +62,7 @@ function registerScreens() {
   );
   Navigation.registerComponent(Screens.LifecycleButton, () => require('./LifecycleButton').default);
   Navigation.registerComponent(Screens.ReactTitleView, () => require('./CustomTopBar').default);
+  Navigation.registerComponent(Screens.LogoTopBar, () => require('./LogoTopBar').default);
   Navigation.registerComponent(Screens.RoundButton, () => require('./RoundedButton').default);
   Navigation.registerComponent(
     Screens.ScrollViewScreen,

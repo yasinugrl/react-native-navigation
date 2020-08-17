@@ -23,7 +23,9 @@ export default class LayoutsScreen extends NavigationComponent {
       topBar: {
         testID: WELCOME_SCREEN_HEADER,
         title: {
-          text: 'React Native Navigation',
+          component: {
+            name: Screens.LogoTopBar,
+          },
         },
       },
       layout: {
