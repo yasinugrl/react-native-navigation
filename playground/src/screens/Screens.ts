@@ -14,6 +14,7 @@ const Screens = {
   ExternalComponent: 'ExternalComponent',
   FullScreenModal: 'FullScreenModal',
   Layouts: 'Layouts',
+  LogoTopBar: 'LogoTopBar',
   Modal: 'Modal',
   ModalCommands: 'ModalCommands',
   StackCommands: 'StackCommands',
