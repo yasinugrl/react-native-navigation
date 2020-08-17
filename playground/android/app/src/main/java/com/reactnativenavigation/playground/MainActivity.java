@@ -1,7 +1,6 @@
 package com.reactnativenavigation.playground;
 
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import com.reactnativenavigation.NavigationActivity;
 
@@ -16,8 +15,6 @@ public class MainActivity extends NavigationActivity {
     }
 
     private void setSplashLayout() {
-        ImageView img = new ImageView(this);
-        img.setImageDrawable(getDrawable(R.drawable.ic_android));
-        setContentView(img);
+        setContentView(R.layout.splash);
     }
 }
