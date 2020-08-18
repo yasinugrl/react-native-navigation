@@ -15,7 +15,8 @@ public class LayoutNode {
 		SideMenuCenter,
 		SideMenuLeft,
 		SideMenuRight,
-        TopTabs
+        TopTabs,
+		SplitView
 	}
 
 	public final String id;

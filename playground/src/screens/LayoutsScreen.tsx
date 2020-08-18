@@ -38,12 +38,7 @@ export default class LayoutsScreen extends NavigationComponent {
         <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
-        <Button
-          label="SplitView"
-          testID={SPLIT_VIEW_BUTTON}
-          platform="ios"
-          onPress={this.splitView}
-        />
+        <Button label="SplitView" testID={SPLIT_VIEW_BUTTON} onPress={this.splitView} />
       </Root>
     );
   }

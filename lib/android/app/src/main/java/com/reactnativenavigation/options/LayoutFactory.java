@@ -1,46 +1,45 @@
 package com.reactnativenavigation.options;
 
-import android.app.Activity;
+import static com.reactnativenavigation.options.Options.parse;
 
+import android.app.Activity;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabPresenter;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
-import com.reactnativenavigation.viewcontrollers.component.ComponentPresenter;
-import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentPresenter;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
-import com.reactnativenavigation.utils.RenderChecker;
-import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuPresenter;
-import com.reactnativenavigation.viewcontrollers.stack.StackPresenter;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.Assertions;
 import com.reactnativenavigation.utils.ImageLoader;
-import com.reactnativenavigation.options.parsers.TypefaceLoader;
-import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
+import com.reactnativenavigation.utils.RenderChecker;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabPresenter;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
+import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.component.ComponentPresenter;
+import com.reactnativenavigation.viewcontrollers.component.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
+import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentPresenter;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
 import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuController;
+import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuPresenter;
+import com.reactnativenavigation.viewcontrollers.splitview.SplitViewController;
+import com.reactnativenavigation.viewcontrollers.splitview.SplitViewPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
+import com.reactnativenavigation.viewcontrollers.stack.StackPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.component.ComponentViewCreator;
+import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
-import com.reactnativenavigation.views.stack.topbar.TopBarBackgroundViewCreator;
 import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-
-import static com.reactnativenavigation.options.Options.parse;
 
 public class LayoutFactory {
 	private Activity activity;
@@ -88,6 +87,8 @@ public class LayoutFactory {
 				return createSideMenuRight(node);
             case TopTabs:
                 return createTopTabs(node);
+			case SplitView:
+				return createSplitView(node);
 			default:
 				throw new IllegalArgumentException("Invalid node type: " + node.type);
 		}
@@ -234,6 +235,22 @@ public class LayoutFactory {
         }
         return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), parse(typefaceManager, node.getOptions()), new Presenter(activity, defaultOptions));
     }
+
+    private ViewController createSplitView(LayoutNode node) {
+		if (node.children.size() != 2) {
+			throw new IllegalArgumentException("SplitView should have 2 children named master and details");
+		}
+		ViewController master = create(node.children.get(0));
+		ViewController details = create(node.children.get(1));
+		return new SplitViewController(activity,
+				childRegistry,
+				node.id,
+				master,
+				details,
+				new SplitViewPresenter(activity, defaultOptions),
+				parse(typefaceManager,
+						node.getOptions()));
+	}
 
     @NonNull
     @RestrictTo(RestrictTo.Scope.TESTS)
