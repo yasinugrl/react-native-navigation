@@ -30,6 +30,7 @@ public class Options {
         result.navigationBar = NavigationBarOptions.parse(json.optJSONObject("navigationBar"));
         result.statusBar = StatusBarOptions.parse(json.optJSONObject("statusBar"));
         result.layout = LayoutOptions.parse(json.optJSONObject("layout"));
+        result.splitViewOptions = SplitViewOptions.parse(json.optJSONObject("splitView"));
 
         return result;
     }
@@ -47,6 +48,7 @@ public class Options {
     @NonNull public NavigationBarOptions navigationBar = new NavigationBarOptions();
     @NonNull public StatusBarOptions statusBar = new StatusBarOptions();
     @NonNull public LayoutOptions layout = new LayoutOptions();
+    @NonNull public SplitViewOptions splitViewOptions = new SplitViewOptions();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
@@ -68,6 +70,7 @@ public class Options {
         result.navigationBar.mergeWith(navigationBar);
         result.statusBar.mergeWith(statusBar);
         result.layout.mergeWith(layout);
+        result.splitViewOptions.mergeWith(splitViewOptions);
         return result;
     }
 
@@ -86,6 +89,7 @@ public class Options {
         result.navigationBar.mergeWith(other.navigationBar);
         result.statusBar.mergeWith(other.statusBar);
         result.layout.mergeWith(other.layout);
+        result.splitViewOptions.mergeWith(splitViewOptions);
         return result;
     }
 
@@ -102,6 +106,7 @@ public class Options {
         navigationBar.mergeWithDefault(defaultOptions.navigationBar);
         statusBar.mergeWithDefault(defaultOptions.statusBar);
         layout.mergeWithDefault(defaultOptions.layout);
+        splitViewOptions.mergeWithDefault(defaultOptions.splitViewOptions);
         return this;
     }
 
