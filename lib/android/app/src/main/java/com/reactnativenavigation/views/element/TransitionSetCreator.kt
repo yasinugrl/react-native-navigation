@@ -1,5 +1,6 @@
 package com.reactnativenavigation.views.element
 
+import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.ElementTransitions
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.SharedElements
@@ -12,6 +13,13 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 class TransitionSetCreator {
+    suspend fun create(animation: AnimationOptions, screen: ViewController<*>): TransitionSet {
+        return TransitionSet().apply {
+            addAll(createSharedElementTransitions(screen, screen, animation.sharedElements))
+            addAll(createElementTransitions(screen, animation.elementTransitions))
+        }
+    }
+
     suspend fun create(
             animation: NestedAnimationsOptions,
             fromScreen: ViewController<*>,
@@ -19,6 +27,26 @@ class TransitionSetCreator {
     ) = TransitionSet().apply {
         addAll(createSharedElementTransitions(fromScreen, toScreen, animation.sharedElements))
         addAll(createElementTransitions(fromScreen, toScreen, animation.elementTransitions))
+    }
+
+    private suspend fun createElementTransitions(
+            screen: ViewController<*>,
+            elementTransitions: ElementTransitions
+    ): List<ElementTransition> = withContext(Dispatchers.Main.immediate) {
+        elementTransitions.transitions
+                .map {
+                    async {
+                        val transition = ElementTransition(it)
+                        OptimisticViewFinder().find(screen, transition.id)?.let {
+                            transition.view = it
+                            transition.viewController = screen
+                        }
+                        transition
+                    }
+                }
+                .awaitAll()
+                .filter { it.isValid() }
+
     }
 
     private suspend fun createSharedElementTransitions(
@@ -31,6 +59,7 @@ class TransitionSetCreator {
                     async {
                         SharedElementTransition(toScreen, it).apply {
                             ExistingViewFinder().find(fromScreen, fromId)?.let { from = it }
+                            OptimisticViewFinder().find(fromScreen, fromId)?.let { from = it }
                             OptimisticViewFinder().find(toScreen, toId)?.let { to = it }
                         }
                     }

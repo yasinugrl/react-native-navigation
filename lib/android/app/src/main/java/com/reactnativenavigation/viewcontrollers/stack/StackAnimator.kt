@@ -59,7 +59,7 @@ open class StackAnimator @JvmOverloads constructor(
 
     private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, pop: NestedAnimationsOptions, set: AnimatorSet) {
         val fade = if (pop.content.isFadeAnimation()) pop else FadeAnimation()
-        val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content, disappearing, appearing)
+        val transitionAnimators = transitionAnimatorCreator.create(pop, fade.contentDuration(), disappearing, appearing)
         set.playTogether(fade.content.getAnimation(disappearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()
@@ -110,7 +110,7 @@ open class StackAnimator @JvmOverloads constructor(
         appearing.setWaitForRender(Bool(true))
         appearing.view.alpha = 0f
         val fade = if (options.animations.push.content.isFadeAnimation()) options.animations.push.content else FadeAnimation().content
-        val transitionAnimators = transitionAnimatorCreator.create(options.animations.push, fade, disappearing, appearing)
+        val transitionAnimators = transitionAnimatorCreator.create(options.animations.push, fade.duration.toLong(), disappearing, appearing)
         set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()

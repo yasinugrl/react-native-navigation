@@ -1,6 +1,5 @@
 package com.reactnativenavigation.options
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.util.Property
 import android.util.TypedValue.COMPLEX_UNIT_DIP
@@ -14,7 +13,7 @@ import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.options.parsers.BoolParser
 import com.reactnativenavigation.options.parsers.TextParser
 import com.reactnativenavigation.utils.CollectionUtils
-import com.reactnativenavigation.utils.CollectionUtils.forEach
+import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 import kotlin.math.max
@@ -22,7 +21,7 @@ import kotlin.math.max
 open class AnimationOptions(json: JSONObject?) {
     constructor() : this(null)
 
-    private fun parse(json: JSONObject?) {
+    internal fun parse(json: JSONObject?) {
         json?.let {
             val iter = json.keys()
             while (iter.hasNext()) {
@@ -30,6 +29,8 @@ open class AnimationOptions(json: JSONObject?) {
                     "id" -> id = TextParser.parse(json, key)
                     "enable", "enabled" -> enabled = BoolParser.parse(json, key)
                     "waitForRender" -> waitForRender = BoolParser.parse(json, key)
+                    "elementTransitions" -> elementTransitions = ElementTransitions.parse(json)
+                    "sharedElementTransitions" -> sharedElements = SharedElements.parse(json)
                     else -> valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)))
                 }
             }
@@ -39,6 +40,8 @@ open class AnimationOptions(json: JSONObject?) {
     @JvmField var id: Text = NullText()
     @JvmField var enabled: Bool = NullBool()
     @JvmField var waitForRender: Bool = NullBool()
+    @JvmField var elementTransitions = ElementTransitions()
+    @JvmField var sharedElements = SharedElements()
     private var valueOptions = HashSet<ValueAnimationOptions>()
 
     fun mergeWith(other: AnimationOptions) {
@@ -46,6 +49,8 @@ open class AnimationOptions(json: JSONObject?) {
         if (other.enabled.hasValue()) enabled = other.enabled
         if (other.waitForRender.hasValue()) waitForRender = other.waitForRender
         if (other.valueOptions.isNotEmpty()) valueOptions = other.valueOptions
+        if (other.elementTransitions.hasValue()) elementTransitions = other.elementTransitions
+        if (other.sharedElements.hasValue()) sharedElements = other.sharedElements
     }
 
     fun mergeWithDefault(defaultOptions: AnimationOptions) {
@@ -53,11 +58,15 @@ open class AnimationOptions(json: JSONObject?) {
         if (!enabled.hasValue()) enabled = defaultOptions.enabled
         if (!waitForRender.hasValue()) waitForRender = defaultOptions.waitForRender
         if (valueOptions.isEmpty()) valueOptions = defaultOptions.valueOptions
+        if (!elementTransitions.hasValue()) elementTransitions = defaultOptions.elementTransitions
+        if (!sharedElements.hasValue()) sharedElements = defaultOptions.sharedElements
     }
 
     fun hasValue() = id.hasValue() || enabled.hasValue() || waitForRender.hasValue()
 
     fun getAnimation(view: View) = getAnimation(view, AnimatorSet())
+
+    fun hasElementTransitions() = elementTransitions.hasValue() || sharedElements.hasValue()
 
     fun getAnimation(view: View, defaultAnimation: AnimatorSet): AnimatorSet {
         if (!hasAnimation()) return defaultAnimation

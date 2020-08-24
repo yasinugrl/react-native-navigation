@@ -38,24 +38,18 @@ public class RootPresenter {
         rootLayout.addView(root.getView(), matchParentWithBehaviour(new BehaviourDelegate(root)));
         Options options = root.resolveCurrentOptions(defaultOptions);
         root.setWaitForRender(options.animations.setRoot.waitForRender);
-        if (options.animations.setRoot.waitForRender.isTrue()) {
+        if (options.animations.setRoot.enabled.isTrueOrUndefined()) {
+            animator.setRoot(root, options, () -> listener.onSuccess(root.getId()));
+        } else if (options.animations.setRoot.waitForRender.isTrue()) {
             root.getView().setAlpha(0);
             root.addOnAppearedListener(() -> {
                 if (root.isDestroyed()) {
                     listener.onError("Could not set root - Waited for the view to become visible but it was destroyed");
                 } else {
                     root.getView().setAlpha(1);
-                    animateSetRootAndReportSuccess(root, listener, options);
+                    listener.onSuccess(root.getId());
                 }
             });
-        } else {
-            animateSetRootAndReportSuccess(root, listener, options);
-        }
-    }
-
-    private void animateSetRootAndReportSuccess(ViewController root, CommandListener listener, Options options) {
-        if (options.animations.setRoot.hasAnimation()) {
-            animator.setRoot(root.getView(), options.animations.setRoot, () -> listener.onSuccess(root.getId()));
         } else {
             listener.onSuccess(root.getId());
         }

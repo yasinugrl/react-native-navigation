@@ -10,7 +10,7 @@ export default class CustomTopBar extends NavigationComponent {
           <Image
             source={require('../../img/navigator.png')}
             // @ts-ignore nativeID isn't included in react-native Image props.
-            nativeID={`logo`}
+            nativeID={`topBarLogo`}
             resizeMode={'contain'}
             style={styles.logo}
             fadeDuration={0}
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     flexDirection: 'column',
-    paddingVertical: 4,
+    paddingVertical: 8,
   },
   logo: {
     height: '100%',

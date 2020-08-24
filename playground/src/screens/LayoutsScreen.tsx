@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet, Image, View } from 'react-native';
 import { Options, NavigationComponent } from 'react-native-navigation';
 
 import Root from '../components/Root';
@@ -24,6 +25,7 @@ export default class LayoutsScreen extends NavigationComponent {
         testID: WELCOME_SCREEN_HEADER,
         title: {
           component: {
+            waitForRender: true,
             name: Screens.LogoTopBar,
           },
         },
@@ -36,16 +38,17 @@ export default class LayoutsScreen extends NavigationComponent {
 
   render() {
     return (
-      <Root componentId={this.props.componentId}>
-        <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
-        <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
-        <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
-        <Button
-          label="SplitView"
-          testID={SPLIT_VIEW_BUTTON}
-          platform="ios"
-          onPress={this.splitView}
-        />
+      <View>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('../../img/navigator.png')}
+            resizeMode={'contain'}
+            // @ts-ignore nativeID isn't included in react-native Image props.
+            nativeID={`appLogo`}
+            style={styles.logo}
+            fadeDuration={0}
+          />
+        </View>
       </Root>
     );
   }
@@ -149,3 +152,21 @@ export default class LayoutsScreen extends NavigationComponent {
     });
   };
 }
+
+const styles = StyleSheet.create({
+  container: {},
+  root: {
+    flex: 1,
+  },
+  logoContainer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  logo: {
+    height: 200,
+  },
+});

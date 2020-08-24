@@ -12,6 +12,7 @@ import androidx.core.animation.doOnEnd
 import com.facebook.react.uimanager.ViewGroupManager
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.AnimationOptions
+import com.reactnativenavigation.options.FadeAnimation
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.ViewUtils
@@ -19,20 +20,24 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.util.*
 
 open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
-
-    suspend fun create(animation: NestedAnimationsOptions, fadeAnimation: AnimationOptions, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
-        val transitions = transitionSetCreator.create(animation, fromScreen, toScreen)
-        return createAnimator(fadeAnimation, transitions)
+    suspend fun createSetRootAnimator(animation: AnimationOptions, root: ViewController<*>): AnimatorSet {
+        val transitions = transitionSetCreator.create(animation, root)
+        return createAnimator(transitions)
     }
 
-    private fun createAnimator(fadeAnimation: AnimationOptions, transitions: TransitionSet): AnimatorSet {
+    suspend fun create(animation: NestedAnimationsOptions, defaultDuration: Long, fromScreen: ViewController<*>, toScreen: ViewController<*>): AnimatorSet {
+        val transitions = transitionSetCreator.create(animation, fromScreen, toScreen)
+        return createAnimator(transitions, defaultDuration)
+    }
+
+    private fun createAnimator(transitions: TransitionSet, defaultDuration: Long = FadeAnimation.DURATION): AnimatorSet {
         recordIndices(transitions)
         reparentViews(transitions)
         val animators = ArrayList<Animator>()
         animators.addAll(createSharedElementTransitionAnimators(transitions.validSharedElementTransitions))
         animators.addAll(createElementTransitionAnimators(transitions.validElementTransitions))
 
-        setAnimatorsDuration(animators, fadeAnimation)
+        setAnimatorsDuration(animators, defaultDuration)
         val set = AnimatorSet()
         set.doOnEnd { restoreViewsToOriginalState(transitions) }
         set.doOnCancel { restoreViewsToOriginalState(transitions) }
@@ -46,12 +51,12 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         }
     }
 
-    private fun setAnimatorsDuration(animators: Collection<Animator>, fadeAnimation: AnimationOptions) {
+    private fun setAnimatorsDuration(animators: Collection<Animator>, defaultDuration: Long) {
         for (animator in animators) {
             if (animator is AnimatorSet) {
-                setAnimatorsDuration(animator.childAnimations, fadeAnimation)
+                setAnimatorsDuration(animator.childAnimations, defaultDuration)
             } else if (animator.duration.toInt() <= 0) {
-                animator.duration = fadeAnimation.duration.toLong()
+                animator.duration = defaultDuration
             }
         }
     }
@@ -97,7 +102,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             sortBy { ViewGroupManager.getViewZIndex(it.view) }
             sortBy { it.view.getTag(R.id.original_index_in_parent) as Int }
             forEach {
-                it.viewController.requireParentController().removeOverlay(it.view)
+                parentOrSelf(it).removeOverlay(it.view)
                 returnToOriginalParent(it.view)
             }
         }
@@ -122,13 +127,16 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             biologicalParent.removeView(view)
 
             val lp = FrameLayout.LayoutParams(view.layoutParams)
-            lp.topMargin = loc.y
+            lp.topMargin = loc.y //- StatusBarUtils.getStatusBarHeight(transition.viewController.activity)
             lp.leftMargin = loc.x
             lp.width = view.width
             lp.height = view.height
-            transition.viewController.requireParentController().addOverlay(view, lp)
+            parentOrSelf(transition).addOverlay(view, lp)
         }
     }
+
+    private fun parentOrSelf(transition: Transition) =
+            transition.viewController.requireParentController() ?: transition.viewController
 
     private fun returnToOriginalParent(element: View) {
         ViewUtils.removeFromParent(element)

@@ -31,6 +31,19 @@ function setRoot() {
   Navigation.setRoot({
     root: {
       bottomTabs: {
+        options: {
+          animations: {
+            setRoot: {
+              sharedElementTransitions: [
+                {
+                  fromId: 'appLogo',
+                  toId: 'topBarLogo',
+                  duration: 3000,
+                },
+              ],
+            },
+          },
+        },
         children: [
           {
             stack: {
