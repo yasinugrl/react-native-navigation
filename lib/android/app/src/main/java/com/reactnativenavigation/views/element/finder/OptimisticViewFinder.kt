@@ -12,7 +12,7 @@ class OptimisticViewFinder : ViewFinder {
         val onViewFoundListener = object : ReactFindViewUtil.OnViewFoundListener {
             override fun getNativeId() = nativeId
             override fun onViewFound(view: View) {
-                view.post { cont.resume(view) }
+                view.post { if (!cont.isCompleted) cont.resume(view) }
             }
         }
         val appearListener = Runnable {
