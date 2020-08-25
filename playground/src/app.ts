@@ -38,7 +38,18 @@ function setRoot() {
                 {
                   fromId: 'appLogo',
                   toId: 'topBarLogo',
-                  duration: 3000,
+                  duration: 400,
+                  interpolation: 'decelerate',
+                },
+              ],
+              elementTransitions: [
+                {
+                  id: 'layoutScreenRoot',
+                  alpha: {
+                    from: 0,
+                    to: 1,
+                    duration: 150,
+                  },
                 },
               ],
             },
