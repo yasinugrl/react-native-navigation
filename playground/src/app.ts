@@ -39,7 +39,7 @@ function setRoot() {
                   fromId: 'rnnLogo',
                   toId: 'topBarLogo',
                   duration: 400,
-                  interpolation: 'decelerate',
+                  interpolation: 'accelerateDecelerate',
                 },
               ],
               elementTransitions: [
@@ -58,6 +58,7 @@ function setRoot() {
         children: [
           {
             stack: {
+              id: 'layoutStack',
               children: [
                 {
                   component: {
