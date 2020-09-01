@@ -29,9 +29,14 @@ open class RootAnimator @JvmOverloads constructor(
     }
 
     private fun setRootWithElementTransition(root: ViewController<*>, options: Options, set: AnimatorSet) = GlobalScope.launch(Dispatchers.Main.immediate) {
+        val splash = SplashViewController(root.activity)
+        if (splash.findSplashView() == null) {
+            setRootWithoutElementTransitions(root, options, set)
+            return@launch
+        }
         root.setWaitForRender(Bool(true))
         root.view.alpha = 0f
-        val transitionAnimators = transitionAnimatorCreator.createSetRootAnimator(options.animations.setRoot, SplashViewController(root.activity), root)
+        val transitionAnimators = transitionAnimatorCreator.createSetRootAnimator(options.animations.setRoot, splash, root)
         set.playTogether(transitionAnimators)
         set.doOnStart {
             root.view.alpha = 1f
