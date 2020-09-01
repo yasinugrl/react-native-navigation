@@ -3,7 +3,6 @@ package com.reactnativenavigation.views.element
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -16,12 +15,13 @@ import com.reactnativenavigation.options.FadeAnimation
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.utils.ViewTags
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.viewcontrollers.splash.SplashViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import java.util.*
 
 open class TransitionAnimatorCreator @JvmOverloads constructor(private val transitionSetCreator: TransitionSetCreator = TransitionSetCreator()) {
-    suspend fun createSetRootAnimator(animation: AnimationOptions, root: ViewController<*>): AnimatorSet {
-        val transitions = transitionSetCreator.create(animation, root)
+    suspend fun createSetRootAnimator(animation: AnimationOptions, splash: SplashViewController, root: ViewController<*>): AnimatorSet {
+        val transitions = transitionSetCreator.create(animation, splash, root)
         return createAnimator(transitions)
     }
 
@@ -127,7 +127,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             biologicalParent.removeView(view)
 
             val lp = FrameLayout.LayoutParams(view.layoutParams)
-            lp.topMargin = loc.y //- StatusBarUtils.getStatusBarHeight(transition.viewController.activity)
+            lp.topMargin = loc.y
             lp.leftMargin = loc.x
             lp.width = view.width
             lp.height = view.height

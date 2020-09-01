@@ -36,7 +36,7 @@ function setRoot() {
             setRoot: {
               sharedElementTransitions: [
                 {
-                  fromId: 'appLogo',
+                  fromId: 'rnnLogo',
                   toId: 'topBarLogo',
                   duration: 400,
                   interpolation: 'decelerate',

@@ -6,10 +6,10 @@ import android.animation.AnimatorSet
 import android.content.Context
 import android.view.View
 import androidx.core.animation.doOnStart
-import androidx.core.view.doOnLayout
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
+import com.reactnativenavigation.viewcontrollers.splash.SplashViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import kotlinx.coroutines.*
@@ -31,7 +31,7 @@ open class RootAnimator @JvmOverloads constructor(
     private fun setRootWithElementTransition(root: ViewController<*>, options: Options, set: AnimatorSet) = GlobalScope.launch(Dispatchers.Main.immediate) {
         root.setWaitForRender(Bool(true))
         root.view.alpha = 0f
-        val transitionAnimators = transitionAnimatorCreator.createSetRootAnimator(options.animations.setRoot, root)
+        val transitionAnimators = transitionAnimatorCreator.createSetRootAnimator(options.animations.setRoot, SplashViewController(root.activity), root)
         set.playTogether(transitionAnimators)
         set.doOnStart {
             root.view.alpha = 1f

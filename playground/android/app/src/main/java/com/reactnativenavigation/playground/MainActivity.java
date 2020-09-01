@@ -1,6 +1,8 @@
 package com.reactnativenavigation.playground;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.reactnativenavigation.NavigationActivity;
 
@@ -15,6 +17,9 @@ public class MainActivity extends NavigationActivity {
     }
 
     private void setSplashLayout() {
-        setContentView(R.layout.splash);
+        View splash = LayoutInflater.from(this).inflate(R.layout.splash, null);
+        splash.setId(R.id.splash_view);
+        splash.findViewById(R.id.rnnLogo).setTag(com.reactnativenavigation.R.id.nativeId, "rnnLogo");
+        setContentView(splash);
     }
 }

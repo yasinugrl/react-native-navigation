@@ -4,6 +4,7 @@ import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.ElementTransitions
 import com.reactnativenavigation.options.NestedAnimationsOptions
 import com.reactnativenavigation.options.SharedElements
+import com.reactnativenavigation.viewcontrollers.splash.SplashViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.finder.ExistingViewFinder
 import com.reactnativenavigation.views.element.finder.OptimisticViewFinder
@@ -13,10 +14,10 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 class TransitionSetCreator {
-    suspend fun create(animation: AnimationOptions, screen: ViewController<*>): TransitionSet {
+    suspend fun create(animation: AnimationOptions, splash: SplashViewController, root: ViewController<*>): TransitionSet {
         return TransitionSet().apply {
-            addAll(createSharedElementTransitions(screen, screen, animation.sharedElements))
-            addAll(createElementTransitions(screen, animation.elementTransitions))
+            addAll(createSharedElementTransitions(splash, root, animation.sharedElements))
+            addAll(createElementTransitions(root, animation.elementTransitions))
         }
     }
 
@@ -59,7 +60,6 @@ class TransitionSetCreator {
                     async {
                         SharedElementTransition(toScreen, it).apply {
                             ExistingViewFinder().find(fromScreen, fromId)?.let { from = it }
-                            OptimisticViewFinder().find(fromScreen, fromId)?.let { from = it }
                             OptimisticViewFinder().find(toScreen, toId)?.let { to = it }
                         }
                     }
