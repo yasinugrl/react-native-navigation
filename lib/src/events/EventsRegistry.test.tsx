@@ -28,6 +28,17 @@ describe('EventsRegistry', () => {
     expect(mockNativeEventsReceiver.registerAppLaunchedListener).toHaveBeenCalledWith(cb);
   });
 
+  it('delegates willAppear to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.experimental_registerComponentWillAppearListener(cb);
+    expect(
+      mockNativeEventsReceiver.experimental_registerComponentWillAppearListener
+    ).toHaveBeenCalledTimes(1);
+    expect(
+      mockNativeEventsReceiver.experimental_registerComponentWillAppearListener
+    ).toHaveBeenCalledWith(cb);
+  });
+
   it('delegates didAppear to nativeEventsReceiver', () => {
     const cb = jest.fn();
     uut.registerComponentDidAppearListener(cb);
@@ -59,8 +70,12 @@ describe('EventsRegistry', () => {
   it('delegates navigationButtonPressed to nativeEventsReceiver', () => {
     const cb = jest.fn();
     uut.registerNavigationButtonPressedListener(cb);
-    expect(mockNativeEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);
-    expect(mockNativeEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledWith(cb);
+    expect(mockNativeEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(
+      1
+    );
+    expect(mockNativeEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledWith(
+      cb
+    );
   });
 
   it('delegates modalDismissed to nativeEventsReceiver', () => {
@@ -73,8 +88,12 @@ describe('EventsRegistry', () => {
   it('delegates modalAttemptedToDimiss to nativeEventsReceiver', () => {
     const cb = jest.fn();
     uut.registerModalAttemptedToDismissListener(cb);
-    expect(mockNativeEventsReceiver.registerModalAttemptedToDismissListener).toHaveBeenCalledTimes(1);
-    expect(mockNativeEventsReceiver.registerModalAttemptedToDismissListener).toHaveBeenCalledWith(cb);
+    expect(mockNativeEventsReceiver.registerModalAttemptedToDismissListener).toHaveBeenCalledTimes(
+      1
+    );
+    expect(mockNativeEventsReceiver.registerModalAttemptedToDismissListener).toHaveBeenCalledWith(
+      cb
+    );
   });
 
   it('delegates searchBarUpdated to nativeEventsReceiver', () => {
@@ -87,8 +106,12 @@ describe('EventsRegistry', () => {
   it('delegates searchBarCancelPressed to nativeEventsReceiver', () => {
     const cb = jest.fn();
     uut.registerSearchBarCancelPressedListener(cb);
-    expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
-    expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledWith(cb);
+    expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(
+      1
+    );
+    expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledWith(
+      cb
+    );
   });
 
   it('delegates previewCompleted to nativeEventsReceiver', () => {
@@ -126,7 +149,9 @@ describe('EventsRegistry', () => {
     const subscription = {};
     mockScreenEventsRegistry.registerComponentListener = jest.fn();
     mockScreenEventsRegistry.registerComponentListener.mockReturnValueOnce(subscription);
-    expect(uut.registerComponentListener({} as NavigationComponentListener, 'componentId')).toEqual(subscription);
+    expect(uut.registerComponentListener({} as NavigationComponentListener, 'componentId')).toEqual(
+      subscription
+    );
   });
 
   it('delegates screenPopped to nativeEventsReceiver', () => {

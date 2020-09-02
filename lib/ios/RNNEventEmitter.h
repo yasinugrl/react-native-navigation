@@ -6,6 +6,8 @@
 
 - (void)sendOnAppLaunched;
 
+- (void)sendComponentWillAppear:(NSString*)componentId componentName:(NSString*)componentName componentType:(NSString *)componentType;
+
 - (void)sendComponentDidAppear:(NSString*)componentId componentName:(NSString*)componentName componentType:(NSString *)componentType;
 
 - (void)sendComponentDidDisappear:(NSString *)componentId componentName:(NSString *)componentName componentType:(NSString *)componentType;

@@ -72,6 +72,14 @@
     return currentButtons;
 }
 
+- (void)componentWillAppear {
+    for (UIBarButtonItem* barButtonItem in [self currentButtons]) {
+      if ([self isRNNUIBarButton:barButtonItem]) {
+          [(RNNUIBarButtonItem *)barButtonItem notifyWillAppear];
+      }
+    }
+}
+
 - (void)componentDidAppear {
     for (UIBarButtonItem* barButtonItem in [self currentButtons]) {
 	  if ([self isRNNUIBarButton:barButtonItem]) {

@@ -12,6 +12,7 @@ static NSString* const AppLaunched				= @"RNN.AppLaunched";
 static NSString* const CommandCompleted			= @"RNN.CommandCompleted";
 static NSString* const BottomTabSelected		= @"RNN.BottomTabSelected";
 static NSString* const BottomTabLongPressed     = @"RNN.BottomTabLongPressed";
+static NSString* const ComponentWillAppear      = @"RNN.ComponentWillAppear";
 static NSString* const ComponentDidAppear		= @"RNN.ComponentDidAppear";
 static NSString* const ComponentDidDisappear	= @"RNN.ComponentDidDisappear";
 static NSString* const NavigationButtonPressed	= @"RNN.NavigationButtonPressed";
@@ -23,21 +24,23 @@ static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 static NSString* const ScreenPopped             = @"RNN.ScreenPopped";
 static NSString* const BottomTabPressed         = @"RNN.BottomTabPressed";
 
--(NSArray<NSString *> *)supportedEvents {
-	return @[AppLaunched,
-			 CommandCompleted,
-			 BottomTabSelected,
-       BottomTabLongPressed,
-       BottomTabPressed,
-			 ComponentDidAppear,
-			 ComponentDidDisappear,
-			 NavigationButtonPressed,
-			 ModalDismissed,
-			 SearchBarUpdated,
-			 SearchBarCancelPressed,
-			 PreviewCompleted,
-       ScreenPopped,
-       ModalAttemptedToDismiss];
+- (NSArray<NSString *> *)supportedEvents {
+    return @[AppLaunched,
+             CommandCompleted,
+             BottomTabSelected,
+             BottomTabLongPressed,
+             BottomTabPressed,
+             ComponentWillAppear,
+             ComponentDidAppear,
+             ComponentDidDisappear,
+             NavigationButtonPressed,
+             ModalDismissed,
+             SearchBarUpdated,
+             SearchBarCancelPressed,
+             PreviewCompleted,
+             ScreenPopped,
+             ModalAttemptedToDismiss
+    ];
 }
 
 # pragma mark public
@@ -48,6 +51,14 @@ static NSString* const BottomTabPressed         = @"RNN.BottomTabPressed";
     } else {
         _appLaunchedEventDeferred = TRUE;
     }
+}
+
+- (void)sendComponentWillAppear:(NSString *)componentId componentName:(NSString *)componentName componentType:(NSString *)componentType {
+    [self send:ComponentWillAppear body:@{
+        @"componentId":componentId,
+        @"componentName": componentName,
+        @"componentType": componentType
+    }];
 }
 
 - (void)sendComponentDidAppear:(NSString *)componentId componentName:(NSString *)componentName componentType:(NSString *)componentType {

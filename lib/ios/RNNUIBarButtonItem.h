@@ -7,11 +7,12 @@
 
 @property (nonatomic, strong) NSString* buttonId;
 
--(instancetype)init:(NSString*)buttonId withIcon:(UIImage*)iconImage;
--(instancetype)init:(NSString*)buttonId withTitle:(NSString*)title;
--(instancetype)init:(NSString*)buttonId withCustomView:(RCTRootView *)reactView;
--(instancetype)init:(NSString*)buttonId withSystemItem:(NSString*)systemItemName;
+- (instancetype)init:(NSString*)buttonId withIcon:(UIImage*)iconImage;
+- (instancetype)init:(NSString*)buttonId withTitle:(NSString*)title;
+- (instancetype)init:(NSString*)buttonId withCustomView:(RCTRootView *)reactView;
+- (instancetype)init:(NSString*)buttonId withSystemItem:(NSString*)systemItemName;
 
+- (void)notifyWillAppear;
 - (void)notifyDidAppear;
 - (void)notifyDidDisappear;
 

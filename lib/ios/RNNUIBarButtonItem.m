@@ -63,6 +63,12 @@
 	return self;
 }
 
+- (void)notifyWillAppear {
+    if ([self.customView isKindOfClass:[RNNReactView class]]) {
+        [((RNNReactView *)self.customView) componentWillAppear];
+    }
+}
+
 - (void)notifyDidAppear {
     if ([self.customView isKindOfClass:[RNNReactView class]]) {
         [((RNNReactView *)self.customView) componentDidAppear];

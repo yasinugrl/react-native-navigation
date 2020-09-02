@@ -9,6 +9,7 @@ import { ComponentDidAppearEvent } from '../interfaces/ComponentEvents';
 describe('ComponentEventsObserver', () => {
   const mockEventsReceiver = new NativeEventsReceiver();
   const mockStore = new Store();
+  const willAppearFn = jest.fn();
   const didAppearFn = jest.fn();
   const didDisappearFn = jest.fn();
   const didMountFn = jest.fn();
@@ -38,6 +39,10 @@ describe('ComponentEventsObserver', () => {
 
     componentWillUnmount() {
       willUnmountFn();
+    }
+
+    experimental_componentWillAppear() {
+      willAppearFn();
     }
 
     componentDidAppear() {
@@ -85,6 +90,10 @@ describe('ComponentEventsObserver', () => {
 
     componentWillUnmount() {
       willUnmountFn();
+    }
+
+    experimental_componentWillAppear() {
+      willAppearFn();
     }
 
     componentDidAppear(event: ComponentDidAppearEvent) {
@@ -172,9 +181,17 @@ describe('ComponentEventsObserver', () => {
     const tree = renderer.create(<BoundScreen componentId={'myCompId'} />);
     expect(tree.toJSON()).toBeDefined();
     expect(didMountFn).toHaveBeenCalledTimes(1);
+    expect(willAppearFn).not.toHaveBeenCalled();
     expect(didAppearFn).not.toHaveBeenCalled();
     expect(didDisappearFn).not.toHaveBeenCalled();
     expect(willUnmountFn).not.toHaveBeenCalled();
+
+    uut.notifyComponentWillAppear({
+      componentId: 'myCompId',
+      componentName: 'doesnt matter',
+      componentType: 'Component',
+    });
+    expect(willAppearFn).toHaveBeenCalledTimes(1);
 
     uut.notifyComponentDidAppear({
       componentId: 'myCompId',
@@ -362,6 +379,9 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`register for all native component events notifies self on events, once`, () => {
+    expect(
+      mockEventsReceiver.experimental_registerComponentWillAppearListener
+    ).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerComponentDidAppearListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerComponentDidDisappearListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).not.toHaveBeenCalled();
@@ -372,6 +392,9 @@ describe('ComponentEventsObserver', () => {
     uut.registerOnceForAllComponentEvents();
     uut.registerOnceForAllComponentEvents();
     uut.registerOnceForAllComponentEvents();
+    expect(
+      mockEventsReceiver.experimental_registerComponentWillAppearListener
+    ).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerComponentDidAppearListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerComponentDidDisappearListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);

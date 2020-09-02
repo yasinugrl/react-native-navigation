@@ -28,6 +28,10 @@
     _defaultOptions = defaultOptions;
 }
 
+- (void)componentWillAppear {
+    
+}
+
 - (void)componentDidAppear {
     
 }

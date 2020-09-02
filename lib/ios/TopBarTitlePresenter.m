@@ -85,6 +85,10 @@
     self.boundViewController.navigationItem.titleView = nil;
 }
 
+- (void)componentWillAppear {
+    [_customTitleView componentWillAppear];
+}
+
 - (void)componentDidAppear {
     [_customTitleView componentDidAppear];
 }

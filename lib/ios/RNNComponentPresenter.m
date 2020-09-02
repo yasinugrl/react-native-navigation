@@ -33,6 +33,15 @@
     [_navigationButtons componentDidDisappear];
 }
 
+- (void)componentWillAppear {
+    RNNReactView* component = (RNNReactView *)self.boundViewController.view;
+    if ([component respondsToSelector:@selector(componentDidAppear)]) {
+        [component componentWillAppear];
+    }
+    [_topBarTitlePresenter componentWillAppear];
+    [_navigationButtons componentWillAppear];
+}
+
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
     [super applyOptionsOnWillMoveToParentViewController:options];
 }

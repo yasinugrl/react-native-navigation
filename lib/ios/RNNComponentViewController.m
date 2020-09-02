@@ -27,6 +27,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+    [_presenter componentWillAppear];
 	[_presenter applyOptions:self.resolveOptions];
 	[self.parentViewController onChildWillAppear];
 }
