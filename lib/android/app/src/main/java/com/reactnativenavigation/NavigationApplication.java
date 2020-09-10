@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
+import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
@@ -18,6 +19,9 @@ public abstract class NavigationApplication extends Application implements React
 	private ReactGateway reactGateway;
 	public static NavigationApplication instance;
 	final Map<String, ExternalComponentCreator> externalComponents = new HashMap<>();
+    static {
+        ReactFeatureFlags.useTurboModules = true;
+    }
 
 	@Override
 	public void onCreate() {
@@ -39,7 +43,7 @@ public abstract class NavigationApplication extends Application implements React
 	protected ReactGateway createReactGateway() {
 	    return new ReactGateway(getReactNativeHost());
     }
-    
+
 	public ReactGateway getReactGateway() {
 		return reactGateway;
 	}
