@@ -39,11 +39,11 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         animators.addAll(createElementTransitionAnimators(transitions.validElementTransitions))
 
         setAnimatorsDuration(animators, defaultDuration)
-        val set = AnimatorSet()
-        set.doOnEnd { restoreViewsToOriginalState(transitions) }
-        set.doOnCancel { restoreViewsToOriginalState(transitions) }
-        set.playTogether(animators)
-        return set
+        return AnimatorSet().apply {
+            doOnEnd { restoreViewsToOriginalState(transitions) }
+            doOnCancel { restoreViewsToOriginalState(transitions) }
+            playTogether(animators)
+        }
     }
 
     private fun recordIndices(transitions: TransitionSet) {
