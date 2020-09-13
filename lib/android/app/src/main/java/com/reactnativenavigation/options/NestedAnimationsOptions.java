@@ -5,29 +5,9 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.parsers.BoolParser;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class NestedAnimationsOptions {
-    public static class FadeAnimation extends NestedAnimationsOptions {
-        public FadeAnimation() {
-            try {
-                JSONObject alpha = new JSONObject();
-                alpha.put("from", 0);
-                alpha.put("to", 1);
-                alpha.put("duration", 300);
-
-                JSONObject content = new JSONObject();
-                content.put("alpha", alpha);
-
-                JSONObject animation = new JSONObject();
-                animation.put("content", content);
-                mergeWith(parse(animation));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
     public static NestedAnimationsOptions parse(JSONObject json) {
         NestedAnimationsOptions options = new NestedAnimationsOptions();
         if (json == null) return options;
