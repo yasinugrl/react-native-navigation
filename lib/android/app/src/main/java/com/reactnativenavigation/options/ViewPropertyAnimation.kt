@@ -13,7 +13,7 @@ import com.reactnativenavigation.options.parsers.NumberParser
 import com.reactnativenavigation.utils.UiUtils.dpToPx
 import org.json.JSONObject
 
-class ValueAnimationOptions {
+class ViewPropertyAnimation {
     private lateinit var viewProperty: ViewProperty
     var from: FloatParam = NullFloatParam()
     private var fromDelta = FloatParam(0f)
@@ -56,22 +56,20 @@ class ValueAnimationOptions {
 
     override fun equals(o: Any?): Boolean {
         if (this === o) return true
-        return if (o == null || javaClass != o.javaClass) false else viewProperty == (o as ValueAnimationOptions).viewProperty
+        return if (o == null || javaClass != o.javaClass) false else viewProperty == (o as ViewPropertyAnimation).viewProperty
     }
 
     fun equals(animationProperty: Property<View?, Float?>): Boolean {
         return viewProperty.property.name == animationProperty.name
     }
 
-    override fun hashCode(): Int {
-        return viewProperty.hashCode()
-    }
+    override fun hashCode() = viewProperty.hashCode()
 
     fun isAlpha(): Boolean = viewProperty.property == View.ALPHA
 
     companion object {
-        fun parse(json: JSONObject?, viewProperty: ViewProperty): ValueAnimationOptions {
-            val options = ValueAnimationOptions()
+        fun parse(json: JSONObject?, viewProperty: ViewProperty): ViewPropertyAnimation {
+            val options = ViewPropertyAnimation()
             options.viewProperty = viewProperty
             options.from = FloatParser.parse(json, "from")
             options.to = FloatParser.parse(json, "to")

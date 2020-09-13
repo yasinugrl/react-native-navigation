@@ -11,8 +11,6 @@ import com.reactnativenavigation.options.parsers.BoolParser
 import com.reactnativenavigation.options.parsers.TextParser
 import com.reactnativenavigation.utils.CollectionUtils
 import org.json.JSONObject
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.max
 
 open class AnimationOptions(json: JSONObject?) {
@@ -21,7 +19,8 @@ open class AnimationOptions(json: JSONObject?) {
     @JvmField var waitForRender: Bool = NullBool()
     @JvmField var elementTransitions = ElementTransitions()
     @JvmField var sharedElements = SharedElements()
-    private var valueOptions = HashSet<ValueAnimationOptions>()
+    var viewPropertyAnimations = mutableListOf<ViewPropertyAnimation>()
+        private set
 
     constructor() : this(null)
 
@@ -39,7 +38,7 @@ open class AnimationOptions(json: JSONObject?) {
                     "waitForRender" -> waitForRender = BoolParser.parse(json, key)
                     "elementTransitions" -> elementTransitions = ElementTransitions.parse(json)
                     "sharedElementTransitions" -> sharedElements = SharedElements.parse(json)
-                    else -> valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), ViewProperty.create(key)))
+                    else -> viewPropertyAnimations.add(ViewPropertyAnimation.parse(json.optJSONObject(key), ViewProperty.create(key)))
                 }
             }
         }
@@ -49,7 +48,7 @@ open class AnimationOptions(json: JSONObject?) {
         if (other.id.hasValue()) id = other.id
         if (other.enabled.hasValue()) enabled = other.enabled
         if (other.waitForRender.hasValue()) waitForRender = other.waitForRender
-        if (other.valueOptions.isNotEmpty()) valueOptions = other.valueOptions
+        if (other.viewPropertyAnimations.isNotEmpty()) viewPropertyAnimations = other.viewPropertyAnimations
         if (other.elementTransitions.hasValue()) elementTransitions = other.elementTransitions
         if (other.sharedElements.hasValue()) sharedElements = other.sharedElements
     }
@@ -58,7 +57,7 @@ open class AnimationOptions(json: JSONObject?) {
         if (!id.hasValue()) id = defaultOptions.id
         if (!enabled.hasValue()) enabled = defaultOptions.enabled
         if (!waitForRender.hasValue()) waitForRender = defaultOptions.waitForRender
-        if (valueOptions.isEmpty()) valueOptions = defaultOptions.valueOptions
+        if (viewPropertyAnimations.isEmpty()) viewPropertyAnimations = defaultOptions.viewPropertyAnimations
         if (!elementTransitions.hasValue()) elementTransitions = defaultOptions.elementTransitions
         if (!sharedElements.hasValue()) sharedElements = defaultOptions.sharedElements
     }
@@ -71,22 +70,20 @@ open class AnimationOptions(json: JSONObject?) {
 
     fun getAnimation(view: View, defaultAnimation: AnimatorSet): AnimatorSet {
         if (!hasAnimation()) return defaultAnimation
-        return AnimatorSet().apply { playTogether(valueOptions.map { it.getAnimation(view) }) }
+        return AnimatorSet().apply { playTogether(viewPropertyAnimations.map { it.getAnimation(view) }) }
     }
 
     val duration: Int
-        get() = CollectionUtils.reduce(valueOptions, 0, { item: ValueAnimationOptions, currentValue: Int -> max(item.duration[currentValue], currentValue) })
+        get() = CollectionUtils.reduce(viewPropertyAnimations, 0, { item: ViewPropertyAnimation, currentValue: Int -> max(item.duration[currentValue], currentValue) })
 
-    open fun hasAnimation(): Boolean = valueOptions.isNotEmpty()
+    open fun hasAnimation(): Boolean = viewPropertyAnimations.isNotEmpty()
 
-    fun isFadeAnimation(): Boolean = valueOptions.size == 1 && valueOptions.find(ValueAnimationOptions::isAlpha) != null
+    fun isFadeAnimation(): Boolean = viewPropertyAnimations.size == 1 && viewPropertyAnimations.find(ViewPropertyAnimation::isAlpha) != null
 
     fun setValueDy(animation: Property<View?, Float?>?, fromDelta: Float, toDelta: Float) {
-        CollectionUtils.first(valueOptions, { o: ValueAnimationOptions -> o.equals(animation) }) { param: ValueAnimationOptions ->
+        CollectionUtils.first(viewPropertyAnimations, { o: ViewPropertyAnimation -> o.equals(animation) }) { param: ViewPropertyAnimation ->
             param.setFromDelta(fromDelta)
             param.setToDelta(toDelta)
         }
     }
-
-    fun getAnimationValues() = ArrayList<ValueAnimationOptions>(valueOptions)
 }

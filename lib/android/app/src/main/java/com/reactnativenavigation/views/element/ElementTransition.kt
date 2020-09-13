@@ -21,7 +21,7 @@ class ElementTransition(private val transitionOptions: ElementTransitionOptions)
     fun isValid(): Boolean = ::view.isInitialized
 
     private fun applyInitialAnimationValues() {
-        transitionOptions.getAnimationValues().forEach {
+        transitionOptions.viewPropertyAnimations.forEach {
             it.setCurrentViewProperty(view, it.from.get())
         }
     }
