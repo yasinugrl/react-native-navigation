@@ -52,19 +52,11 @@
 }
 
 - (void)bootstrapWithDelegate:(id<RCTBridgeDelegate>)bridgeDelegate launchOptions:(NSDictionary *)launchOptions {
-<<<<<<< HEAD
     UIWindow* mainWindow = [self initializeKeyWindowIfNeeded];
 	
     self.bridgeManager = [[RNNBridgeManager alloc] initWithLaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:mainWindow];
     [self.bridgeManager initializeBridge];
     [RNNSplashScreen showOnWindow:mainWindow];
-=======
-	UIWindow* mainWindow = [self initializeKeyWindow];
-	
-	self.bridgeManager = [[RNNBridgeManager alloc] initWithlaunchOptions:launchOptions andBridgeDelegate:bridgeDelegate mainWindow:mainWindow];
-    [self.bridgeManager initializeBridge];
-	[RNNSplashScreen showOnWindow:mainWindow];
->>>>>>> Turbo Modules support (#6399)
 }
 
 - (UIWindow *)initializeKeyWindowIfNeeded {
