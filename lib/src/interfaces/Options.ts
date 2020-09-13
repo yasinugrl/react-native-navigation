@@ -6,13 +6,17 @@ import { ImageRequireSource, Insets } from 'react-native';
 declare type Color = string | symbol;
 type FontFamily = string;
 type FontWeight =
-  | 'regular'
-  | 'bold'
+  | 'normal'
+  | 'ultralight'
   | 'thin'
-  | 'ultraLight'
   | 'light'
+  | 'regular'
   | 'medium'
   | 'semibold'
+  | 'demibold'
+  | 'extrabold'
+  | 'ultrabold'
+  | 'bold'
   | 'heavy'
   | 'black';
 export type LayoutOrientation = 'portrait' | 'landscape';
@@ -46,7 +50,8 @@ type Interpolation =
   | 'accelerateDecelerate'
   | 'decelerate'
   | 'accelerate'
-  | 'decelerateAccelerate';
+  | 'decelerateAccelerate'
+  | 'spring';
 
 export interface OptionsSplitView {
   /**
@@ -262,6 +267,11 @@ export interface OptionsTopBarSubtitle {
 }
 
 export interface OptionsTopBarBackButton {
+  /**
+   * Overrides the text that's read by the screen reader when the user interacts with the back button
+   * #### (Android specific)
+   */
+  accessibilityLabel?: string;
   /**
    * Button id for reference press event
    * #### (Android specific)
@@ -512,6 +522,16 @@ export interface OptionsTopBar {
    * #### (iOS 11+ specific)
    */
   searchBarPlaceholder?: string;
+  /**
+   * The background color of the UISearchBar's TextField
+   * #### (iOS 13+ specific)
+   */
+  searchBarBackgroundColor?: string;
+  /**
+   * The tint color of the UISearchBar
+   * #### (iOS 11+ specific)
+   */
+  searchBarTintColor?: string;
   /**
    * Controls Hiding NavBar on focus UISearchBar
    * #### (iOS 11+ specific)
@@ -901,7 +921,7 @@ export interface OptionsAnimationPropertyConfig {
   /**
    * Animation interplation
    */
-  interpolation?: 'accelerate' | 'decelerate';
+  interpolation?: 'accelerate' | 'decelerate' | 'spring';
 }
 
 /**
