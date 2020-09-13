@@ -38,8 +38,8 @@ function setRoot() {
                 {
                   fromId: 'rnnLogo',
                   toId: 'topBarLogo',
-                  duration: 400,
-                  interpolation: 'accelerateDecelerate',
+                  duration: 700,
+                  interpolation: 'decelerate',
                 },
               ],
               elementTransitions: [

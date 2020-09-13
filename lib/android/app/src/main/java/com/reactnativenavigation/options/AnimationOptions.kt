@@ -2,10 +2,7 @@ package com.reactnativenavigation.options
 
 import android.animation.AnimatorSet
 import android.util.Property
-import android.util.TypedValue.COMPLEX_UNIT_DIP
-import android.util.TypedValue.COMPLEX_UNIT_FRACTION
 import android.view.View
-import android.view.View.*
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.options.params.NullBool
 import com.reactnativenavigation.options.params.NullText
@@ -13,13 +10,24 @@ import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.options.parsers.BoolParser
 import com.reactnativenavigation.options.parsers.TextParser
 import com.reactnativenavigation.utils.CollectionUtils
-import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.max
 
 open class AnimationOptions(json: JSONObject?) {
+    @JvmField var id: Text = NullText()
+    @JvmField var enabled: Bool = NullBool()
+    @JvmField var waitForRender: Bool = NullBool()
+    @JvmField var elementTransitions = ElementTransitions()
+    @JvmField var sharedElements = SharedElements()
+    private var valueOptions = HashSet<ValueAnimationOptions>()
+
     constructor() : this(null)
+
+    init {
+        json?.let { parse(it) }
+    }
 
     internal fun parse(json: JSONObject?) {
         json?.let {
@@ -31,18 +39,11 @@ open class AnimationOptions(json: JSONObject?) {
                     "waitForRender" -> waitForRender = BoolParser.parse(json, key)
                     "elementTransitions" -> elementTransitions = ElementTransitions.parse(json)
                     "sharedElementTransitions" -> sharedElements = SharedElements.parse(json)
-                    else -> valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)))
+                    else -> valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), ViewProperty.create(key)))
                 }
             }
         }
     }
-
-    @JvmField var id: Text = NullText()
-    @JvmField var enabled: Bool = NullBool()
-    @JvmField var waitForRender: Bool = NullBool()
-    @JvmField var elementTransitions = ElementTransitions()
-    @JvmField var sharedElements = SharedElements()
-    private var valueOptions = HashSet<ValueAnimationOptions>()
 
     fun mergeWith(other: AnimationOptions) {
         if (other.id.hasValue()) id = other.id
@@ -87,25 +88,5 @@ open class AnimationOptions(json: JSONObject?) {
         }
     }
 
-    companion object {
-        private fun getAnimProp(key: String): Triple<Property<View, Float>, Int, (View) -> Float> {
-            when (key) {
-                "x" -> return Triple(X, COMPLEX_UNIT_DIP, View::getX)
-                "y" -> return Triple(Y, COMPLEX_UNIT_DIP, View::getY)
-                "translationX" -> return Triple(TRANSLATION_X, COMPLEX_UNIT_DIP, View::getTranslationX)
-                "translationY" -> return Triple(TRANSLATION_Y, COMPLEX_UNIT_DIP, View::getTranslationY)
-                "alpha" -> return Triple(ALPHA, COMPLEX_UNIT_FRACTION, View::getAlpha)
-                "scaleX" -> return Triple(SCALE_X, COMPLEX_UNIT_FRACTION, View::getScaleX)
-                "scaleY" -> return Triple(SCALE_Y, COMPLEX_UNIT_FRACTION, View::getScaleY)
-                "rotationX" -> return Triple(ROTATION_X, COMPLEX_UNIT_FRACTION, View::getRotationX)
-                "rotationY" -> return Triple(ROTATION_Y, COMPLEX_UNIT_FRACTION, View::getRotationY)
-                "rotation" -> return Triple(ROTATION, COMPLEX_UNIT_FRACTION, View::getRotation)
-            }
-            throw IllegalArgumentException("This animation is not supported: $key")
-        }
-    }
-
-    init {
-        json?.let { parse(it) }
-    }
+    fun getAnimationValues() = ArrayList<ValueAnimationOptions>(valueOptions)
 }

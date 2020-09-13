@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import com.facebook.react.uimanager.ViewGroupManager
+import com.reactnativenavigation.NavigationActivity
 import com.reactnativenavigation.R
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.FadeAnimation
@@ -67,12 +68,8 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
                 .forEach { reparent(it) }
     }
 
-    private fun createSharedElementTransitionAnimators(transitions: List<SharedElementTransition>): List<AnimatorSet> {
-        val animators: MutableList<AnimatorSet> = ArrayList()
-        for (transition in transitions) {
-            animators.add(createSharedElementAnimator(transition))
-        }
-        return animators
+    private fun createSharedElementTransitionAnimators(transitions: List<SharedElementTransition>) = transitions.map {
+        createSharedElementAnimator(it)
     }
 
     private fun createSharedElementAnimator(transition: SharedElementTransition): AnimatorSet {
@@ -87,12 +84,8 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
                 }
     }
 
-    private fun createElementTransitionAnimators(transitions: List<ElementTransition>): List<AnimatorSet> {
-        val animators: MutableList<AnimatorSet> = ArrayList()
-        for (transition in transitions) {
-            animators.add(transition.createAnimators())
-        }
-        return animators
+    private fun createElementTransitionAnimators(transitions: List<ElementTransition>) = transitions.map {
+        it.createAnimators()
     }
 
     private fun restoreViewsToOriginalState(transitions: TransitionSet) {
@@ -102,7 +95,7 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             sortBy { ViewGroupManager.getViewZIndex(it.view) }
             sortBy { it.view.getTag(R.id.original_index_in_parent) as Int }
             forEach {
-                parentOrSelf(it).removeOverlay(it.view)
+                removeOverlay(it)
                 returnToOriginalParent(it.view)
             }
         }
@@ -131,12 +124,9 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
             lp.leftMargin = loc.x
             lp.width = view.width
             lp.height = view.height
-            parentOrSelf(transition).addOverlay(view, lp)
+            addOverlay(viewController, view, lp)
         }
     }
-
-    private fun parentOrSelf(transition: Transition) =
-            transition.viewController.requireParentController() ?: transition.viewController
 
     private fun returnToOriginalParent(element: View) {
         ViewUtils.removeFromParent(element)
@@ -150,5 +140,21 @@ open class TransitionAnimatorCreator @JvmOverloads constructor(private val trans
         val lp = ViewTags.get<ViewGroup.LayoutParams>(element, R.id.original_layout_params)
         val index = ViewTags.get<Int>(element, R.id.original_index_in_parent)
         parent.addView(element, index, lp)
+    }
+
+    open fun addOverlay(viewController: ViewController<*>, view: View, layoutParams: FrameLayout.LayoutParams) {
+        if (viewController.parentController != null) {
+            viewController.requireParentController().addOverlay(view, layoutParams)
+        } else {
+            (viewController.activity as NavigationActivity).navigator.addOverlay(view, layoutParams)
+        }
+    }
+
+    open fun removeOverlay(transition: Transition) = with(transition) {
+        if (viewController.parentController != null) {
+            viewController.requireParentController().removeOverlay(view)
+        } else {
+            (viewController.activity as NavigationActivity).navigator.removeOverlay(view)
+        }
     }
 }

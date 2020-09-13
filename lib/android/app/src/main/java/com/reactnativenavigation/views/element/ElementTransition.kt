@@ -13,8 +13,16 @@ class ElementTransition(private val transitionOptions: ElementTransitionOptions)
     override val topInset: Int
         get() = viewController.topInset
 
-    override fun createAnimators(): AnimatorSet = transitionOptions.getAnimation(view)
+    override fun createAnimators(): AnimatorSet {
+        applyInitialAnimationValues()
+        return transitionOptions.getAnimation(view)
+    }
 
     fun isValid(): Boolean = ::view.isInitialized
 
+    private fun applyInitialAnimationValues() {
+        transitionOptions.getAnimationValues().forEach {
+            it.setCurrentViewProperty(view, it.from.get())
+        }
+    }
 }

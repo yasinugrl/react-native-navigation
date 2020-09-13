@@ -10,4 +10,6 @@ class ElementTransitionOptions(json: JSONObject) {
         get() = animation.id.get()
 
     fun getAnimation(view: View): AnimatorSet = animation.getAnimation(view)
+
+    fun getAnimationValues() = animation.getAnimationValues()
 }
