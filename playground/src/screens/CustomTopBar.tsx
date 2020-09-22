@@ -13,7 +13,7 @@ export default class CustomTopBar extends React.Component<Props> {
     return (
       <View collapsable={false} style={styles.container}>
         <TouchableOpacity
-          disabled={!this.props.clickable}
+          disabled={!!this.props.clickable}
           onPress={() => Alert.alert(this.props.title, 'Thanks for that :)')}
         >
           <Text style={styles.text}>{this.props.text}</Text>
