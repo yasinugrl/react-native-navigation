@@ -31,8 +31,8 @@ public class BottomTabOptions {
         options.text = TextParser.parse(json, "text");
         options.textColor = ColorParser.parse(context, json, "textColor");
         options.selectedTextColor = ColorParser.parse(context, json, "selectedTextColor");
-        options.icon = IconParser.parse(json, "icon");
-        options.selectedIcon = IconParser.parse(json, "selectedIcon");
+        options.icon = IconParser.parse(json, "icon", context);
+        options.selectedIcon = IconParser.parse(json, "selectedIcon", context);
         options.iconColor = ColorParser.parse(context, json, "iconColor");
         options.selectedIconColor = ColorParser.parse(context, json, "selectedIconColor");
         options.badge = TextParser.parse(json, "badge");

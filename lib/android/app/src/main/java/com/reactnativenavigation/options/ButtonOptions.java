@@ -17,6 +17,7 @@ import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
+import com.reactnativenavigation.options.parsers.IconParser;
 import com.reactnativenavigation.options.parsers.TextParser;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.IdFactory;
@@ -88,7 +89,7 @@ public class ButtonOptions {
         button.component = ComponentOptions.parse(json.optJSONObject("component"));
 
         if (json.has("icon")) {
-            button.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
+            button.icon = IconParser.parse(json, "icon", context);
         }
 
         return button;

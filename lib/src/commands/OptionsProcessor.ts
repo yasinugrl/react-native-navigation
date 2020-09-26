@@ -10,7 +10,7 @@ import { Store } from '../components/Store';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { ColorService } from '../adapters/ColorService';
 import { AssetService } from '../adapters/AssetResolver';
-import { Options } from '../interfaces/Options';
+import { ImageSystemSource, Options } from '../interfaces/Options';
 import { Deprecations } from './Deprecations';
 import { OptionProcessorsStore } from '../processors/OptionProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
@@ -111,8 +111,24 @@ export class OptionsProcessor {
       endsWith(key, 'Icon') ||
       endsWith(key, 'Image')
     ) {
-      options[key] = isString(value) ? value : this.assetService.resolveFromRequire(value);
+      if (this.isImageSystemSource(value)) {
+        if (value.fallback) {
+          value = {
+            ...value,
+            fallback: isString(value.fallback)
+              ? value.fallback
+              : this.assetService.resolveFromRequire(value.fallback),
+          };
+          options[key] = value;
+        }
+      } else {
+        options[key] = isString(value) ? value : this.assetService.resolveFromRequire(value);
+      }
     }
+  }
+
+  private isImageSystemSource(object: any): object is ImageSystemSource {
+    return isObject(object) && 'system' in object;
   }
 
   private processButtonsPassProps(key: string, value: any) {
