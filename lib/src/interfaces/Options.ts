@@ -1231,6 +1231,13 @@ setRoot: {
    */
   popGesture?: boolean;
   /**
+   * Render a blur overlay above the parent screen. Requires `componentBackgroundColor` and
+   * `backgroundColor` to be transparent.
+   *
+   * @default false
+   */
+  blurParent?: boolean;
+  /**
    * Background image for the screen
    * #### (iOS specific)
    */
