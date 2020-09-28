@@ -1233,7 +1233,7 @@ setRoot: {
   /**
    * Render a blur overlay above the parent screen. Requires `componentBackgroundColor` and
    * `backgroundColor` to be transparent.
-   *
+   * #### (iOS specific)
    * @default false
    */
   blurParent?: boolean;
