@@ -18,13 +18,13 @@ public class IconParser {
     public static Text parse(@Nullable JSONObject json, String key, Context context) {
         if (json == null || !json.has(key)) return new NullText();
         try {
-            if (!TextParser.parse(json.optJSONObject(key), "system").equals(new NullText())) {
+            if (!TextParser.parse(json.optJSONObject(key), "system").hasValue()) {
                 Text fallbackIcon = TextParser.parse(json.optJSONObject(key), "fallback");
                 Text systemIcon = TextParser.parse(json.optJSONObject(key), "system");
                 if (getSystemResourceId(systemIcon.toString(), context) > 0) {
                     return new Text("@android:drawable/" + systemIcon);
                 } else {
-                    if (!fallbackIcon.equals(new NullText())) {
+                    if (!fallbackIcon.hasValue()) {
                         JSONObject js = json.optJSONObject(key);
                         if (js != null) {
                             return js.get("fallback") instanceof String ? TextParser.parse(js, "fallback") : TextParser.parse(js.optJSONObject("fallback"), "uri");
