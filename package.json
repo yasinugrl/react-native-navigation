@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -97,6 +97,7 @@
     "react-native-gesture-handler": "^1.6.1",
     "react-native-keyboard-tracking-view": "5.x.x",
     "react-native-reanimated": "^1.9.0",
+    "react-native-fast-image": "8.x.x",
     "react-native-ui-lib": "5.11.0",
     "react-redux": "5.x.x",
     "react-test-renderer": "16.13.1",
