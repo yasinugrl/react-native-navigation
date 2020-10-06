@@ -62,6 +62,7 @@ const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
               style={styles.storyContainer}
               onPress={() => onCarStoryPressed(car)}
             >
+              <View style={styles.storyBackground} />
               <View style={styles.story}>
                 <Text style={styles.storyIcon}>{car.name.charAt(0)}</Text>
               </View>
@@ -114,11 +115,16 @@ const styles = StyleSheet.create({
     marginRight: 15,
     borderRadius: STORY_SIZE / 2,
   },
-  story: {
+  storyBackground: {
+    position: 'absolute',
     width: STORY_SIZE,
     height: STORY_SIZE,
     borderRadius: STORY_SIZE / 2,
     backgroundColor: colors.primary,
+  },
+  story: {
+    width: STORY_SIZE,
+    height: STORY_SIZE,
     justifyContent: 'center',
     alignItems: 'center',
   },
