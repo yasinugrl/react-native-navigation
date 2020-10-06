@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 import { CarItem } from '../../assets/cars';
 import Reanimated, { Easing } from 'react-native-reanimated';
@@ -8,8 +8,6 @@ import useDismissGesture from './useDismissGesture';
 import { SET_DURATION } from './Constants';
 import colors from '../../commons/Colors';
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
-
-const HEADER_HEIGHT = 250;
 
 interface Props {
   car: CarItem;
@@ -42,7 +40,17 @@ const CarStoryScreen: NavigationFunctionComponent<Props> = ({ car, componentId }
 
   return (
     <DismissableView dismissGestureState={dismissGesture} style={styles.container}>
-      <Text style={styles.carName} numberOfLines={3} lineBreakMode="tail" ellipsizeMode="tail">
+      <View style={styles.background} nativeID={`story.${car.id}.background.to`} />
+      <Text style={styles.carIcon} nativeID={`story.${car.id}.icon.to`}>
+        {car.name.charAt(0)}
+      </Text>
+      <Text
+        style={styles.carName}
+        nativeID={`story.${car.id}.title.to`}
+        numberOfLines={3}
+        lineBreakMode="tail"
+        ellipsizeMode="tail"
+      >
         {car.name}
       </Text>
       <Text
@@ -79,31 +87,9 @@ export default CarStoryScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: '20%',
-  },
-  headerImage: {
-    position: 'absolute',
-    height: HEADER_HEIGHT,
-    width: Dimensions.get('window').width,
-  },
-  content: {
-    paddingTop: HEADER_HEIGHT,
-    paddingHorizontal: 25,
-  },
-  title: {
-    fontSize: 32,
-    marginTop: 30,
-    fontWeight: '500',
-    zIndex: 2,
-  },
-  description: {
-    fontSize: 15,
-    letterSpacing: 0.2,
-    lineHeight: 25,
-    marginTop: 32,
   },
   closeButton: {
     position: 'absolute',
@@ -121,20 +107,20 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
   },
-  buyButton: {
-    alignSelf: 'center',
-    marginVertical: 25,
-    width: '100%',
-    height: 45,
-    backgroundColor: 'dodgerblue',
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
+  background: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: colors.primary,
   },
-  buyText: {
-    fontSize: 18,
+  carIcon: {
+    fontSize: 40,
     fontWeight: 'bold',
     color: 'white',
+    marginVertical: 10,
+    textAlign: 'center',
   },
   carName: {
     fontSize: 22,

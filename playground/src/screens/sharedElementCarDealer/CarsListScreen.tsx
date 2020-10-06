@@ -4,7 +4,7 @@ import { NavigationFunctionComponent } from 'react-native-navigation';
 import cars, { CarItem } from '../../assets/cars';
 import Navigation from '../../services/Navigation';
 import Screens from '../Screens';
-import { buildSharedElementAnimations } from './Constants';
+import { buildSharedElementAnimations, buildStorySharedElementAnimations } from './Constants';
 import CarCard from './CarCard';
 import PressableScale from '../../components/PressableScale';
 import colors from '../../commons/Colors';
@@ -34,8 +34,8 @@ const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
     [componentId]
   );
   const onCarStoryPressed = useCallback(
-    async (car: CarItem) => {
-      const navigationAnimations = await buildSharedElementAnimations(car);
+    (car: CarItem) => {
+      const navigationAnimations = buildStorySharedElementAnimations(car);
       Navigation.push(componentId, {
         component: {
           name: Screens.CarStoryScreen,
@@ -62,11 +62,18 @@ const CarsListScreen: NavigationFunctionComponent = ({ componentId }) => {
               style={styles.storyContainer}
               onPress={() => onCarStoryPressed(car)}
             >
-              <View style={styles.storyBackground} />
+              <View style={styles.storyBackground} nativeID={`story.${car.id}.background.from`} />
               <View style={styles.story}>
-                <Text style={styles.storyIcon}>{car.name.charAt(0)}</Text>
+                <Text style={styles.storyIcon} nativeID={`story.${car.id}.icon.from`}>
+                  {car.name.charAt(0)}
+                </Text>
               </View>
-              <Text style={styles.storyTitle} ellipsizeMode="tail" numberOfLines={1}>
+              <Text
+                style={styles.storyTitle}
+                nativeID={`story.${car.id}.title.from`}
+                ellipsizeMode="tail"
+                numberOfLines={1}
+              >
                 {car.name}
               </Text>
             </PressableScale>
