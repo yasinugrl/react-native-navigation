@@ -62,6 +62,13 @@
     if ([side isEqualToString:@"right"]) {
         [self clearPreviousButtonViews:barButtonItems oldButtons:self.viewController.navigationItem.rightBarButtonItems];
         [self.viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
+        for (RNNUIBarButtonItem *button in barButtonItems) {
+            [button transformView:0];
+            [self.viewController.navigationController.view bringSubviewToFront:button.customView];
+            //NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:button.customView.rightAnchor attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.viewController.navigationItem attribute:NSLayoutAttributeRight multiplier:1.0 constant:16];
+            //NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:button.customView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.viewController.navigationController.navigationBar attribute:NSLayoutAttributeBottom multiplier:1.0 constant: 60];
+            //[NSLayoutConstraint activateConstraints:@[bottom]];
+        }
     }
     
     [self notifyButtonsDidAppear:barButtonItems];

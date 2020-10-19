@@ -12,6 +12,7 @@
 -(instancetype)init:(NSString*)buttonId withCustomView:(RCTRootView *)reactView;
 -(instancetype)init:(NSString*)buttonId withSystemItem:(NSString*)systemItemName;
 
+- (void)transformView:(float)height;
 - (void)notifyDidAppear;
 - (void)notifyDidDisappear;
 

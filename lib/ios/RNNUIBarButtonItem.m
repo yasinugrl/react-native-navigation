@@ -55,6 +55,12 @@
 	self.buttonId = buttonId;
 	return self;
 }
+
+- (void)transformView:(float)height
+{
+    self.customView.transform = CGAffineTransformMakeTranslation(0, height);
+    
+}
 	
 - (instancetype)init:(NSString*)buttonId withSystemItem:(NSString *)systemItemName {
 	UIBarButtonSystemItem systemItem = [RCTConvert UIBarButtonSystemItem:systemItemName];

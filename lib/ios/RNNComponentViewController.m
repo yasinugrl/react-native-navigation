@@ -34,7 +34,10 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self.reactView componentDidAppear];
+    
     [self componentDidAppear];
+    
+    [self addScrollViewDelegate:self.view];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -42,8 +45,40 @@
     [self.reactView componentDidDisappear];
     [self componentDidDisappear];
     
+    
     // Fix's momentum scroll bug https://github.com/wix/react-native-navigation/issues/4325
     [self.view stopMomentumScrollViews];
+}
+
+- (void)addScrollViewDelegate:(UIView *)v {
+    if ([v isKindOfClass:[UIScrollView class]]){
+        UIScrollView* scrollView = (UIScrollView*)v;
+        scrollView.delegate = self;
+        
+    } else {
+      for (UIView *subview in v.subviews) {
+          [self addScrollViewDelegate:subview];
+      }
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    float height = scrollView.frame.size.height;
+    NSMutableArray *barButtonItems = self.presentedComponentViewController.navigationItem.rightBarButtonItems;
+    
+    for (RNNUIBarButtonItem *button in self.presentedComponentViewController.navigationItem.rightBarButtonItems) {
+        if (self.navigationController.navigationBar.frame.size.height == 44) {
+            [button transformView: 0];
+        } else {
+            float searchBarHeight = self.presentedComponentViewController.navigationItem.searchController.searchBar.frame.size.height;
+            if (self.navigationController.navigationBar.frame.size.height > 44) {
+                [button transformView: self.navigationController.navigationBar.frame.size.height - 48 - searchBarHeight];
+            }
+        }
+        
+    }
+    
+    NSLog(@"%f", self.navigationController.navigationBar.frame.size.height);
 }
 
 - (void)loadView {
