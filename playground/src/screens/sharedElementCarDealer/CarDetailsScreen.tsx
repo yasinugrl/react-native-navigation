@@ -76,6 +76,7 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
   return (
     <DismissableView dismissGestureState={dismissGesture} style={styles.container}>
       <Reanimated.ScrollView
+        automaticallyAdjustContentInsets={false}
         contentInsetAdjustmentBehavior="never"
         contentContainerStyle={styles.content}
         onScroll={onScroll}
@@ -139,6 +140,7 @@ const styles = StyleSheet.create({
   content: {
     paddingTop: HEADER_HEIGHT,
     paddingHorizontal: 25,
+    paddingBottom: 30,
   },
   title: {
     fontSize: 32,
