@@ -1184,7 +1184,7 @@ export interface AnimationOptions {
   /**
    * Configure the setStackRoot animation
    */
-  setStackRoot?: ViewAnimationOptions;
+  setStackRoot?: ViewAnimationOptions | StackAnimationOptions;
   /**
    * Configure the setRoot animation
    */
