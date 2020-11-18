@@ -202,6 +202,9 @@ export class OptionsProcessor {
     parentOptions: AnimationOptions
   ) {
     if (key !== 'setStackRoot') return;
+    if (has(animation, 'content') || has(animation, 'topBar') || has(animation, 'bottomTabs')) {
+      return;
+    }
     if (!has(animation, 'content.enter') && !has(animation, 'content.exit')) {
       parentOptions[key] = {
         content: {
@@ -217,9 +220,23 @@ export class OptionsProcessor {
     parentOptions: AnimationOptions
   ) {
     if (key !== 'pop') return;
-    if (!has(animation, 'content.enter') && !has(animation, 'content.exit')) {
+    if (animation.content && !has(animation, 'content.enter') && !has(animation, 'content.exit')) {
       parentOptions.pop!!.content = {
         exit: animation.content as ViewAnimationOptions,
+      };
+    }
+    if (animation.topBar && !has(animation, 'topBar.enter') && !has(animation, 'topBar.exit')) {
+      parentOptions.pop!!.topBar = {
+        exit: animation.topBar as ViewAnimationOptions,
+      };
+    }
+    if (
+      animation.bottomTabs &&
+      !has(animation, 'bottomTabs.enter') &&
+      !has(animation, 'bottomTabs.exit')
+    ) {
+      parentOptions.pop!!.bottomTabs = {
+        exit: animation.bottomTabs as ViewAnimationOptions,
       };
     }
   }
@@ -230,9 +247,23 @@ export class OptionsProcessor {
     parentOptions: AnimationOptions
   ) {
     if (key !== 'push') return;
-    if (!has(animation, 'content.enter') && !has(animation, 'content.exit')) {
+    if (animation.content && !has(animation, 'content.enter') && !has(animation, 'content.exit')) {
       parentOptions.push!!.content = {
         enter: animation.content as ViewAnimationOptions,
+      };
+    }
+    if (animation.topBar && !has(animation, 'topBar.enter') && !has(animation, 'topBar.exit')) {
+      parentOptions.push!!.topBar = {
+        enter: animation.topBar as ViewAnimationOptions,
+      };
+    }
+    if (
+      animation.bottomTabs &&
+      !has(animation, 'bottomTabs.enter') &&
+      !has(animation, 'bottomTabs.exit')
+    ) {
+      parentOptions.push!!.bottomTabs = {
+        enter: animation.bottomTabs as ViewAnimationOptions,
       };
     }
   }
