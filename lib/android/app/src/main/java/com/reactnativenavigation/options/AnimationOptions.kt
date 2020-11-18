@@ -13,12 +13,12 @@ import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.options.parsers.BoolParser
 import com.reactnativenavigation.options.parsers.TextParser
 import com.reactnativenavigation.utils.CollectionUtils
+import com.reactnativenavigation.utils.CollectionUtils.first
 import org.json.JSONObject
 import java.util.*
 import kotlin.math.max
 
-open class AnimationOptions(json: JSONObject?) : LayoutAnimation {
-    constructor() : this(null)
+open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) : LayoutAnimation {
 
     @JvmField var id: Text = NullText()
     @JvmField var enabled: Bool = NullBool()
@@ -90,7 +90,7 @@ open class AnimationOptions(json: JSONObject?) : LayoutAnimation {
     fun isFadeAnimation(): Boolean = valueOptions.size == 1 && valueOptions.find(ValueAnimationOptions::isAlpha) != null
 
     fun setValueDy(animation: Property<View?, Float?>?, fromDelta: Float, toDelta: Float) {
-        CollectionUtils.first(valueOptions, { o: ValueAnimationOptions -> o.equals(animation) }) { param: ValueAnimationOptions ->
+        first(valueOptions, { o: ValueAnimationOptions -> o.equals(animation) }) { param: ValueAnimationOptions ->
             param.setFromDelta(fromDelta)
             param.setToDelta(toDelta)
         }

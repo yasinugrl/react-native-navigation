@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.options.Alignment;
+import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.AnimationsOptions;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
@@ -343,9 +344,10 @@ public class StackPresenter {
     }
 
     public void onChildWillAppear(StackController parent, ViewController appearing, ViewController disappearing) {
+        Options resolvedOptions = parent.resolveChildOptions(disappearing).withDefaultOptions(defaultOptions);
         if (disappearing.options.topBar.visible.isTrueOrUndefined() && appearing.options.topBar.visible.isFalse()) {
             if (disappearing.options.topBar.animate.isTrueOrUndefined() && disappearing.options.animations.pop.enabled.isTrueOrUndefined()) {
-                topBarController.hideAnimate(disappearing.options.animations.pop.topBar.exit, 0, getTopBarTranslationAnimationDelta(parent, appearing));
+                topBarController.hideAnimate(resolvedOptions.animations.pop.topBar.exit, 0, getTopBarTranslationAnimationDelta(parent, appearing));
             } else {
                 topBarController.hide();
             }

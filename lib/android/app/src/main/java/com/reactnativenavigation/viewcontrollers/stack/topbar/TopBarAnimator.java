@@ -70,6 +70,7 @@ public class TopBarAnimator {
     }
 
     public void hide(AnimationOptions options, Runnable onAnimationEnd, float translationStartDy, float translationEndDy) {
+        if (hideAnimator != null && hideAnimator.isRunning()) return;
         if (options.hasValue() && (!options.id.hasValue() || options.id.get().equals(stackId))) {
             options.setValueDy(TRANSLATION_Y, translationStartDy, -translationEndDy);
             hideAnimator = options.getAnimation(topBar);
