@@ -6,13 +6,13 @@ import {
   OptionsAnimationPropertyConfig,
 } from 'react-native-navigation';
 import { Dimensions } from 'react-native';
-import Colors from './Colors';
-import flags from '../flags';
+import Colors from '../Colors';
+import flags from '../../flags';
 
 const { useCustomAnimations, useSlowOpenScreenAnimations, useSlideAnimation } = flags;
 const height = Math.round(Dimensions.get('window').height);
 const width = Math.round(Dimensions.get('window').width);
-const SHOW_DURATION = 250 * (useSlowOpenScreenAnimations ? 2.5 : 1);
+const SCREEN_ANIMATION_DURATION = 300 * (useSlowOpenScreenAnimations ? 2.5 : 1);
 
 const setDefaultOptions = () =>
   Navigation.setDefaultOptions({
@@ -37,7 +37,7 @@ const setDefaultOptions = () =>
   });
 
 const baseSlideAnimation: OptionsAnimationPropertyConfig = {
-  duration: useSlowOpenScreenAnimations ? SHOW_DURATION : 300,
+  duration: SCREEN_ANIMATION_DURATION,
   interpolation: {
     type: 'spring',
     damping: 500,
@@ -107,13 +107,13 @@ const customAnimations: AnimationOptions = {
     translationY: {
       from: height,
       to: 0,
-      duration: SHOW_DURATION,
+      duration: SCREEN_ANIMATION_DURATION,
       interpolation: { type: 'decelerate' },
     },
     alpha: {
       from: 0.65,
       to: 1,
-      duration: SHOW_DURATION * 0.7,
+      duration: SCREEN_ANIMATION_DURATION * 0.7,
       interpolation: { type: 'decelerate' },
     },
   },
@@ -121,7 +121,7 @@ const customAnimations: AnimationOptions = {
     translationY: {
       from: 0,
       to: height,
-      duration: SHOW_DURATION * 0.9,
+      duration: SCREEN_ANIMATION_DURATION * 0.9,
     },
   },
   push: {
@@ -130,13 +130,13 @@ const customAnimations: AnimationOptions = {
       alpha: {
         from: 0.65,
         to: 1,
-        duration: SHOW_DURATION * 0.7,
+        duration: SCREEN_ANIMATION_DURATION * 0.7,
         interpolation: { type: 'decelerate' },
       },
       translationY: {
         from: height * 0.3,
         to: 0,
-        duration: SHOW_DURATION,
+        duration: SCREEN_ANIMATION_DURATION,
         interpolation: { type: 'decelerate' },
       },
     },
@@ -146,12 +146,12 @@ const customAnimations: AnimationOptions = {
       alpha: {
         from: 1,
         to: 0,
-        duration: SHOW_DURATION,
+        duration: SCREEN_ANIMATION_DURATION,
       },
       translationY: {
         from: 0,
         to: height * 0.7,
-        duration: SHOW_DURATION * 0.9,
+        duration: SCREEN_ANIMATION_DURATION * 0.9,
       },
     },
   },

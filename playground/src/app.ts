@@ -1,7 +1,7 @@
 import Navigation from './services/Navigation';
 import { registerScreens } from './screens';
 import addOptionsProcessors from './commons/OptionProcessors';
-import { setDefaultOptions } from './commons/Options';
+import { setDefaultOptions } from './commons/options/Options';
 import testIDs from './testIDs';
 import Screens from './screens/Screens';
 
