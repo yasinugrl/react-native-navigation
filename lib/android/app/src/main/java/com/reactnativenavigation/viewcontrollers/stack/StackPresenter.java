@@ -416,7 +416,6 @@ public class StackPresenter {
     }
 
     private void mergeTopBarOptions(TopBarOptions resolveOptions, Options options, StackController stack, ViewController child) {
-        AnimationsOptions animationsOptions = options.copy().withDefaultOptions(defaultOptions).animations;
         TopBarOptions topBarOptions = options.topBar;
         final View component = child.getView();
         if (options.layout.direction.hasValue()) topBar.setLayoutDirection(options.layout.direction);
@@ -470,14 +469,14 @@ public class StackPresenter {
         topBarController.resetViewProperties();
         if (topBarOptions.visible.isFalse()) {
             if (topBarOptions.animate.isTrueOrUndefined()) {
-                topBarController.hideAnimate(animationsOptions.pop.topBar.exit, 0, getTopBarTranslationAnimationDelta(stack, child));
+                topBarController.hideAnimate(new AnimationOptions(), 0, getTopBarTranslationAnimationDelta(stack, child));
             } else {
                 topBarController.hide();
             }
         }
         if (topBarOptions.visible.isTrue()) {
             if (topBarOptions.animate.isTrueOrUndefined()) {
-                topBarController.showAnimate(animationsOptions.push.topBar.enter, getTopBarTranslationAnimationDelta(stack, child));
+                topBarController.showAnimate(new AnimationOptions(), getTopBarTranslationAnimationDelta(stack, child));
             } else {
                 topBarController.show();
             }
