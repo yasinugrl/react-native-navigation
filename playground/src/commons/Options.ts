@@ -2,6 +2,8 @@ import {
   Navigation,
   AnimationOptions,
   OptionsModalPresentationStyle,
+  ViewAnimationOptions,
+  OptionsAnimationPropertyConfig,
 } from 'react-native-navigation';
 import { Dimensions } from 'react-native';
 import Colors from './Colors';
@@ -34,66 +36,67 @@ const setDefaultOptions = () =>
     modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
   });
 
+const baseSlideAnimation: OptionsAnimationPropertyConfig = {
+  duration: useSlowOpenScreenAnimations ? SHOW_DURATION : 300,
+  interpolation: {
+    type: 'spring',
+    damping: 500,
+    stiffness: 200,
+    mass: 5,
+  },
+};
+
+const slideInFromRight: ViewAnimationOptions = {
+  translationX: {
+    from: width,
+    to: 0,
+    ...baseSlideAnimation,
+  },
+};
+
+const slideInFromLeft: ViewAnimationOptions = {
+  translationX: {
+    from: -50,
+    to: 0,
+    ...baseSlideAnimation,
+  },
+};
+
+const slideOutToLeft: ViewAnimationOptions = {
+  translationX: {
+    from: 0,
+    to: -50,
+    ...baseSlideAnimation,
+  },
+};
+
+const slideOutToRight: ViewAnimationOptions = {
+  translationX: {
+    from: 0,
+    to: width,
+    ...baseSlideAnimation,
+  },
+};
+
 const slideAnimations: AnimationOptions = {
   push: {
     waitForRender: true,
     content: {
-      enter: {
-        translationX: {
-          from: width,
-          to: 0,
-          duration: useSlowOpenScreenAnimations ? SHOW_DURATION : 300,
-          interpolation: {
-            type: 'spring',
-            damping: 500,
-            stiffness: 200,
-            mass: 5,
-          },
-        },
-      },
-      exit: {
-        translationX: {
-          from: 0,
-          to: -50,
-          duration: useSlowOpenScreenAnimations ? SHOW_DURATION : 300,
-          interpolation: {
-            type: 'spring',
-            damping: 500,
-            stiffness: 200,
-            mass: 5,
-          },
-        },
-      },
+      enter: slideInFromRight,
+      exit: slideOutToLeft,
     },
   },
   pop: {
     content: {
-      enter: {
-        translationX: {
-          from: -50,
-          to: 0,
-          duration: useSlowOpenScreenAnimations ? SHOW_DURATION : 300,
-          interpolation: {
-            type: 'spring',
-            damping: 500,
-            stiffness: 200,
-            mass: 5,
-          },
-        },
-      },
-      exit: {
-        translationX: {
-          from: 0,
-          to: width,
-          duration: useSlowOpenScreenAnimations ? SHOW_DURATION : 300,
-          interpolation: {
-            type: 'spring',
-            damping: 500,
-            stiffness: 200,
-            mass: 5,
-          },
-        },
-      },
+      enter: slideInFromLeft,
+      exit: slideOutToRight,
+    },
+  },
+  setStackRoot: {
+    waitForRender: true,
+    content: {
+      enter: slideInFromRight,
+      exit: slideOutToLeft,
     },
   },
 };
