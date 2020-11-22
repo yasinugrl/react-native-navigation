@@ -94,10 +94,12 @@
     "metro-react-native-babel-preset": "0.59.0",
     "prettier": "2.1.2",
     "react": "16.13.1",
-    "react-native": "0.63.2",
+    "react-native": "0.63.3",
     "react-native-fast-image": "8.x.x",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
+    "react-native-tscodegen": "^0.65.3",
+    "react-native-tscodegen-types": "^0.65.3",
     "react-native-ui-lib": "5.11.0",
     "react-redux": "5.x.x",
     "react-test-renderer": "16.13.1",
@@ -107,9 +109,7 @@
     "shell-utils": "1.x.x",
     "ts-mockito": "^2.3.1",
     "typedoc": "0.x.x",
-    "typescript": "3.9.5",
-    "react-native-tscodegen": "^0.65.3",
-    "react-native-tscodegen-types": "^0.65.3"
+    "typescript": "3.9.5"
   },
   "jest": {
     "preset": "react-native",
@@ -140,11 +140,6 @@
       "text",
       "html"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint",
