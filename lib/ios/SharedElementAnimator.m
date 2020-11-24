@@ -60,16 +60,6 @@
                                                       interpolator:interpolator]];
     }
 
-    if (!CGRectEqualToRect(self.view.location.fromBounds, self.view.location.toBounds)) {
-        [animations
-            addObject:[[LayerBoundsTransition alloc] initWithView:self.view
-                                                             from:self.view.location.fromBounds
-                                                               to:self.view.location.toBounds
-                                                       startDelay:startDelay
-                                                         duration:duration
-                                                     interpolator:interpolator]];
-    }
-
     if (!CATransform3DEqualToTransform(self.view.location.fromTransform,
                                        self.view.location.toTransform)) {
         [animations addObject:[[TransformRectTransition alloc] initWithView:self.view
