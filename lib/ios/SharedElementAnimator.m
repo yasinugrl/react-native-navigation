@@ -60,15 +60,6 @@
                                                       interpolator:interpolator]];
     }
 
-    if (!CATransform3DEqualToTransform(self.view.location.fromTransform,
-                                       self.view.location.toTransform)) {
-        [animations addObject:[[TransformRectTransition alloc] initWithView:self.view
-                                                               viewLocation:self.view.location
-                                                                 startDelay:startDelay
-                                                                   duration:duration
-                                                               interpolator:interpolator]];
-    }
-
     if (![_fromView.backgroundColor isEqual:_toView.backgroundColor]) {
         [animations addObject:[[ColorTransition alloc] initWithView:self.view
                                                                from:_fromView.backgroundColor
