@@ -1,5 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
+import android.animation.Animator;
 import android.graphics.Color;
 import android.view.ViewGroup;
 
@@ -7,6 +8,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState;
 import com.reactnativenavigation.options.AnimationsOptions;
 import com.reactnativenavigation.options.BottomTabsOptions;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.animations.ViewAnimationOptions;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
 
@@ -177,5 +179,9 @@ public class BottomTabsPresenter {
 
     public int getBottomInset(Options resolvedOptions) {
         return resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind() ? 0 : bottomTabs.getHeight();
+    }
+
+    public Animator getPushAnimation(Options appearingOptions, ViewAnimationOptions bottomTabs) {
+        return animator.getPushAnimation(appearingOptions, bottomTabs);
     }
 }

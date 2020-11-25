@@ -1,5 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
@@ -9,6 +10,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.options.BottomTabOptions;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.animations.ViewAnimationOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -221,5 +223,9 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     @RestrictTo(RestrictTo.Scope.TESTS)
     public BottomTabs getBottomTabs() {
         return bottomTabs;
+    }
+
+    public Animator getPushAnimation(Options appearingOptions, ViewAnimationOptions bottomTabs) {
+        return presenter.getPushAnimation(appearingOptions, bottomTabs);
     }
 }

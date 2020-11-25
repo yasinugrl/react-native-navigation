@@ -359,8 +359,8 @@ public class StackPresenter {
 
     public List<Animator> getAdditionalPushAnimations(Options appearingOptions) {
         return Arrays.asList(
-                topBarController.getPushAnimation(appearingOptions, appearingOptions.animations.push.topBar)
-                // TODO: BottomTabs
+                topBarController.getPushAnimation(appearingOptions, appearingOptions.animations.push.topBar),
+                bottomTabsController.getPushAnimation(appearingOptions, appearingOptions.animations.push.bottomTabs)
         );
     }
 
