@@ -4,11 +4,9 @@
 #import "AnimatedViewFactory.h"
 #import "ColorTransition.h"
 #import "CornerRadiusTransition.h"
-#import "LayerBoundsTransition.h"
 #import "RectTransition.h"
 #import "RotationTransition.h"
 #import "TextStorageTransition.h"
-#import "TransformRectTransition.h"
 
 @implementation SharedElementAnimator {
     SharedElementTransitionOptions *_transitionOptions;
