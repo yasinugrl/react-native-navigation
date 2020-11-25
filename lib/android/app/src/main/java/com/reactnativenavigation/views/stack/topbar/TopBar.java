@@ -303,4 +303,15 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public boolean containsRightButton(ButtonController button) {
         return titleBar.containsRightButton(button);
     }
+
+    public void resetProperties() {
+        setTranslationY(0);
+        setTranslationX(0);
+        setAlpha(1);
+        setScaleY(1);
+        setScaleX(1);
+        setRotationX(0);
+        setRotationY(0);
+        setRotation(0);
+    }
 }

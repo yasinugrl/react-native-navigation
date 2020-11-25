@@ -1,16 +1,19 @@
 package com.reactnativenavigation.viewcontrollers.stack.topbar;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.options.AnimationOptions;
+import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.animations.ViewAnimationOptions;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
 import com.reactnativenavigation.views.stack.StackLayout;
-import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 
 import java.util.List;
 
@@ -26,6 +29,10 @@ public class TopBarController {
     private TopBar topBar;
     private TitleBar titleBar;
     private TopBarAnimator animator;
+
+    public TopBarAnimator getAnimator() {
+        return animator;
+    }
 
     public MenuItem getRightButton(int index) {
         return titleBar.getRightButton(index);
@@ -77,6 +84,14 @@ public class TopBarController {
         topBar.clearTopTabs();
     }
 
+    public Animator getPushAnimation(Options appearingOptions, ViewAnimationOptions topBar) {
+        return animator.getPushAnimation(appearingOptions, topBar);
+    }
+
+    public Animator getPopAnimation(Options appearingOptions, ViewAnimationOptions topBar) {
+        return animator.getPopAnimation(appearingOptions, topBar);
+    }
+
     public void show() {
         if (isVisible(topBar) || animator.isAnimatingShow()) return;
         topBar.setVisibility(View.VISIBLE);
@@ -88,29 +103,16 @@ public class TopBarController {
     }
 
     public void hide() {
-        if (!animator.isAnimatingHide()) {
-            topBar.setVisibility(View.GONE);
-        }
+        if (!animator.isAnimatingHide()) topBar.setVisibility(View.GONE);
     }
 
     public void hideAnimate(AnimationOptions options, float translationStart, float translationEnd) {
-        hideAnimate(options, () -> {}, translationStart, translationEnd);
+        hideAnimate(options, translationStart, translationEnd, () -> {});
     }
 
-    private void hideAnimate(AnimationOptions options, Runnable onAnimationEnd, float translationStart, float translationEnd) {
-        if (!isVisible(topBar)) return;
-        animator.hide(options, onAnimationEnd, translationStart, translationEnd);
-    }
-
-    public void resetViewProperties() {
-        topBar.setTranslationY(0);
-        topBar.setTranslationX(0);
-        topBar.setAlpha(1);
-        topBar.setScaleY(1);
-        topBar.setScaleX(1);
-        topBar.setRotationX(0);
-        topBar.setRotationY(0);
-        topBar.setRotation(0);
+    private void hideAnimate(AnimationOptions options, float translationStart, float translationEnd, Runnable onAnimationEnd) {
+        if (!isVisible(topBar) || animator.isAnimatingHide()) return;
+        animator.hide(options, translationStart, translationEnd, onAnimationEnd);
     }
 
     public void setTitleComponent(TitleBarReactViewController component) {

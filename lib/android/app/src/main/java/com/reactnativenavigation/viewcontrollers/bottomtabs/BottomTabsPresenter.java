@@ -24,6 +24,10 @@ public class BottomTabsPresenter {
     private BottomTabsAnimator animator;
     private TabSelector tabSelector;
 
+    public BottomTabsAnimator getTabsAnimator() {
+        return animator;
+    }
+
     public BottomTabsPresenter(List<ViewController> tabs, Options defaultOptions) {
         this.tabs = tabs;
         this.defaultOptions = defaultOptions;

@@ -7,7 +7,10 @@ import android.content.Context
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import androidx.core.animation.doOnEnd
-import com.reactnativenavigation.options.*
+import com.reactnativenavigation.options.FadeInAnimation
+import com.reactnativenavigation.options.FadeOutAnimation
+import com.reactnativenavigation.options.Options
+import com.reactnativenavigation.options.StackAnimationOptions
 import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.utils.awaitRender
 import com.reactnativenavigation.utils.resetViewProperties
@@ -25,8 +28,10 @@ open class StackAnimator @JvmOverloads constructor(
 ) : BaseAnimator(context) {
     @VisibleForTesting
     val runningPushAnimations: MutableMap<ViewController<*>, AnimatorSet> = HashMap()
+
     @VisibleForTesting
     val runningPopAnimations: MutableMap<ViewController<*>, AnimatorSet> = HashMap()
+
     @VisibleForTesting
     val runningSetRootAnimations: MutableMap<ViewController<*>, AnimatorSet> = HashMap()
 
@@ -47,37 +52,62 @@ open class StackAnimator @JvmOverloads constructor(
         }
     }
 
-    fun push(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, onAnimationEnd: Runnable) {
+    fun push(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            resolvedOptions: Options,
+            additionalAnimations: List<Animator>,
+            onAnimationEnd: Runnable
+    ) {
         val set = createPushAnimator(appearing, onAnimationEnd)
         runningPushAnimations[appearing] = set
-        if (options.animations.push.sharedElements.hasValue()) {
-            pushWithElementTransition(appearing, disappearing, options, set)
+        if (resolvedOptions.animations.push.sharedElements.hasValue()) {
+            pushWithElementTransition(appearing, disappearing, resolvedOptions, set)
         } else {
-            pushWithoutElementTransitions(appearing, disappearing, options, set)
+            pushWithoutElementTransitions(appearing, disappearing, resolvedOptions, set, additionalAnimations)
         }
     }
 
-    open fun pop(appearing: ViewController<*>, disappearing: ViewController<*>, pop: StackAnimationOptions, onAnimationEnd: Runnable) {
+    open fun pop(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            disappearingOptions: Options,
+            additionalAnimations: List<Animator>,
+            onAnimationEnd: Runnable
+    ) {
         if (runningPushAnimations.containsKey(disappearing)) {
             runningPushAnimations[disappearing]!!.cancel()
             onAnimationEnd.run()
         } else {
-            animatePop(appearing, disappearing, pop, onAnimationEnd)
+            animatePop(
+                    appearing,
+                    disappearing,
+                    disappearingOptions,
+                    additionalAnimations,
+                    onAnimationEnd
+            )
         }
     }
 
-    private fun animatePop(appearing: ViewController<*>, disappearing: ViewController<*>, pop: StackAnimationOptions, onAnimationEnd: Runnable) {
+    private fun animatePop(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            disappearingOptions: Options,
+            additionalAnimations: List<Animator>,
+            onAnimationEnd: Runnable
+    ) {
         GlobalScope.launch(Dispatchers.Main.immediate) {
             val set = createPopAnimator(disappearing, onAnimationEnd)
-            if (pop.sharedElements.hasValue()) {
-                popWithElementTransitions(appearing, disappearing, pop, set)
+            if (disappearingOptions.animations.pop.sharedElements.hasValue()) {
+                popWithElementTransitions(appearing, disappearing, disappearingOptions, set)
             } else {
-                popWithoutElementTransitions(pop, set, appearing, disappearing)
+                popWithoutElementTransitions(appearing, disappearing, disappearingOptions, set, additionalAnimations)
             }
         }
     }
 
-    private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, pop: StackAnimationOptions, set: AnimatorSet) {
+    private suspend fun popWithElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, resolvedOptions: Options, set: AnimatorSet) {
+        val pop = resolvedOptions.animations.pop
         val fade = if (pop.content.exit.isFadeAnimation()) pop else FadeOutAnimation()
         val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content.exit, disappearing, appearing)
         set.playTogether(fade.content.exit.getAnimation(disappearing.view), transitionAnimators)
@@ -86,11 +116,20 @@ open class StackAnimator @JvmOverloads constructor(
         set.start()
     }
 
-    private fun popWithoutElementTransitions(pop: StackAnimationOptions, set: AnimatorSet, appearing: ViewController<*>, disappearing: ViewController<*>) {
-        val animators = mutableListOf(pop.content.exit.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
+    private fun popWithoutElementTransitions(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            disappearingOptions: Options,
+            set: AnimatorSet,
+            additionalAnimations: List<Animator>
+    ) {
+        val pop = disappearingOptions.animations.pop
+        val animators = mutableListOf<Animator>(pop.content.exit.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
+        animators.addAll(additionalAnimations)
         if (pop.content.enter.hasValue()) {
             animators.add(pop.content.enter.getAnimation(appearing.view))
         }
+
         set.playTogether(animators.toList())
         set.start()
     }
@@ -153,7 +192,12 @@ open class StackAnimator @JvmOverloads constructor(
         return set
     }
 
-    private fun pushWithElementTransition(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, set: AnimatorSet) = GlobalScope.launch(Dispatchers.Main.immediate) {
+    private fun pushWithElementTransition(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            options: Options,
+            set: AnimatorSet
+    ) = GlobalScope.launch(Dispatchers.Main.immediate) {
         appearing.setWaitForRender(Bool(true))
         appearing.view.alpha = 0f
         appearing.awaitRender()
@@ -165,21 +209,34 @@ open class StackAnimator @JvmOverloads constructor(
         set.start()
     }
 
-    private fun pushWithoutElementTransitions(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, set: AnimatorSet) {
-        val push = options.animations.push
+    private fun pushWithoutElementTransitions(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            resolvedOptions: Options,
+            set: AnimatorSet,
+            additionalAnimations: List<Animator>
+    ) {
+        val push = resolvedOptions.animations.push
         if (push.waitForRender.isTrue) {
             appearing.view.alpha = 0f
             appearing.addOnAppearedListener {
                 appearing.view.alpha = 1f
-                animatePushWithoutElementTransitions(set, push, appearing, disappearing)
+                animatePushWithoutElementTransitions(set, push, appearing, disappearing, additionalAnimations)
             }
         } else {
-            animatePushWithoutElementTransitions(set, push, appearing, disappearing)
+            animatePushWithoutElementTransitions(set, push, appearing, disappearing, additionalAnimations)
         }
     }
 
-    private fun animatePushWithoutElementTransitions(set: AnimatorSet, push: StackAnimationOptions, appearing: ViewController<*>, disappearing: ViewController<*>) {
-        val animators = mutableListOf(push.content.enter.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
+    private fun animatePushWithoutElementTransitions(
+            set: AnimatorSet,
+            push: StackAnimationOptions,
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            additionalAnimations: List<Animator>
+    ) {
+        val animators = mutableListOf<Animator>(push.content.enter.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
+        animators.addAll(additionalAnimations)
         if (push.content.exit.hasValue()) {
             animators.add(push.content.exit.getAnimation(disappearing.view))
         }

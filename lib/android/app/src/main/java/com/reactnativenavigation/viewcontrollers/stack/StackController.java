@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.options.StackAnimationOptions;
 import com.reactnativenavigation.options.Options;
+import com.reactnativenavigation.options.StackAnimationOptions;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.Constants;
@@ -163,7 +163,12 @@ public class StackController extends ParentController<StackLayout> {
         if (toRemove != null) {
             StackAnimationOptions animation = resolvedOptions.animations.push;
             if (animation.enabled.isTrueOrUndefined()) {
-                animator.push(child, toRemove, resolvedOptions, () -> onPushAnimationComplete(child, toRemove, listener));
+                animator.push(
+                        child,
+                        toRemove,
+                        resolvedOptions,
+                        presenter.getAdditionalPushAnimations(resolvedOptions),
+                        () -> onPushAnimationComplete(child, toRemove, listener));
             } else {
                 child.onViewDidAppear();
                 getView().removeView(toRemove.getView());
@@ -232,6 +237,7 @@ public class StackController extends ParentController<StackLayout> {
                         child,
                         toRemove,
                         resolvedOptions,
+                        presenter.getAdditionalPushAnimations(resolvedOptions),
                         () -> listenerAdapter.onSuccess(child.getId())
                     )
                 );
@@ -272,10 +278,12 @@ public class StackController extends ParentController<StackLayout> {
         }
         presenter.onChildWillAppear(this, appearing, disappearing);
         if (disappearingOptions.animations.pop.enabled.isTrueOrUndefined()) {
+            Options appearingOptions = resolveChildOptions(appearing).withDefaultOptions(presenter.getDefaultOptions());
             animator.pop(
                     appearing,
                     disappearing,
-                    disappearingOptions.animations.pop,
+                    disappearingOptions,
+                    presenter.getAdditionalPopAnimations(appearingOptions),
                     () -> finishPopping(appearing, disappearing, listener)
             );
         } else {
@@ -362,7 +370,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public StackLayout createView() {
         StackLayout stackLayout = new StackLayout(getActivity(), topBarController, getId());
-        presenter.bindView(topBarController);
+        presenter.bindView(topBarController, getBottomTabsController());
         addInitialChild(stackLayout);
         return stackLayout;
     }

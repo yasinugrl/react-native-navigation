@@ -1,5 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.stack;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -27,6 +28,7 @@ import com.reactnativenavigation.utils.ObjectUtils;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.utils.UiUtils;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
@@ -41,6 +43,7 @@ import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreat
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -67,6 +70,7 @@ public class StackPresenter {
 
     private TopBar topBar;
     private TopBarController topBarController;
+    private BottomTabsController bottomTabsController;
     private final TitleBarReactViewCreator titleViewCreator;
     private ButtonController.OnClickListener onClickListener;
     private final RenderChecker renderChecker;
@@ -114,8 +118,9 @@ public class StackPresenter {
         return defaultOptions;
     }
 
-    public void bindView(TopBarController topBarController) {
+    public void bindView(TopBarController topBarController, BottomTabsController bottomTabsController) {
         this.topBarController = topBarController;
+        this.bottomTabsController = bottomTabsController;
         topBar = topBarController.getView();
     }
 
@@ -260,14 +265,12 @@ public class StackPresenter {
 
     private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions, StackController stack, ViewController child) {
         if (options.visible.isFalse()) {
-            topBarController.resetViewProperties();
             if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
                 topBarController.hideAnimate(animationOptions.pop.topBar.exit, 0, getTopBarTranslationAnimationDelta(stack, child));
             } else {
                 topBarController.hide();
             }
         } else if (options.visible.isTrueOrUndefined()) {
-            topBarController.resetViewProperties();
             if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
                 topBarController.showAnimate(animationOptions.push.topBar.enter, getTopBarTranslationAnimationDelta(stack, child));
             } else {
@@ -352,6 +355,20 @@ public class StackPresenter {
                 topBarController.hide();
             }
         }
+    }
+
+    public List<Animator> getAdditionalPushAnimations(Options appearingOptions) {
+        return Arrays.asList(
+                topBarController.getPushAnimation(appearingOptions, appearingOptions.animations.push.topBar)
+                // TODO: BottomTabs
+        );
+    }
+
+    public List<Animator> getAdditionalPopAnimations(Options appearingOptions) {
+        return Arrays.asList(
+                topBarController.getPopAnimation(appearingOptions, appearingOptions.animations.pop.topBar)
+                // TODO: BottomTabs
+        );
     }
 
     public void mergeChildOptions(Options toMerge, Options resolvedOptions, StackController stack, ViewController child) {
@@ -468,7 +485,6 @@ public class StackPresenter {
 
         if (topBarOptions.testId.hasValue()) topBar.setTestId(topBarOptions.testId.get());
 
-        topBarController.resetViewProperties();
         if (topBarOptions.visible.isFalse()) {
             if (topBarOptions.animate.isTrueOrUndefined()) {
                 topBarController.hideAnimate(new AnimationOptions(), 0, getTopBarTranslationAnimationDelta(stack, child));

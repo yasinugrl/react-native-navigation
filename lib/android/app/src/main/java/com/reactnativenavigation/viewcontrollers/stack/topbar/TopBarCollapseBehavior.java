@@ -59,6 +59,6 @@ public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListe
 
     @Override
     public void onHide() {
-        animator.hide(topBar.getTranslationY(), ((ViewGroup.MarginLayoutParams) topBar.getLayoutParams()).topMargin);
+        animator.hideOnScroll(topBar.getTranslationY(), ((ViewGroup.MarginLayoutParams) topBar.getLayoutParams()).topMargin);
     }
 }
