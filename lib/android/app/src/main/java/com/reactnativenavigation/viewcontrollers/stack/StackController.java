@@ -283,7 +283,7 @@ public class StackController extends ParentController<StackLayout> {
                     appearing,
                     disappearing,
                     disappearingOptions,
-                    presenter.getAdditionalPopAnimations(appearingOptions),
+                    presenter.getAdditionalPopAnimations(appearingOptions, disappearingOptions),
                     () -> finishPopping(appearing, disappearing, listener)
             );
         } else {

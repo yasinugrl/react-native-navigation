@@ -1,5 +1,6 @@
 package com.reactnativenavigation.options
 
+import android.animation.Animator
 import android.animation.AnimatorSet
 import android.util.Property
 import android.util.TypedValue.COMPLEX_UNIT_DIP
@@ -73,7 +74,7 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
 
     fun getAnimation(view: View) = getAnimation(view, AnimatorSet())
 
-    fun getAnimation(view: View, defaultAnimation: AnimatorSet): AnimatorSet {
+    fun getAnimation(view: View, defaultAnimation: Animator): Animator {
         if (!hasAnimation()) return defaultAnimation
         return AnimatorSet().apply { playTogether(valueOptions.map { it.getAnimation(view) }) }
     }

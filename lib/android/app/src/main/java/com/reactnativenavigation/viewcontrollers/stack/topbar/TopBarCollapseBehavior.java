@@ -8,9 +8,9 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListe
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 
 public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListener, ScrollEventListener.OnDragListener {
-    private TopBar topBar;
+    private final TopBar topBar;
     private ScrollEventListener scrollEventListener;
-    private TopBarAnimator animator;
+    private final TopBarAnimator animator;
 
     public TopBarCollapseBehavior(TopBar topBar) {
         this.topBar = topBar;

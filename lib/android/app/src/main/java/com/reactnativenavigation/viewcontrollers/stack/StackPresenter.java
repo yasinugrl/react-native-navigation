@@ -43,7 +43,6 @@ import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreat
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactViewCreator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -70,7 +69,7 @@ public class StackPresenter {
 
     private TopBar topBar;
     private TopBarController topBarController;
-    private BottomTabsController bottomTabsController;
+    private @Nullable BottomTabsController bottomTabsController;
     private final TitleBarReactViewCreator titleViewCreator;
     private ButtonController.OnClickListener onClickListener;
     private final RenderChecker renderChecker;
@@ -118,7 +117,7 @@ public class StackPresenter {
         return defaultOptions;
     }
 
-    public void bindView(TopBarController topBarController, BottomTabsController bottomTabsController) {
+    public void bindView(TopBarController topBarController, @Nullable BottomTabsController bottomTabsController) {
         this.topBarController = topBarController;
         this.bottomTabsController = bottomTabsController;
         topBar = topBarController.getView();
@@ -233,7 +232,7 @@ public class StackPresenter {
             topBar.clearBackgroundComponent();
         }
 
-        applyTopBarVisibility(topBarOptions, animationOptions, componentOptions, stack, child);
+//        applyTopBarVisibility(topBarOptions, animationOptions, componentOptions, stack, child);
         if (topBarOptions.hideOnScroll.isTrue()) {
             if (component instanceof IReactView) {
                 topBar.enableCollapse(((IReactView) component).getScrollEventListener());
@@ -263,21 +262,21 @@ public class StackPresenter {
         }
     }
 
-    private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions, StackController stack, ViewController child) {
-        if (options.visible.isFalse()) {
-            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
-                topBarController.hideAnimate(animationOptions.pop.topBar.exit, 0, getTopBarTranslationAnimationDelta(stack, child));
-            } else {
-                topBarController.hide();
-            }
-        } else if (options.visible.isTrueOrUndefined()) {
-            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
-                topBarController.showAnimate(animationOptions.push.topBar.enter, getTopBarTranslationAnimationDelta(stack, child));
-            } else {
-                topBarController.show();
-            }
-        }
-    }
+//    private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions, StackController stack, ViewController child) {
+//        if (options.visible.isFalse()) {
+//            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
+//                topBarController.hideAnimate(animationOptions.pop.topBar.exit, 0, getTopBarTranslationAnimationDelta(stack, child));
+//            } else {
+//                topBarController.hide();
+//            }
+//        } else if (options.visible.isTrueOrUndefined()) {
+//            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
+//                topBarController.showAnimate(animationOptions.push.topBar.enter, getTopBarTranslationAnimationDelta(stack, child));
+//            } else {
+//                topBarController.show();
+//            }
+//        }
+//    }
 
     private void applyButtons(TopBarOptions options, ViewController child) {
         if (options.buttons.right != null) {
@@ -358,16 +357,16 @@ public class StackPresenter {
     }
 
     public List<Animator> getAdditionalPushAnimations(Options appearingOptions) {
-        return Arrays.asList(
-                topBarController.getPushAnimation(appearingOptions, appearingOptions.animations.push.topBar),
-                bottomTabsController.getPushAnimation(appearingOptions, appearingOptions.animations.push.bottomTabs)
+        return CollectionUtils.asList(
+                topBarController.getPushAnimation(appearingOptions),
+                perform(bottomTabsController, null, btc -> btc.getPushAnimation(appearingOptions))
         );
     }
 
-    public List<Animator> getAdditionalPopAnimations(Options appearingOptions) {
-        return Arrays.asList(
-                topBarController.getPopAnimation(appearingOptions, appearingOptions.animations.pop.topBar)
-                // TODO: BottomTabs
+    public List<Animator> getAdditionalPopAnimations(Options appearingOptions, Options disappearingOptions) {
+        return CollectionUtils.asList(
+                topBarController.getPopAnimation(appearingOptions, disappearingOptions),
+                perform(bottomTabsController, null, btc -> btc.getPopAnimation(appearingOptions, disappearingOptions))
         );
     }
 

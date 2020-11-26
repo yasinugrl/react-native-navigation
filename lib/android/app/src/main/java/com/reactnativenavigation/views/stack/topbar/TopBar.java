@@ -15,17 +15,17 @@ import android.widget.RelativeLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.reactnativenavigation.R;
-import com.reactnativenavigation.options.FontOptions;
-import com.reactnativenavigation.options.parsers.TypefaceLoader;
-import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
-import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Alignment;
+import com.reactnativenavigation.options.FontOptions;
 import com.reactnativenavigation.options.LayoutDirection;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
+import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
@@ -302,16 +302,5 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public boolean containsRightButton(ButtonController button) {
         return titleBar.containsRightButton(button);
-    }
-
-    public void resetProperties() {
-        setTranslationY(0);
-        setTranslationX(0);
-        setAlpha(1);
-        setScaleY(1);
-        setScaleX(1);
-        setRotationX(0);
-        setRotationY(0);
-        setRotation(0);
     }
 }
