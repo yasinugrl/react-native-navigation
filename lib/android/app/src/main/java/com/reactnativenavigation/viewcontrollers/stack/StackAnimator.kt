@@ -124,7 +124,7 @@ open class StackAnimator @JvmOverloads constructor(
             additionalAnimations: List<Animator>
     ) {
         val pop = disappearingOptions.animations.pop
-        val animators = mutableListOf<Animator>(pop.content.exit.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
+        val animators = mutableListOf(pop.content.exit.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
         animators.addAll(additionalAnimations)
         if (pop.content.enter.hasValue()) {
             animators.add(pop.content.enter.getAnimation(appearing.view))
@@ -235,7 +235,7 @@ open class StackAnimator @JvmOverloads constructor(
             disappearing: ViewController<*>,
             additionalAnimations: List<Animator>
     ) {
-        val animators = mutableListOf<Animator>(push.content.enter.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
+        val animators = mutableListOf(push.content.enter.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
         animators.addAll(additionalAnimations)
         if (push.content.exit.hasValue()) {
             animators.add(push.content.exit.getAnimation(disappearing.view))

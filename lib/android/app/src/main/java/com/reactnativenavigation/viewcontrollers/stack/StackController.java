@@ -92,7 +92,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void onAttachToParent() {
         if (!isEmpty() && !getCurrentChild().isDestroyed() && !isViewShown()) {
-            presenter.applyChildOptions(resolveCurrentOptions(), this, getCurrentChild());
+            presenter.applyChildOptions(resolveCurrentOptions(), getCurrentChild());
         }
     }
 
@@ -105,7 +105,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
-        presenter.applyChildOptions(resolveCurrentOptions(), this, child);
+        presenter.applyChildOptions(resolveCurrentOptions(), child);
         fabPresenter.applyOptions(this.options.fabOptions, child, getView());
         performOnParentController(parent ->
                 parent.applyChildOptions(
@@ -167,7 +167,7 @@ public class StackController extends ParentController<StackLayout> {
                         child,
                         toRemove,
                         resolvedOptions,
-                        presenter.getAdditionalPushAnimations(resolvedOptions),
+                        presenter.getAdditionalPushAnimations(this, child, resolvedOptions),
                         () -> onPushAnimationComplete(child, toRemove, listener));
             } else {
                 child.onViewDidAppear();
@@ -237,7 +237,7 @@ public class StackController extends ParentController<StackLayout> {
                         child,
                         toRemove,
                         resolvedOptions,
-                        presenter.getAdditionalPushAnimations(resolvedOptions),
+                        presenter.getAdditionalPushAnimations(this, child, resolvedOptions),
                         () -> listenerAdapter.onSuccess(child.getId())
                     )
                 );

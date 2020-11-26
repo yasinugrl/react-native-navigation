@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.AnimationOptions;
-import com.reactnativenavigation.options.AnimationsOptions;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.options.Options;
@@ -78,12 +77,12 @@ public class StackPresenter {
     private Options defaultOptions;
 
     private List<ButtonController> currentRightButtons = new ArrayList<>();
-    private Map<View, TitleBarReactViewController> titleControllers = new HashMap();
-    private Map<View, TopBarBackgroundViewController> backgroundControllers = new HashMap();
-    private Map<View, Map<String, ButtonController>> componentRightButtons = new HashMap();
-    private Map<View, Map<String, ButtonController>> componentLeftButtons = new HashMap();
-    private IconResolver iconResolver;
-    private TypefaceLoader typefaceLoader;
+    private final Map<View, TitleBarReactViewController> titleControllers = new HashMap();
+    private final Map<View, TopBarBackgroundViewController> backgroundControllers = new HashMap();
+    private final Map<View, Map<String, ButtonController>> componentRightButtons = new HashMap();
+    private final Map<View, Map<String, ButtonController>> componentLeftButtons = new HashMap();
+    private final IconResolver iconResolver;
+    private final TypefaceLoader typefaceLoader;
 
     public StackPresenter(Activity activity,
                           TitleBarReactViewCreator titleViewCreator,
@@ -144,11 +143,11 @@ public class StackPresenter {
         setInitialTopBarVisibility(withDefault.topBar);
     }
 
-    public void applyChildOptions(Options options, StackController stack, ViewController child) {
+    public void applyChildOptions(Options options, ViewController child) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefault.layout.orientation);
         applyButtons(withDefault.topBar, child);
-        applyTopBarOptions(withDefault, stack, child, options);
+        applyTopBarOptions(withDefault, child);
         applyTopTabsOptions(withDefault.topTabs);
         applyTopTabOptions(withDefault.topTabOptions);
     }
@@ -171,10 +170,9 @@ public class StackPresenter {
         if (buttons != null) forEach(buttons.values(), ViewController::destroy);
     }
 
-    private void applyTopBarOptions(Options options, StackController stack, ViewController child, Options componentOptions) {
+    private void applyTopBarOptions(Options options, ViewController child) {
         final View component = child.getView();
         TopBarOptions topBarOptions = options.topBar;
-        AnimationsOptions animationOptions = options.animations;
 
         topBar.setTestId(topBarOptions.testId.get(""));
         topBar.setLayoutDirection(options.layout.direction);
@@ -232,7 +230,6 @@ public class StackPresenter {
             topBar.clearBackgroundComponent();
         }
 
-//        applyTopBarVisibility(topBarOptions, animationOptions, componentOptions, stack, child);
         if (topBarOptions.hideOnScroll.isTrue()) {
             if (component instanceof IReactView) {
                 topBar.enableCollapse(((IReactView) component).getScrollEventListener());
@@ -349,16 +346,16 @@ public class StackPresenter {
         Options resolvedOptions = parent.resolveChildOptions(disappearing).withDefaultOptions(defaultOptions);
         if (disappearing.options.topBar.visible.isTrueOrUndefined() && appearing.options.topBar.visible.isFalse()) {
             if (disappearing.options.topBar.animate.isTrueOrUndefined() && disappearing.options.animations.pop.enabled.isTrueOrUndefined()) {
-                topBarController.hideAnimate(resolvedOptions.animations.pop.topBar.exit, 0, getTopBarTranslationAnimationDelta(parent, appearing));
+                topBarController.hideAnimate(resolvedOptions.animations.pop.topBar.exit, getTopBarTranslationAnimationDelta(parent, appearing));
             } else {
                 topBarController.hide();
             }
         }
     }
 
-    public List<Animator> getAdditionalPushAnimations(Options appearingOptions) {
+    public List<Animator> getAdditionalPushAnimations(StackController stack, ViewController appearing, Options appearingOptions) {
         return CollectionUtils.asList(
-                topBarController.getPushAnimation(appearingOptions),
+                topBarController.getPushAnimation(appearingOptions, getTopBarTranslationAnimationDelta(stack, appearing)),
                 perform(bottomTabsController, null, btc -> btc.getPushAnimation(appearingOptions))
         );
     }
@@ -486,7 +483,7 @@ public class StackPresenter {
 
         if (topBarOptions.visible.isFalse()) {
             if (topBarOptions.animate.isTrueOrUndefined()) {
-                topBarController.hideAnimate(new AnimationOptions(), 0, getTopBarTranslationAnimationDelta(stack, child));
+                topBarController.hideAnimate(new AnimationOptions(), getTopBarTranslationAnimationDelta(stack, child));
             } else {
                 topBarController.hide();
             }

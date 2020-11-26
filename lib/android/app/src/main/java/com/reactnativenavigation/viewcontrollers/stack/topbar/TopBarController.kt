@@ -48,8 +48,15 @@ open class TopBarController {
 
     fun clearTopTabs() = view.clearTopTabs()
 
-    fun getPushAnimation(appearingOptions: Options): Animator {
-        return animator.getPushAnimation(appearingOptions.animations.push.topBar, appearingOptions.topBar.visible)
+    fun getPushAnimation(
+            appearingOptions: Options,
+            additionalDy: Float = 0f
+    ): Animator {
+        return animator.getPushAnimation(
+                appearingOptions.animations.push.topBar,
+                appearingOptions.topBar.visible,
+                additionalDy
+        )
     }
 
     fun getPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator {
@@ -61,18 +68,18 @@ open class TopBarController {
         view.visibility = View.VISIBLE
     }
 
-    fun showAnimate(options: AnimationOptions?, translationDy: Int) {
+    fun showAnimate(options: AnimationOptions, additionalDy: Float) {
         if (ViewUtils.isVisible(view) || animator.isAnimatingShow()) return
-        animator.show(options!!, translationDy)
+        animator.show(options, additionalDy)
     }
 
     fun hide() {
         if (!animator.isAnimatingHide()) view.visibility = View.GONE
     }
 
-    fun hideAnimate(options: AnimationOptions?, translationStart: Float, translationEnd: Float) {
+    fun hideAnimate(options: AnimationOptions, additionalDy: Float) {
         if (!ViewUtils.isVisible(view) || animator.isAnimatingHide()) return
-        animator.hide(options!!, translationStart, translationEnd, null)
+        animator.hide(options, additionalDy)
     }
 
     fun setTitleComponent(component: TitleBarReactViewController) {
