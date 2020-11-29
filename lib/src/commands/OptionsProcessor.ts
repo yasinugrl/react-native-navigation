@@ -202,15 +202,30 @@ export class OptionsProcessor {
     parentOptions: AnimationOptions
   ) {
     if (key !== 'setStackRoot') return;
-    if (has(animation, 'content') || has(animation, 'topBar') || has(animation, 'bottomTabs')) {
-      return;
-    }
+    if (this.isNewStackAnimationApi(animation)) return;
+    this.convertDeprecatedViewAnimationApiToNewStackAnimationApi(animation, parentOptions);
+  }
+
+  private isNewStackAnimationApi(animation: ViewAnimationOptions | StackAnimationOptions) {
+    return has(animation, 'content') || has(animation, 'topBar') || has(animation, 'bottomTabs');
+  }
+
+  private convertDeprecatedViewAnimationApiToNewStackAnimationApi(
+    animation: ViewAnimationOptions | StackAnimationOptions,
+    parentOptions: AnimationOptions
+  ) {
     if (!has(animation, 'content.enter') && !has(animation, 'content.exit')) {
-      parentOptions[key] = {
+      parentOptions.setStackRoot = {
         content: {
           enter: animation,
         },
       };
+      if (has(animation, 'enabled')) {
+        parentOptions.setStackRoot!!.enabled = animation.enabled;
+      }
+      if (has(animation, 'waitForRender')) {
+        parentOptions.setStackRoot!!.waitForRender = animation.waitForRender;
+      }
     }
   }
 

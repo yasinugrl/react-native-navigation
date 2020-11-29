@@ -557,10 +557,14 @@ describe('navigation options', () => {
           },
         };
         uut.processOptions(options, CommandName.SetRoot);
-        expect((options.animations!!.setStackRoot as StackAnimationOptions).content).toStrictEqual({
-          enter: {
-            enabled: false,
-            waitForRender: true,
+        expect(options.animations!!.setStackRoot as StackAnimationOptions).toStrictEqual({
+          enabled: false,
+          waitForRender: true,
+          content: {
+            enter: {
+              enabled: false,
+              waitForRender: true,
+            },
           },
         });
       });
