@@ -228,6 +228,10 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         return presenter.getPushAnimation(appearingOptions);
     }
 
+    public Animator getSetStackRootAnimation(Options appearingOptions) {
+        return presenter.getSetStackRootAnimation(appearingOptions);
+    }
+
     public Animator getPopAnimation(Options appearingOptions, Options disappearingOptions) {
         return presenter.getPopAnimation(appearingOptions, disappearingOptions);
     }

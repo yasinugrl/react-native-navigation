@@ -233,16 +233,20 @@ public class StackController extends ParentController<StackLayout> {
         if (toRemove != null && resolvedOptions.animations.setStackRoot.enabled.isTrueOrUndefined()) {
             if (resolvedOptions.animations.setStackRoot.waitForRender.isTrue()) {
                 child.getView().setAlpha(0);
-                child.addOnAppearedListener(() -> animator.push(
+                child.addOnAppearedListener(() -> animator.setRoot(
                         child,
                         toRemove,
                         resolvedOptions,
-                        presenter.getAdditionalPushAnimations(this, child, resolvedOptions),
+                        presenter.getAdditionalSetRootAnimations(this, child, resolvedOptions),
                         () -> listenerAdapter.onSuccess(child.getId())
                     )
                 );
             } else {
-                animator.setRoot(child, toRemove, resolvedOptions, () -> listenerAdapter.onSuccess(child.getId()));
+                animator.setRoot(child,
+                        toRemove,
+                        resolvedOptions,
+                        presenter.getAdditionalSetRootAnimations(this, child, resolvedOptions),
+                        () -> listenerAdapter.onSuccess(child.getId()));
             }
         } else {
             listenerAdapter.onSuccess(child.getId());

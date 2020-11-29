@@ -37,7 +37,13 @@ open class StackAnimator @JvmOverloads constructor(
 
     fun cancelPushAnimations() = runningPushAnimations.values.forEach(Animator::cancel)
 
-    fun setRoot(appearing: ViewController<*>, disappearing: ViewController<*>, options: Options, onAnimationEnd: Runnable) {
+    fun setRoot(
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            options: Options,
+            additionalAnimations: List<Animator>,
+            onAnimationEnd: Runnable
+    ) {
         val set = createSetRootAnimator(appearing, onAnimationEnd)
         runningSetRootAnimations[appearing] = set
         val setRoot = options.animations.setStackRoot
@@ -45,10 +51,10 @@ open class StackAnimator @JvmOverloads constructor(
             appearing.view.alpha = 0f
             appearing.addOnAppearedListener {
                 appearing.view.alpha = 1f
-                animateSetRoot(set, setRoot, appearing, disappearing)
+                animateSetRoot(set, setRoot, appearing, disappearing, additionalAnimations)
             }
         } else {
-            animateSetRoot(set, setRoot, appearing, disappearing)
+            animateSetRoot(set, setRoot, appearing, disappearing, additionalAnimations)
         }
     }
 
@@ -247,11 +253,18 @@ open class StackAnimator @JvmOverloads constructor(
         set.start()
     }
 
-    private fun animateSetRoot(set: AnimatorSet, setRoot: StackAnimationOptions, appearing: ViewController<*>, disappearing: ViewController<*>) {
+    private fun animateSetRoot(
+            set: AnimatorSet,
+            setRoot: StackAnimationOptions,
+            appearing: ViewController<*>,
+            disappearing: ViewController<*>,
+            additionalAnimations: List<Animator>
+    ) {
         val animators = mutableListOf(setRoot.content.enter.getAnimation(
                 appearing.view,
                 getDefaultSetStackRootAnimation(appearing.view)
         ))
+        animators.addAll(additionalAnimations)
         if (setRoot.content.exit.hasValue()) {
             animators.add(setRoot.content.exit.getAnimation(disappearing.view))
         }

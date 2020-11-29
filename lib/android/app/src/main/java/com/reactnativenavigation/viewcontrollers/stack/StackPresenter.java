@@ -367,6 +367,13 @@ public class StackPresenter {
         );
     }
 
+    public List<Animator> getAdditionalSetRootAnimations(StackController stack, ViewController appearing, Options appearingOptions) {
+        return CollectionUtils.asList(
+                topBarController.getSetStackRootAnimation(appearingOptions, getTopBarTranslationAnimationDelta(stack, appearing)),
+                perform(bottomTabsController, null, btc -> btc.getSetStackRootAnimation(appearingOptions))
+        );
+    }
+
     public void mergeChildOptions(Options toMerge, Options resolvedOptions, StackController stack, ViewController child) {
         TopBarOptions topBar = toMerge.copy().topBar.mergeWithDefault(resolvedOptions.topBar).mergeWithDefault(defaultOptions.topBar);
         mergeOrientation(toMerge.layout.orientation);

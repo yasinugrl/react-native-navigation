@@ -48,10 +48,7 @@ open class TopBarController {
 
     fun clearTopTabs() = view.clearTopTabs()
 
-    fun getPushAnimation(
-            appearingOptions: Options,
-            additionalDy: Float = 0f
-    ): Animator {
+    fun getPushAnimation(appearingOptions: Options, additionalDy: Float = 0f): Animator {
         return animator.getPushAnimation(
                 appearingOptions.animations.push.topBar,
                 appearingOptions.topBar.visible,
@@ -61,6 +58,14 @@ open class TopBarController {
 
     fun getPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator {
         return animator.getPopAnimation(disappearingOptions.animations.pop.topBar, appearingOptions.topBar.visible)
+    }
+
+    fun getSetStackRootAnimation(appearingOptions: Options, additionalDy: Float = 0f): Animator {
+        return animator.getSetStackRootAnimation(
+                appearingOptions.animations.setStackRoot.topBar,
+                appearingOptions.topBar.visible,
+                additionalDy
+        )
     }
 
     fun show() {

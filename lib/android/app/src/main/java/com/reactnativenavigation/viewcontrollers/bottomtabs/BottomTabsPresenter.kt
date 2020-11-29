@@ -173,4 +173,10 @@ class BottomTabsPresenter(private val tabs: List<ViewController<*>>, private var
         )
     }
 
+    fun getSetStackRootAnimation(appearingOptions: Options): Animator {
+        return tabsAnimator.getSetStackRootAnimation(
+                appearingOptions.animations.setStackRoot.bottomTabs,
+                appearingOptions.bottomTabsOptions.visible
+        )
+    }
 }

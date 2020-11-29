@@ -91,11 +91,7 @@ open class BaseViewAnimator<T : View>(private val hideDirection: HideDirection, 
 
     fun isAnimatingShow() = showAnimator.isRunning
 
-    fun getPushAnimation(
-            animation: ViewAnimationOptions,
-            visible: Bool,
-            additionalDy: Float = 0f
-    ): Animator {
+    fun getPushAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
             hideAnimator = animation.exit.getAnimation(view, getDefaultHideAnimator(additionalDy))
@@ -111,11 +107,23 @@ open class BaseViewAnimator<T : View>(private val hideDirection: HideDirection, 
         return AnimatorSet()
     }
 
-    fun getPopAnimation(
-            animation: ViewAnimationOptions,
-            visible: Bool,
-            additionalDy: Float = 0f
-    ): Animator {
+    fun getPopAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator {
+        if (isOrWillBeVisible && visible.isFalse) {
+            showAnimator.cancel()
+            hideAnimator = animation.exit.getAnimation(view, getDefaultHideAnimator(additionalDy))
+            return hideAnimator
+        }
+
+        if (isOrWillBeHidden && visible.isTrueOrUndefined) {
+            hideAnimator.cancel()
+            showAnimator = animation.enter.getAnimation(view, getDefaultShowAnimator(additionalDy))
+            return showAnimator
+        }
+
+        return AnimatorSet()
+    }
+
+    fun getSetStackRootAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
             hideAnimator = animation.exit.getAnimation(view, getDefaultHideAnimator(additionalDy))
