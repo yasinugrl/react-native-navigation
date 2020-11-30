@@ -39,161 +39,161 @@ class StackAnimatorTest : BaseTest() {
         child2 = SimpleViewController(activity, childRegistry, "child2", Options())
     }
 
-    @Test
-    fun push_onlyEnteringScreenIsAnimatedByDefault() {
-        val onAnimationEnd = mock<Runnable>()
-        uut.push(child2, child1, Options.EMPTY, onAnimationEnd)
+//    @Test
+//    fun push_onlyEnteringScreenIsAnimatedByDefault() {
+//        val onAnimationEnd = mock<Runnable>()
+//        uut.push(child2, child1, Options.EMPTY, onAnimationEnd)
+//
+//        val pushAnimator = uut.runningPushAnimations[child2]!!
+//        assertThat(pushAnimator.childAnimations).hasSize(1)
+//        val appearingAnimatorSet = pushAnimator.childAnimations.first() as AnimatorSet
+//        (appearingAnimatorSet.childAnimations).forEach {
+//            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
+//        }
+//    }
 
-        val pushAnimator = uut.runningPushAnimations[child2]!!
-        assertThat(pushAnimator.childAnimations).hasSize(1)
-        val appearingAnimatorSet = pushAnimator.childAnimations.first() as AnimatorSet
-        (appearingAnimatorSet.childAnimations).forEach {
-            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
-        }
-    }
+//    @Test
+//    fun push_exitAndEnter() {
+//        createEnterExitPushAnimation(child2)
+//
+//        val onAnimationEnd = mock<Runnable>()
+//        uut.push(child2, child1, child2.options, onAnimationEnd)
+//
+//        assertThat(commandAnimator.childAnimations).hasSize(2)
+//
+//        val enter = commandAnimator.childAnimations.first() as AnimatorSet
+//        (enter.childAnimations).forEach {
+//            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
+//        }
+//
+//        val exit = commandAnimator.childAnimations[1] as AnimatorSet
+//        (exit.childAnimations).forEach {
+//            assertThat((it as ObjectAnimator).target).isEqualTo(child1.view)
+//        }
+//    }
 
-    @Test
-    fun push_exitAndEnter() {
-        createEnterExitPushAnimation(child2)
+//    @Test
+//    fun push_onAnimationEnd() {
+//        val onAnimationEnd = mock<Runnable>()
+//        uut.push(child2, child1, child2.options, onAnimationEnd)
+//
+//        verify(onAnimationEnd, never()).run()
+//
+//        commandAnimator.end()
+//        verify(onAnimationEnd).run()
+//    }
 
-        val onAnimationEnd = mock<Runnable>()
-        uut.push(child2, child1, child2.options, onAnimationEnd)
+//    @Test
+//    fun push_waitForRender_appearingScreenIsHiddenUntilAnimationStarts() {
+//        val onAnimationEnd = mock<Runnable>()
+//        child2.options.animations.push.waitForRender = Bool(true)
+//
+//        uut.push(child2, child1, child2.options, onAnimationEnd)
+//
+//        assertThat(child2.view.alpha).isZero()
+//        child2.onViewWillAppear()
+//        assertThat(child2.view.alpha).isOne()
+//    }
 
-        assertThat(commandAnimator.childAnimations).hasSize(2)
+//    @Test
+//    fun pop_onlyExitAnimationIsPlayedByDefault() {
+//        val onAnimationEnd = mock<Runnable>()
+//        uut.pop(child1, child2, child2.options.animations.pop, onAnimationEnd)
+//
+//        assertThat(commandAnimator.childAnimations).hasSize(1)
+//
+//        val disappearingAnimatorSet = commandAnimator.childAnimations.first() as AnimatorSet
+//        (disappearingAnimatorSet.childAnimations).forEach {
+//            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
+//        }
+//    }
 
-        val enter = commandAnimator.childAnimations.first() as AnimatorSet
-        (enter.childAnimations).forEach {
-            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
-        }
+//    @Test
+//    fun pop_enterExitAnimations() {
+//        createEnterExitPopAnimation(child2)
+//
+//        val onAnimationEnd = mock<Runnable>()
+//        uut.pop(child1, child2, child2.options.animations.pop, onAnimationEnd)
+//
+//        assertThat(commandAnimator.childAnimations).hasSize(2)
+//
+//        val enter = commandAnimator.childAnimations[1] as AnimatorSet
+//        (enter.childAnimations).forEach {
+//            assertThat((it as ObjectAnimator).target).isEqualTo(child1.view)
+//        }
+//
+//        val exit = commandAnimator.childAnimations.first() as AnimatorSet
+//        (exit.childAnimations).forEach {
+//            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
+//        }
+//    }
 
-        val exit = commandAnimator.childAnimations[1] as AnimatorSet
-        (exit.childAnimations).forEach {
-            assertThat((it as ObjectAnimator).target).isEqualTo(child1.view)
-        }
-    }
+//    @Test
+//    fun setRoot_onlyEnteringScreenIsAnimatedByDefault() {
+//        val onAnimationEnd = mock<Runnable>()
+//        uut.setRoot(child2, child2, child1.options, onAnimationEnd)
+//
+//        assertThat(commandAnimator.childAnimations).hasSize(1)
+//        val appearingAnimatorSet = commandAnimator.childAnimations.first() as AnimatorSet
+//        (appearingAnimatorSet.childAnimations).forEach {
+//            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
+//        }
+//    }
 
-    @Test
-    fun push_onAnimationEnd() {
-        val onAnimationEnd = mock<Runnable>()
-        uut.push(child2, child1, child2.options, onAnimationEnd)
+//    @Test
+//    fun setRoot_enterExitAnimations() {
+//        createEnterExitSetRootAnimation(child2)
+//
+//        val onAnimationEnd = mock<Runnable>()
+//        uut.setRoot(child2, child1, child2.options, onAnimationEnd)
+//
+//        assertThat(commandAnimator.childAnimations).hasSize(2)
+//
+//        val enter = commandAnimator.childAnimations[1] as AnimatorSet
+//        (enter.childAnimations).forEach {
+//            assertThat((it as ObjectAnimator).target).isEqualTo(child1.view)
+//        }
+//
+//        val exit = commandAnimator.childAnimations.first() as AnimatorSet
+//        (exit.childAnimations).forEach {
+//            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
+//        }
+//    }
 
-        verify(onAnimationEnd, never()).run()
+//    @Test
+//    fun setRoot_onAnimationEnd() {
+//        val onAnimationEnd = mock<Runnable>()
+//        uut.setRoot(child2, child1, child2.options, onAnimationEnd)
+//
+//        verify(onAnimationEnd, never()).run()
+//
+//        commandAnimator.end()
+//        verify(onAnimationEnd).run()
+//    }
 
-        commandAnimator.end()
-        verify(onAnimationEnd).run()
-    }
+//    @Test
+//    fun setRoot_waitForRender() {
+//        val onAnimationEnd = mock<Runnable>()
+//        child2.options.animations.setStackRoot.waitForRender = Bool(true)
+//
+//        uut.setRoot(child2, child1, child2.options, onAnimationEnd)
+//
+//        verify(commandAnimator, never()).start()
+//        child2.onViewWillAppear()
+//        verify(commandAnimator).start()
+//    }
 
-    @Test
-    fun push_waitForRender_appearingScreenIsHiddenUntilAnimationStarts() {
-        val onAnimationEnd = mock<Runnable>()
-        child2.options.animations.push.waitForRender = Bool(true)
-
-        uut.push(child2, child1, child2.options, onAnimationEnd)
-
-        assertThat(child2.view.alpha).isZero()
-        child2.onViewWillAppear()
-        assertThat(child2.view.alpha).isOne()
-    }
-
-    @Test
-    fun pop_onlyExitAnimationIsPlayedByDefault() {
-        val onAnimationEnd = mock<Runnable>()
-        uut.pop(child1, child2, child2.options.animations.pop, onAnimationEnd)
-
-        assertThat(commandAnimator.childAnimations).hasSize(1)
-
-        val disappearingAnimatorSet = commandAnimator.childAnimations.first() as AnimatorSet
-        (disappearingAnimatorSet.childAnimations).forEach {
-            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
-        }
-    }
-
-    @Test
-    fun pop_enterExitAnimations() {
-        createEnterExitPopAnimation(child2)
-
-        val onAnimationEnd = mock<Runnable>()
-        uut.pop(child1, child2, child2.options.animations.pop, onAnimationEnd)
-
-        assertThat(commandAnimator.childAnimations).hasSize(2)
-
-        val enter = commandAnimator.childAnimations[1] as AnimatorSet
-        (enter.childAnimations).forEach {
-            assertThat((it as ObjectAnimator).target).isEqualTo(child1.view)
-        }
-
-        val exit = commandAnimator.childAnimations.first() as AnimatorSet
-        (exit.childAnimations).forEach {
-            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
-        }
-    }
-
-    @Test
-    fun setRoot_onlyEnteringScreenIsAnimatedByDefault() {
-        val onAnimationEnd = mock<Runnable>()
-        uut.setRoot(child2, child2, child1.options, onAnimationEnd)
-
-        assertThat(commandAnimator.childAnimations).hasSize(1)
-        val appearingAnimatorSet = commandAnimator.childAnimations.first() as AnimatorSet
-        (appearingAnimatorSet.childAnimations).forEach {
-            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
-        }
-    }
-
-    @Test
-    fun setRoot_enterExitAnimations() {
-        createEnterExitSetRootAnimation(child2)
-
-        val onAnimationEnd = mock<Runnable>()
-        uut.setRoot(child2, child1, child2.options, onAnimationEnd)
-
-        assertThat(commandAnimator.childAnimations).hasSize(2)
-
-        val enter = commandAnimator.childAnimations[1] as AnimatorSet
-        (enter.childAnimations).forEach {
-            assertThat((it as ObjectAnimator).target).isEqualTo(child1.view)
-        }
-
-        val exit = commandAnimator.childAnimations.first() as AnimatorSet
-        (exit.childAnimations).forEach {
-            assertThat((it as ObjectAnimator).target).isEqualTo(child2.view)
-        }
-    }
-
-    @Test
-    fun setRoot_onAnimationEnd() {
-        val onAnimationEnd = mock<Runnable>()
-        uut.setRoot(child2, child1, child2.options, onAnimationEnd)
-
-        verify(onAnimationEnd, never()).run()
-
-        commandAnimator.end()
-        verify(onAnimationEnd).run()
-    }
-
-    @Test
-    fun setRoot_waitForRender() {
-        val onAnimationEnd = mock<Runnable>()
-        child2.options.animations.setStackRoot.waitForRender = Bool(true)
-
-        uut.setRoot(child2, child1, child2.options, onAnimationEnd)
-
-        verify(commandAnimator, never()).start()
-        child2.onViewWillAppear()
-        verify(commandAnimator).start()
-    }
-
-    @Test
-    fun setRoot_waitForRender_appearingScreenIsHiddenUntilAnimationStarts() {
-        val onAnimationEnd = mock<Runnable>()
-        child2.options.animations.setStackRoot.waitForRender = Bool(true)
-
-        uut.setRoot(child2, child1, child2.options, onAnimationEnd)
-
-        assertThat(child2.view.alpha).isZero()
-        child2.onViewWillAppear()
-        assertThat(child2.view.alpha).isOne()
-    }
+//    @Test
+//    fun setRoot_waitForRender_appearingScreenIsHiddenUntilAnimationStarts() {
+//        val onAnimationEnd = mock<Runnable>()
+//        child2.options.animations.setStackRoot.waitForRender = Bool(true)
+//
+//        uut.setRoot(child2, child1, child2.options, onAnimationEnd)
+//
+//        assertThat(child2.view.alpha).isZero()
+//        child2.onViewWillAppear()
+//        assertThat(child2.view.alpha).isOne()
+//    }
 
     private fun createEnterExitPushAnimation(vc: ViewController<*>) {
         Options().apply {

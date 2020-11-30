@@ -25,7 +25,7 @@ public class BottomTabsAttacherTest extends BaseTest {
     private BottomTabsAttacher uut;
     private AttachMode mode;
     private Options defaultOptions = new Options();
-    private List<ViewController> tabs;
+    private List<ViewController<?>> tabs;
 
     @Override
     public void beforeEach() {

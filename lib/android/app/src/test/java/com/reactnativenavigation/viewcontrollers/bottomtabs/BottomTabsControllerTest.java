@@ -71,7 +71,7 @@ public class BottomTabsControllerTest extends BaseTest {
     private ImageLoader imageLoaderMock = ImageLoaderMock.mock();
     private EventEmitter eventEmitter;
     private ChildControllersRegistry childRegistry;
-    private List<ViewController> tabs;
+    private List<ViewController<?>> tabs;
     private BottomTabsPresenter presenter;
     private BottomTabPresenter bottomTabPresenter;
     private BottomTabsAttacher tabsAttacher;
