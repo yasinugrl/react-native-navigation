@@ -10,6 +10,7 @@
 #import "RectTransition.h"
 #import "RotationTransition.h"
 #import "TextStorageTransition.h"
+#import "TransformRectTransition.h"
 
 @implementation SharedElementAnimator {
     SharedElementTransitionOptions *_transitionOptions;
@@ -62,14 +63,16 @@
                                                      interpolator:interpolator]];
     }
 
-    //  if (!CATransform3DEqualToTransform(self.view.location.fromTransform,
-    //                                     self.view.location.toTransform)) {
-    //      [animations addObject:[[TransformRectTransition alloc] initWithView:self.view
-    //                                                             viewLocation:self.view.location
-    //                                                               startDelay:startDelay
-    //                                                                 duration:duration
-    //                                                             interpolator:interpolator]];
-    //  }
+    if (!CATransform3DEqualToTransform(self.view.location.fromTransform,
+                                       self.view.location.toTransform)) {
+        [animations
+            addObject:[[TransformRectTransition alloc] initWithView:self.view
+                                                               from:self.view.location.fromTransform
+                                                                 to:self.view.location.toTransform
+                                                         startDelay:startDelay
+                                                           duration:duration
+                                                       interpolator:interpolator]];
+    }
 
     if (!CGPointEqualToPoint(self.view.location.fromCenter, self.view.location.toCenter)) {
         [animations addObject:[[CenterTransition alloc] initWithView:self.view
