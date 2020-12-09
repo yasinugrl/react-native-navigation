@@ -57,6 +57,7 @@
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
+    "react-native-blurhash": "^1.0.27",
     "tslib": "1.9.3"
   },
   "devDependencies": {

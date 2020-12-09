@@ -14,6 +14,7 @@ import useDismissGesture from './useDismissGesture';
 import { buildFullScreenSharedElementAnimations, SET_DURATION } from './Constants';
 import PressableScale from '../../components/PressableScale';
 import colors from '../../commons/Colors';
+import { Blurhash } from 'react-native-blurhash';
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
 const ReanimatedFastImage = Reanimated.createAnimatedComponent(FastImage);
@@ -107,12 +108,21 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
         </PressableScale>
       </Reanimated.ScrollView>
       <ReanimatedTouchableOpacity style={imageStyle} onPress={openImage}>
+        <Blurhash
+          nativeID={`image${car.id}Dest`}
+          blurhash="LGFFaXYk^6#M@-5c,1J5@[or[Q6."
+          style={styles.background}
+          decodeAsync={true}
+          decodeHeight={16}
+          decodeWidth={16}
+          decodePunch={0.35}
+        />
         <ReanimatedFastImage
           source={car.image}
           // @ts-ignore nativeID isn't included in react-native-fast-image props.
-          nativeID={`image${car.id}Dest`}
+          nativeID={`image${car.id}Dest-small`}
           resizeMode="cover"
-          style={StyleSheet.absoluteFill}
+          style={styles.smallImage}
         />
       </ReanimatedTouchableOpacity>
       <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>
@@ -152,6 +162,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: HEADER_HEIGHT,
     width: Dimensions.get('window').width,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: -100,
+    overflow: 'hidden',
+    borderRadius: 50,
+  },
+  smallImage: {
+    width: Dimensions.get('window').width * 0.1,
+    aspectRatio: 1,
+    zIndex: 100,
   },
   content: {
     paddingTop: HEADER_HEIGHT,

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Dimensions } from 'react-native';
+import { Blurhash } from 'react-native-blurhash';
 import FastImage, { Source } from 'react-native-fast-image';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 
@@ -19,10 +20,19 @@ const ImageFullScreenViewer: NavigationFunctionComponent<Props> = ({
 
   return (
     <View style={styles.container}>
+      <Blurhash
+        nativeID={sharedElementId}
+        blurhash="LGFFaXYk^6#M@-5c,1J5@[or[Q6."
+        style={styles.background}
+        decodeAsync={true}
+        decodeHeight={16}
+        decodeWidth={16}
+        decodePunch={0.35}
+      />
       <FastImage
         // @ts-ignore nativeID isn't included in FastImage props.
-        nativeID={sharedElementId}
-        style={StyleSheet.absoluteFill}
+        nativeID={`${sharedElementId}-small`}
+        style={styles.smallImage}
         source={source}
         resizeMode="contain"
       />
@@ -37,6 +47,13 @@ const ImageFullScreenViewer: NavigationFunctionComponent<Props> = ({
 export default ImageFullScreenViewer;
 
 const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    zIndex: -100,
+    borderRadius: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: 'black',
@@ -57,5 +74,10 @@ const styles = StyleSheet.create({
   closeText: {
     color: 'black',
     fontWeight: 'bold',
+  },
+  smallImage: {
+    width: Dimensions.get('window').width * 0.1,
+    aspectRatio: 1,
+    zIndex: 100,
   },
 });

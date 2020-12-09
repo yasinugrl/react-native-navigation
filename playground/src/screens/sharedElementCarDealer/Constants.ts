@@ -119,6 +119,12 @@ export function buildFullScreenSharedElementAnimations(car: CarItem): AnimationO
           duration: SET_DURATION,
           interpolation: { type: 'spring', ...SPRING_CONFIG },
         },
+        {
+          fromId: `image${car.id}Dest-small`,
+          toId: `image${car.id}Full-small`,
+          duration: SET_DURATION,
+          interpolation: { type: 'spring', ...SPRING_CONFIG },
+        },
       ],
     },
     dismissModal: {
@@ -131,6 +137,12 @@ export function buildFullScreenSharedElementAnimations(car: CarItem): AnimationO
         {
           fromId: `image${car.id}Full`,
           toId: `image${car.id}Dest`,
+          duration: SET_DURATION,
+          interpolation: { type: 'spring', ...SPRING_CONFIG },
+        },
+        {
+          fromId: `image${car.id}Full-small`,
+          toId: `image${car.id}Dest-small`,
           duration: SET_DURATION,
           interpolation: { type: 'spring', ...SPRING_CONFIG },
         },
