@@ -2,11 +2,15 @@
 #import "AnchorTransition.h"
 #import "AnimatedTextView.h"
 #import "AnimatedViewFactory.h"
+#import "CenterTransition.h"
 #import "ColorTransition.h"
 #import "CornerRadiusTransition.h"
+#import "LayerBoundsTransition.h"
+#import "PathTransition.h"
 #import "RectTransition.h"
 #import "RotationTransition.h"
 #import "TextStorageTransition.h"
+#import "TransformRectTransition.h"
 
 @implementation SharedElementAnimator {
     SharedElementTransitionOptions *_transitionOptions;
@@ -49,13 +53,34 @@
     CGFloat duration = [_transitionOptions.duration getWithDefaultValue:300];
     id<Interpolator> interpolator = _transitionOptions.interpolator;
 
-    if (!CGRectEqualToRect(self.view.location.fromFrame, self.view.location.toFrame)) {
-        [animations addObject:[[RectTransition alloc] initWithView:self.view
-                                                              from:self.view.location.fromFrame
-                                                                to:self.view.location.toFrame
-                                                        startDelay:startDelay
-                                                          duration:duration
-                                                      interpolator:interpolator]];
+    if (!CGRectEqualToRect(self.view.location.fromBounds, self.view.location.toBounds)) {
+        [animations
+            addObject:[[LayerBoundsTransition alloc] initWithView:self.view
+                                                             from:self.view.location.fromBounds
+                                                               to:self.view.location.toBounds
+                                                       startDelay:startDelay
+                                                         duration:duration
+                                                     interpolator:interpolator]];
+    }
+
+    if (!CATransform3DEqualToTransform(self.view.location.fromTransform,
+                                       self.view.location.toTransform)) {
+        [animations
+            addObject:[[TransformRectTransition alloc] initWithView:self.view
+                                                               from:self.view.location.fromTransform
+                                                                 to:self.view.location.toTransform
+                                                         startDelay:startDelay
+                                                           duration:duration
+                                                       interpolator:interpolator]];
+    }
+
+    if (!CGPointEqualToPoint(self.view.location.fromCenter, self.view.location.toCenter)) {
+        [animations addObject:[[CenterTransition alloc] initWithView:self.view
+                                                                from:self.view.location.fromCenter
+                                                                  to:self.view.location.toCenter
+                                                          startDelay:startDelay
+                                                            duration:duration
+                                                        interpolator:interpolator]];
     }
 
     if (![_fromView.backgroundColor isEqual:_toView.backgroundColor]) {
@@ -65,6 +90,18 @@
                                                          startDelay:startDelay
                                                            duration:duration
                                                        interpolator:interpolator]];
+    }
+
+    if (!CGRectEqualToRect(self.view.location.fromPath, self.view.location.toPath)) {
+        [animations
+            addObject:[[PathTransition alloc] initWithView:self.view
+                                                  fromPath:self.view.location.fromPath
+                                                    toPath:self.view.location.toPath
+                                          fromCornerRadius:self.view.location.fromCornerRadius
+                                            toCornerRadius:self.view.location.toCornerRadius
+                                                startDelay:startDelay
+                                                  duration:duration
+                                              interpolator:interpolator]];
     }
 
     if ([self.view isKindOfClass:AnimatedTextView.class]) {

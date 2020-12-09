@@ -20,4 +20,9 @@
                        precent:(CGFloat)p
                   interpolator:(id<Interpolator>)interpolator;
 
++ (CGPoint)fromPoint:(CGPoint)from
+             toPoint:(CGPoint)to
+             precent:(CGFloat)p
+        interpolator:(id<Interpolator>)interpolator;
+
 @end

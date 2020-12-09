@@ -48,6 +48,12 @@
 		390AD478200F499D00A8250D /* RNNSwizzles.m in Sources */ = {isa = PBXBuildFile; fileRef = 390AD476200F499D00A8250D /* RNNSwizzles.m */; };
 		4534E72520CB6724009F8185 /* RNNLargeTitleOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4534E72320CB6724009F8185 /* RNNLargeTitleOptions.h */; };
 		4534E72620CB6724009F8185 /* RNNLargeTitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */; };
+		5004759B256E6CA0003F3102 /* PathTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 50047599256E6C9F003F3102 /* PathTransition.h */; };
+		5004759C256E6CA0003F3102 /* PathTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5004759A256E6C9F003F3102 /* PathTransition.m */; };
+		500475D1256E8361003F3102 /* CenterTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 500475CF256E8361003F3102 /* CenterTransition.h */; };
+		500475D2256E8361003F3102 /* CenterTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 500475D0256E8361003F3102 /* CenterTransition.m */; };
+		500477892577A3D1003F3102 /* TransformRectTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 500477872577A3D1003F3102 /* TransformRectTransition.h */; };
+		5004778A2577A3D1003F3102 /* TransformRectTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 500477882577A3D1003F3102 /* TransformRectTransition.m */; };
 		5008641223856A2D00A55BE9 /* UITabBar+utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5008641023856A2C00A55BE9 /* UITabBar+utils.m */; };
 		501214C9217741A000435148 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 501214C8217741A000435148 /* libOCMock.a */; };
 		501223D72173590F000F5F98 /* RNNStackPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 501223D52173590F000F5F98 /* RNNStackPresenter.h */; };
@@ -555,6 +561,12 @@
 		390AD476200F499D00A8250D /* RNNSwizzles.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSwizzles.m; sourceTree = "<group>"; };
 		4534E72320CB6724009F8185 /* RNNLargeTitleOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNLargeTitleOptions.h; sourceTree = "<group>"; };
 		4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNLargeTitleOptions.m; sourceTree = "<group>"; };
+		50047599256E6C9F003F3102 /* PathTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathTransition.h; sourceTree = "<group>"; };
+		5004759A256E6C9F003F3102 /* PathTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathTransition.m; sourceTree = "<group>"; };
+		500475CF256E8361003F3102 /* CenterTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CenterTransition.h; sourceTree = "<group>"; };
+		500475D0256E8361003F3102 /* CenterTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CenterTransition.m; sourceTree = "<group>"; };
+		500477872577A3D1003F3102 /* TransformRectTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransformRectTransition.h; sourceTree = "<group>"; };
+		500477882577A3D1003F3102 /* TransformRectTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransformRectTransition.m; sourceTree = "<group>"; };
 		5008641023856A2C00A55BE9 /* UITabBar+utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+utils.m"; sourceTree = "<group>"; };
 		5008641123856A2D00A55BE9 /* UITabBar+utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITabBar+utils.h"; sourceTree = "<group>"; };
 		501214C8217741A000435148 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
@@ -1359,6 +1371,12 @@
 				50BCB27C23F2A1EE00D6C8E5 /* FloatTransition.m */,
 				50BCB27F23F2AADF00D6C8E5 /* RectTransition.h */,
 				50BCB28023F2AADF00D6C8E5 /* RectTransition.m */,
+				50047599256E6C9F003F3102 /* PathTransition.h */,
+				5004759A256E6C9F003F3102 /* PathTransition.m */,
+				500475CF256E8361003F3102 /* CenterTransition.h */,
+				500475D0256E8361003F3102 /* CenterTransition.m */,
+				500477872577A3D1003F3102 /* TransformRectTransition.h */,
+				500477882577A3D1003F3102 /* TransformRectTransition.m */,
 				50BCB28723F2B4DE00D6C8E5 /* ColorTransition.h */,
 				50BCB28823F2B4DE00D6C8E5 /* ColorTransition.m */,
 				50BCB28F23F2C7CD00D6C8E5 /* AnchorTransition.h */,
@@ -1776,6 +1794,7 @@
 				26916C981E4B9E7700D13680 /* RNNReactRootViewCreator.h in Headers */,
 				5012241A21736678000F5F98 /* Image.h in Headers */,
 				506A2B1420973DFD00F43A95 /* RNNErrorHandler.h in Headers */,
+				5004759B256E6CA0003F3102 /* PathTransition.h in Headers */,
 				50A4962323FD51B900F4816D /* WindowOptions.h in Headers */,
 				50A5628A23DDAB5A0027C219 /* TransitionDelegate.h in Headers */,
 				503A8A0923BB86200094D1C4 /* TimeIntervalParser.h in Headers */,
@@ -1798,6 +1817,7 @@
 				5012241621736667000F5F98 /* Color.h in Headers */,
 				7365071121E4B16F004E020F /* RCTConvert+UIBarButtonSystemItem.h in Headers */,
 				5064495D20DC62B90026709C /* RNNSideMenuSideOptions.h in Headers */,
+				500477892577A3D1003F3102 /* TransformRectTransition.h in Headers */,
 				50F5DFC11F407A8C001A00BC /* RNNBottomTabsController.h in Headers */,
 				503A8A0523BB850A0094D1C4 /* TimeInterval.h in Headers */,
 				B84F6E4E252C5ECE007D78A1 /* AccelerateDecelerateInterpolator.h in Headers */,
@@ -1874,6 +1894,7 @@
 				5038A3C6216E2D93009280BC /* Number.h in Headers */,
 				503A8A0123BB7B810094D1C4 /* ElementAnimator.h in Headers */,
 				50CED44D239EA78700C42EE2 /* TopBarAppearancePresenter.h in Headers */,
+				500475D1256E8361003F3102 /* CenterTransition.h in Headers */,
 				50D3A37223B8D77C00717F95 /* SharedElementTransitionOptions.h in Headers */,
 				50887C1520ECC5C200D06111 /* RNNButtonOptions.h in Headers */,
 				5049593E216F5D73006D2B81 /* BoolParser.h in Headers */,
@@ -2128,6 +2149,7 @@
 				50CB3B6A1FDE911400AA153B /* RNNSideMenuOptions.m in Sources */,
 				503A8A0623BB850A0094D1C4 /* TimeInterval.m in Sources */,
 				5016E8F020209690009D4F7C /* RNNCustomTitleView.m in Sources */,
+				5004778A2577A3D1003F3102 /* TransformRectTransition.m in Sources */,
 				5061B6C823D48449008B9827 /* VerticalRotationTransition.m in Sources */,
 				5022EDB62405224B00852BA6 /* BottomTabPresenter.m in Sources */,
 				503955982174864E00B0A663 /* NullDouble.m in Sources */,
@@ -2193,6 +2215,7 @@
 				50395594217485B000B0A663 /* Double.m in Sources */,
 				504AFE751FFFF0540076E904 /* RNNTopTabsOptions.m in Sources */,
 				50175CD2207A2AA1004FE91B /* RNNComponentOptions.m in Sources */,
+				500475D2256E8361003F3102 /* CenterTransition.m in Sources */,
 				505C640323E074860078AFC0 /* TopBarTitlePresenter.m in Sources */,
 				50EA541F23B00E03006F881A /* StackControllerDelegate.m in Sources */,
 				50E02BDC21A6EE7900A43942 /* SideMenuOpenGestureModeParser.m in Sources */,
@@ -2250,6 +2273,7 @@
 				50706E6E20CE7CA5003345C3 /* UIImage+tint.m in Sources */,
 				50CED452239F9DFC00C42EE2 /* TopBarPresenter.m in Sources */,
 				50FCD83823FC102200000DD0 /* DeprecationOptions.m in Sources */,
+				5004759C256E6CA0003F3102 /* PathTransition.m in Sources */,
 				50BCB29223F2C7CD00D6C8E5 /* AnchorTransition.m in Sources */,
 				50344D2923A03DB4004B6A7C /* BottomTabsAttachMode.m in Sources */,
 				501224072173592D000F5F98 /* RNNBottomTabsPresenter.m in Sources */,

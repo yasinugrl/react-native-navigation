@@ -6,8 +6,7 @@
     UIView *_originalParent;
     CGRect _originalFrame;
     CGFloat _originalCornerRadius;
-    CGRect _originalLayoutBounds;
-    CATransform3D _originalTransform;
+    CGRect _originalBounds;
     UIView *_toElement;
     UIColor *_fromColor;
     NSInteger _zIndex;
@@ -46,8 +45,7 @@
 - (void)hijackReactElement:(UIView *)element {
     _reactView = element;
     _originalFrame = _reactView.frame;
-    _originalTransform = element.layer.transform;
-    _originalLayoutBounds = element.layer.bounds;
+    _originalBounds = element.bounds;
     self.contentMode = element.contentMode;
     self.frame = self.location.fromFrame;
     _originalParent = _reactView.superview;
@@ -61,9 +59,7 @@
 - (void)reset {
     _reactView.frame = _originalFrame;
     _reactView.layer.cornerRadius = _originalCornerRadius;
-    _reactView.bounds = _originalLayoutBounds;
-    _reactView.layer.bounds = _originalLayoutBounds;
-    _reactView.layer.transform = _originalTransform;
+    _reactView.bounds = _originalBounds;
     [_originalParent insertSubview:_reactView atIndex:self.location.index];
     _toElement.hidden = NO;
     _reactView.backgroundColor = _fromColor;

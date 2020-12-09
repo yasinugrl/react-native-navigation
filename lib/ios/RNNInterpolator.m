@@ -27,6 +27,14 @@
                       RNNInterpolate(from.size.height, to.size.height, p, interpolator));
 }
 
++ (CGPoint)fromPoint:(CGPoint)from
+             toPoint:(CGPoint)to
+             precent:(CGFloat)p
+        interpolator:(id<Interpolator>)interpolator {
+    return CGPointMake(RNNInterpolate(from.x, to.x, p, interpolator),
+                       RNNInterpolate(from.y, to.y, p, interpolator));
+}
+
 + (CATransform3D)fromTransform:(CATransform3D)from
                    toTransform:(CATransform3D)to
                        precent:(CGFloat)p
