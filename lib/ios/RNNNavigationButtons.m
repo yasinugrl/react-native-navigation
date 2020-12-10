@@ -277,16 +277,12 @@
     return value ? value : defaultValue;
 }
 
-- (UIEdgeInsets)leftButtonInsets:(RNNInsetsOptions *)defaultInsets {
-    return UIEdgeInsetsMake(
-        [defaultInsets.top getWithDefaultValue:0], [defaultInsets.left getWithDefaultValue:0],
-        [defaultInsets.bottom getWithDefaultValue:0], [defaultInsets.right getWithDefaultValue:0]);
+- (UIEdgeInsets)leftButtonInsets:(RNNInsetsOptions *)insets {
+    return [insets edgeInsetsWithDefault:UIEdgeInsetsZero];
 }
 
-- (UIEdgeInsets)rightButtonInsets:(RNNInsetsOptions *)defaultInsets {
-    return UIEdgeInsetsMake(
-        [defaultInsets.top getWithDefaultValue:0], [defaultInsets.left getWithDefaultValue:0],
-        [defaultInsets.bottom getWithDefaultValue:0], [defaultInsets.right getWithDefaultValue:0]);
+- (UIEdgeInsets)rightButtonInsets:(RNNInsetsOptions *)insets {
+    return [insets edgeInsetsWithDefault:UIEdgeInsetsZero];
 }
 
 @end
