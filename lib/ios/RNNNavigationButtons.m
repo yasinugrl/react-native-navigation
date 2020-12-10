@@ -280,12 +280,12 @@
 - (UIEdgeInsets)leftButtonInsets:(RNNInsetsOptions *)defaultInsets {
     return UIEdgeInsetsMake(
         [defaultInsets.top getWithDefaultValue:0], [defaultInsets.left getWithDefaultValue:0],
-        [defaultInsets.bottom getWithDefaultValue:0], [defaultInsets.right getWithDefaultValue:15]);
+        [defaultInsets.bottom getWithDefaultValue:0], [defaultInsets.right getWithDefaultValue:0]);
 }
 
 - (UIEdgeInsets)rightButtonInsets:(RNNInsetsOptions *)defaultInsets {
     return UIEdgeInsetsMake(
-        [defaultInsets.top getWithDefaultValue:0], [defaultInsets.left getWithDefaultValue:15],
+        [defaultInsets.top getWithDefaultValue:0], [defaultInsets.left getWithDefaultValue:0],
         [defaultInsets.bottom getWithDefaultValue:0], [defaultInsets.right getWithDefaultValue:0]);
 }
 
