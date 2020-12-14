@@ -50,6 +50,8 @@ public class TopBarOptions {
         options.leftButtonDisabledColor = ColorParser.parse(context, json, "leftButtonDisabledColor");
         options.rightButtonDisabledColor = ColorParser.parse(context, json, "rightButtonDisabledColor");
 
+
+        options.searchBar = SearchBarOptions.parse(context, typefaceLoader, json.optJSONObject("searchBar"));
         options.validate();
         return options;
     }
@@ -57,6 +59,7 @@ public class TopBarOptions {
     public TitleOptions title = new TitleOptions();
     public SubtitleOptions subtitle = new SubtitleOptions();
     public TopBarButtons buttons = new TopBarButtons();
+    public SearchBarOptions searchBar = new SearchBarOptions();
     public Text testId = new NullText();
     public TopBarBackgroundOptions background = new TopBarBackgroundOptions();
     public Bool visible = new NullBool();
@@ -102,6 +105,8 @@ public class TopBarOptions {
         if (other.rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = other.rightButtonDisabledColor;
         if (other.leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = other.leftButtonDisabledColor;
 
+        if (other.searchBar.visible.hasValue()) searchBar = other.searchBar;
+
         validate();
     }
 
@@ -125,6 +130,8 @@ public class TopBarOptions {
         if (!leftButtonColor.hasValue()) leftButtonColor = defaultOptions.leftButtonColor;
         if (!rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = defaultOptions.rightButtonDisabledColor;
         if (!leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = defaultOptions.leftButtonDisabledColor;
+
+        if (defaultOptions.searchBar.visible.hasValue()) searchBar = defaultOptions.searchBar;
 
         validate();
         return this;

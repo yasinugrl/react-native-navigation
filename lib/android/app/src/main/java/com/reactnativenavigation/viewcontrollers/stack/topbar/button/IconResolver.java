@@ -37,6 +37,8 @@ public class IconResolver {
             });
         } else if (Constants.BACK_BUTTON_ID.equals(button.id)) {
             onSuccess.run(imageLoader.getBackButtonIcon(context));
+        } else if (Constants.SEARCH_BUTTON_ID.equals(button.id)) {
+            onSuccess.run(imageLoader.getSearchButtonIcon(context));
         } else {
             Log.w("RNN", "Left button needs to have an icon");
         }

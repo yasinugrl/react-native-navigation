@@ -226,7 +226,8 @@ public class TitleBar extends Toolbar {
         setLeftButton(button);
     }
 
-    public void setLeftButtons(List<ButtonController> leftButtons) {
+    public void
+    setLeftButtons(List<ButtonController> leftButtons) {
         if (leftButtons == null) return;
         if (leftButtons.isEmpty()) {
             clearLeftButton();

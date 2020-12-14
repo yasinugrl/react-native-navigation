@@ -29,6 +29,10 @@ open class ImageLoader {
         return ContextCompat.getDrawable(context, if (isRTL) R.drawable.ic_arrow_back_black_rtl_24dp else R.drawable.ic_arrow_back_black_24dp)
     }
 
+    open fun getSearchButtonIcon(context: Activity): Drawable? {
+        return ContextCompat.getDrawable(context, R.drawable.ic_baseline_search_24)
+    }
+
     open fun loadIcon(context: Context, uri: String?): Drawable? {
         if (uri == null) return null
         try {

@@ -227,6 +227,12 @@ public class StackPresenter {
             topBar.clearBackgroundComponent();
         }
 
+        if (topBarOptions.searchBar.visible.hasValue()) {
+            topBar.setSearchBarWithOptions(topBarOptions.searchBar);
+        } else {
+            topBar.removeSearchBar();
+        }
+
         applyTopBarVisibility(topBarOptions, animationOptions, componentOptions, stack, child);
         if (topBarOptions.hideOnScroll.isTrue()) {
             if (component instanceof IReactView) {
@@ -464,6 +470,7 @@ public class StackPresenter {
                 topBar.setBackgroundComponent(controller.getView());
             }
         }
+        
 
         if (topBarOptions.testId.hasValue()) topBar.setTestId(topBarOptions.testId.get());
 
@@ -487,6 +494,12 @@ public class StackPresenter {
         }
         if (topBarOptions.hideOnScroll.isFalse()) {
             topBar.disableCollapse();
+        }
+
+        if (topBarOptions.searchBar.visible.hasValue()) {
+            topBar.setSearchBarWithOptions(topBarOptions.searchBar);
+        } else {
+            topBar.removeSearchBar();
         }
     }
 

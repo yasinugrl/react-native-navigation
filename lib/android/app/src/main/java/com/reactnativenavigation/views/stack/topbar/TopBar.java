@@ -10,14 +10,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.reactnativenavigation.R;
+import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.FontOptions;
+import com.reactnativenavigation.options.SearchBarOptions;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarCollapseBehavior;
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Alignment;
 import com.reactnativenavigation.options.LayoutDirection;
@@ -27,6 +31,7 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar;
+import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarButtonCreator;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
 import java.util.Collections;
@@ -46,6 +51,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private final TopBarCollapseBehavior collapsingBehavior;
     private TopTabs topTabs;
     private FrameLayout root;
+    private SearchBar searchBar;
+    private ImageView leftIcon;
     private View border;
     private View component;
     private float elevation = -1;
@@ -69,6 +76,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar = createTitleBar(getContext());
         topTabs = createTopTabs();
         border = createBorder();
+        searchBar = createSearchBar();
         LinearLayout content = createContentLayout();
 
         root = new FrameLayout(getContext());
@@ -103,6 +111,14 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         lp.gravity = Gravity.BOTTOM;
         border.setLayoutParams(lp);
         return border;
+    }
+
+    private SearchBar createSearchBar() {
+        SearchBar searchBar = new SearchBar(getContext());
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+        lp.addRule(RelativeLayout.LAYOUT_DIRECTION_RTL);
+        searchBar.setLayoutParams(lp);
+        return searchBar;
     }
 
     protected TitleBar createTitleBar(Context context) {
@@ -302,5 +318,30 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public boolean containsRightButton(ButtonController button) {
         return titleBar.containsRightButton(button);
+    }
+    
+    public void setSearchBarWithOptions(SearchBarOptions searchBarOptions) {
+        searchBar.setPlaceholder(searchBarOptions.placeholder);
+        if (searchBarOptions.focus.isTrue()) {
+            searchBar.setFocus();
+        }
+
+        leftIcon = new ImageView(getContext());
+
+        leftIcon.setImageResource(R.drawable.ic_arrow_back_black_24dp);
+        leftIcon.setVisibility(View.VISIBLE);
+        titleBar.addView(leftIcon);
+        leftIcon.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchBar.hideKeyboard(getContext());
+                leftIcon.setVisibility(View.GONE);
+            }
+        });
+        titleBar.addView(searchBar);
+    }
+
+    public void removeSearchBar() {
+        titleBar.removeView(searchBar);
     }
 }
