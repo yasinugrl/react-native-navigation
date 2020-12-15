@@ -4,7 +4,6 @@
 #import "RNNComponentViewController.h"
 #import "RNNFontAttributesCreator.h"
 #import "RNNUIBarButtonItem.h"
-#import "UIImage+insets.h"
 #import "UIImage+tint.h"
 #import "UIViewController+LayoutProtocol.h"
 #import <React/RCTConvert.h>
@@ -171,11 +170,8 @@
     UIImage *iconImage = [[ImageParser parse:dictionary
                                          key:@"icon"] getWithDefaultValue:defaultIcon];
 
-    if (iconImage) {
-        iconImage = [iconImage imageWithInsets:insets];
-        if (color) {
-            iconImage = [iconImage withTintColor:color];
-        }
+    if (color) {
+        iconImage = [iconImage withTintColor:color];
     }
 
     RNNUIBarButtonItem *barButtonItem;
@@ -190,6 +186,10 @@
                          componentType:RNNComponentTypeTopBarButton
                    reactViewReadyBlock:nil];
         barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
+    } else if (iconImage && !UIEdgeInsetsEqualToEdgeInsets(insets, UIEdgeInsetsZero)) {
+        barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId
+                                                withIcon:iconImage
+                                              withInsets:insets];
     } else if (iconImage) {
         barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];
     } else if (title) {
