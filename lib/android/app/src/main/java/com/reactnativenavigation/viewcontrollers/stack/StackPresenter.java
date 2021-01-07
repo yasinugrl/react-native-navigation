@@ -140,14 +140,14 @@ public class StackPresenter {
 
     public void applyInitialChildLayoutOptions(Options options) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
-        setInitialTopBarVisibility(withDefault.topBar);
+        applyTopBarVisibility(withDefault.topBar);
     }
 
-    public void applyChildOptions(Options options, ViewController child) {
+    public void applyChildOptions(Options options, StackController stack, ViewController child) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefault.layout.orientation);
         applyButtons(withDefault.topBar, child);
-        applyTopBarOptions(withDefault, child);
+        applyTopBarOptions(withDefault, stack, child);
         applyTopTabsOptions(withDefault.topTabs);
         applyTopTabOptions(withDefault.topTabOptions);
     }
@@ -170,7 +170,7 @@ public class StackPresenter {
         if (buttons != null) forEach(buttons.values(), ViewController::destroy);
     }
 
-    private void applyTopBarOptions(Options options, ViewController child) {
+    private void applyTopBarOptions(Options options, StackController stack, ViewController child) {
         final View component = child.getView();
         TopBarOptions topBarOptions = options.topBar;
 
@@ -230,6 +230,7 @@ public class StackPresenter {
             topBar.clearBackgroundComponent();
         }
 
+        applyTopBarVisibilityIfChildIsNotBeingAnimated(topBarOptions, stack, child);
         if (topBarOptions.hideOnScroll.isTrue()) {
             if (component instanceof IReactView) {
                 topBar.enableCollapse(((IReactView) component).getScrollEventListener());
@@ -250,7 +251,12 @@ public class StackPresenter {
         return null;
     }
 
-    private void setInitialTopBarVisibility(TopBarOptions options) {
+    private void applyTopBarVisibilityIfChildIsNotBeingAnimated(TopBarOptions options, StackController stack, ViewController child) {
+        if (!stack.isChildInTransition(child))
+        applyTopBarVisibility(options);
+    }
+
+    private void applyTopBarVisibility(TopBarOptions options) {
         if (options.visible.isFalse()) {
             topBarController.hide();
         }
@@ -258,22 +264,6 @@ public class StackPresenter {
             topBarController.show();
         }
     }
-
-//    private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions, StackController stack, ViewController child) {
-//        if (options.visible.isFalse()) {
-//            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
-//                topBarController.hideAnimate(animationOptions.pop.topBar.exit, 0, getTopBarTranslationAnimationDelta(stack, child));
-//            } else {
-//                topBarController.hide();
-//            }
-//        } else if (options.visible.isTrueOrUndefined()) {
-//            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
-//                topBarController.showAnimate(animationOptions.push.topBar.enter, getTopBarTranslationAnimationDelta(stack, child));
-//            } else {
-//                topBarController.show();
-//            }
-//        }
-//    }
 
     private void applyButtons(TopBarOptions options, ViewController child) {
         if (options.buttons.right != null) {
@@ -340,17 +330,6 @@ public class StackPresenter {
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {
         if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
-    }
-
-    public void onChildWillAppear(StackController parent, ViewController appearing, ViewController disappearing) {
-        Options resolvedOptions = parent.resolveChildOptions(disappearing).withDefaultOptions(defaultOptions);
-        if (disappearing.options.topBar.visible.isTrueOrUndefined() && appearing.options.topBar.visible.isFalse()) {
-            if (disappearing.options.topBar.animate.isTrueOrUndefined() && disappearing.options.animations.pop.enabled.isTrueOrUndefined()) {
-                topBarController.hideAnimate(resolvedOptions.animations.pop.topBar.exit, getTopBarTranslationAnimationDelta(parent, appearing));
-            } else {
-                topBarController.hide();
-            }
-        }
     }
 
     public List<Animator> getAdditionalPushAnimations(StackController stack, ViewController appearing, Options appearingOptions) {

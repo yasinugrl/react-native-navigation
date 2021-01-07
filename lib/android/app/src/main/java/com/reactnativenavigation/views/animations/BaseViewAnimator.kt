@@ -3,35 +3,34 @@ package com.reactnativenavigation.views.animations
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.view.View
 import androidx.annotation.CallSuper
+import androidx.annotation.VisibleForTesting
 import androidx.core.animation.doOnEnd
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.animations.ViewAnimationOptions
 import com.reactnativenavigation.options.params.Bool
-import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.resetViewProperties
 
-open class BaseViewAnimator<T : View>(private val hideDirection: HideDirection, view: T? = null) {
-    companion object {
-        private const val DURATION = 300L
-        private val fastOutSlowInInterpolator = FastOutSlowInInterpolator()
-    }
-
+open class BaseViewAnimator<T : View>(
+        private val hideDirection: HideDirection,
+        view: T? = null,
+        private val defaultAnimatorCreator: ViewAnimatorCreator = DefaultViewAnimatorCreator()
+) {
     enum class HideDirection { Up, Down }
     private enum class AnimationState { Idle, AnimatingEnter, AnimatingExit }
 
-    private lateinit var view: T
+    protected lateinit var view: T
 
-    private var showAnimator: Animator = AnimatorSet()
-        set(value) {
+    @VisibleForTesting
+    var showAnimator: Animator = AnimatorSet()
+        private set(value) {
             field = value
             field.addListener(showAnimatorListener)
             field.doOnEnd { onShowAnimationEnd() }
         }
-    private var hideAnimator: Animator = AnimatorSet()
+    @VisibleForTesting
+    var hideAnimator: Animator = AnimatorSet()
         set(value) {
             field = value
             field.addListener(hideAnimatorListener)
@@ -69,7 +68,7 @@ open class BaseViewAnimator<T : View>(private val hideDirection: HideDirection, 
     private val isFullyVisible: Boolean
         get() = view.visibility == View.VISIBLE && animationState == AnimationState.Idle
 
-    private val isOrWillBeHidden: Boolean
+    val isOrWillBeHidden: Boolean
         get() = isFullyHidden || animationState == AnimationState.AnimatingExit
     private val isFullyHidden: Boolean
         get() = view.visibility == View.GONE && animationState == AnimationState.Idle
@@ -94,13 +93,13 @@ open class BaseViewAnimator<T : View>(private val hideDirection: HideDirection, 
     fun getPushAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
-            hideAnimator = animation.exit.getAnimation(view, getDefaultHideAnimator(additionalDy))
+            hideAnimator = animation.exit.getAnimation(view, defaultAnimatorCreator.getHideAnimator(view, hideDirection, additionalDy))
             return hideAnimator
         }
 
         if (isOrWillBeHidden && visible.isTrueOrUndefined) {
             hideAnimator.cancel()
-            showAnimator = animation.enter.getAnimation(view, getDefaultShowAnimator(additionalDy))
+            showAnimator = animation.enter.getAnimation(view, defaultAnimatorCreator.getShowAnimator(view, hideDirection, additionalDy))
             return showAnimator
         }
 
@@ -110,13 +109,13 @@ open class BaseViewAnimator<T : View>(private val hideDirection: HideDirection, 
     fun getPopAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
-            hideAnimator = animation.exit.getAnimation(view, getDefaultHideAnimator(additionalDy))
+            hideAnimator = animation.exit.getAnimation(view, defaultAnimatorCreator.getHideAnimator(view, hideDirection, additionalDy))
             return hideAnimator
         }
 
         if (isOrWillBeHidden && visible.isTrueOrUndefined) {
             hideAnimator.cancel()
-            showAnimator = animation.enter.getAnimation(view, getDefaultShowAnimator(additionalDy))
+            showAnimator = animation.enter.getAnimation(view, defaultAnimatorCreator.getShowAnimator(view, hideDirection, additionalDy))
             return showAnimator
         }
 
@@ -126,43 +125,37 @@ open class BaseViewAnimator<T : View>(private val hideDirection: HideDirection, 
     fun getSetStackRootAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
-            hideAnimator = animation.exit.getAnimation(view, getDefaultHideAnimator(additionalDy))
+            hideAnimator = animation.exit.getAnimation(view, defaultAnimatorCreator.getHideAnimator(view, hideDirection, additionalDy))
             return hideAnimator
         }
 
         if (isOrWillBeHidden && visible.isTrueOrUndefined) {
             hideAnimator.cancel()
-            showAnimator = animation.enter.getAnimation(view, getDefaultShowAnimator(additionalDy))
+            showAnimator = animation.enter.getAnimation(view, defaultAnimatorCreator.getShowAnimator(view, hideDirection, additionalDy))
             return showAnimator
         }
 
         return AnimatorSet()
     }
 
-    fun show(options: AnimationOptions, translationStartDy: Float) {
+    fun show(options: AnimationOptions = AnimationOptions(), translationStartDy: Float = 0f) {
         if (isOrWillBeVisible) return
         showAnimator = if (options.hasValue()) {
             options.setValueDy(
                     View.TRANSLATION_Y,
-                    -translationStartDy.toFloat(),
+                    -translationStartDy,
                     0f
             )
             options.getAnimation(view)
         } else {
-            getDefaultShowAnimator(translationStartDy)
+            defaultAnimatorCreator.getShowAnimator(view, hideDirection, translationStartDy)
         }
         hideAnimator.cancel()
         showAnimator.start()
     }
 
-    fun show(startTranslation: Float) {
-        showAnimator = getDefaultShowAnimator(startTranslation)
-        hideAnimator.cancel()
-        showAnimator.start()
-    }
-
     open fun hide(
-            options: AnimationOptions,
+            options: AnimationOptions = AnimationOptions(),
             additionalDy: Float = 0f,
             onAnimationEnd: Runnable? = null
     ) {
@@ -171,43 +164,12 @@ open class BaseViewAnimator<T : View>(private val hideDirection: HideDirection, 
             options.setValueDy(View.TRANSLATION_Y, 0f, -additionalDy)
             options.getAnimation(view)
         } else {
-            getDefaultHideAnimator(additionalDy)
+            defaultAnimatorCreator.getHideAnimator(view, hideDirection, additionalDy)
         }
-        hideInternal(onAnimationEnd = onAnimationEnd)
-    }
-
-    private fun hideInternal(onAnimationEnd: Runnable?) {
         showAnimator.cancel()
         hideAnimator.apply {
             doOnEnd { onAnimationEnd?.run() }
             start()
-        }
-    }
-
-    private fun getDefaultShowAnimator(translationStart: Float): Animator {
-        val direction = if (hideDirection == HideDirection.Up) 1 else -1
-        return ObjectAnimator.ofFloat(
-                view,
-                View.TRANSLATION_Y,
-                direction * (-ViewUtils.getHeight(view) - translationStart),
-                0f
-        ).apply {
-            interpolator = fastOutSlowInInterpolator
-            duration = DURATION
-        }
-    }
-
-    private fun getDefaultHideAnimator(additionalDy: Float): Animator {
-        val direction = if (hideDirection == HideDirection.Up) -1 else 1
-        android.R.integer.config_mediumAnimTime
-        return ObjectAnimator.ofFloat(
-                view,
-                View.TRANSLATION_Y,
-                view.translationY,
-                direction * (view.measuredHeight + additionalDy)
-        ).apply {
-            interpolator = fastOutSlowInInterpolator
-            duration = DURATION
         }
     }
 }

@@ -10,6 +10,7 @@ import com.reactnativenavigation.utils.Assertions;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabPresenter;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsAnimator;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.attacher.BottomTabsAttacher;
@@ -211,7 +212,7 @@ public class LayoutFactory {
 
     private ViewController createBottomTabs(ReactContext context, LayoutNode node) {
         List<ViewController<?>> tabs = map(node.children, this::create);
-        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, defaultOptions);
+        BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, defaultOptions, new BottomTabsAnimator());
         return new BottomTabsController(activity,
                 tabs,
                 childRegistry,

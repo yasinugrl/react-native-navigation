@@ -44,7 +44,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
     private final BottomTabPresenter tabPresenter;
 
     public BottomTabsAnimator getAnimator() {
-        return presenter.getTabsAnimator();
+        return presenter.getAnimator();
     }
 
     public BottomTabsController(Activity activity, List<ViewController<?>> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, Presenter presenter, BottomTabsAttacher tabsAttacher, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
@@ -72,7 +72,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
         bottomTabs = createBottomTabs();
         tabsAttacher.init(root, resolveCurrentOptions());
-        presenter.bindView(bottomTabs, this, new BottomTabsAnimator(bottomTabs));
+        presenter.bindView(bottomTabs, this);
         tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);

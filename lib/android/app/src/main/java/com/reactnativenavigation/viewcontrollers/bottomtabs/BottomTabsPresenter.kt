@@ -11,12 +11,14 @@ import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
 
-class BottomTabsPresenter(private val tabs: List<ViewController<*>>, private var defaultOptions: Options) {
+class BottomTabsPresenter(
+        private val tabs: List<ViewController<*>>,
+        private var defaultOptions: Options,
+        val animator: BottomTabsAnimator
+) {
     private val bottomTabFinder: BottomTabFinder = BottomTabFinder(tabs)
     private lateinit var bottomTabs: BottomTabs
     private lateinit var tabSelector: TabSelector
-    lateinit var tabsAnimator: BottomTabsAnimator
-        private set
     private val defaultTitleState: TitleState
         get() {
             bottomTabs.forEachIndexed { index, _ ->
@@ -29,10 +31,10 @@ class BottomTabsPresenter(private val tabs: List<ViewController<*>>, private var
         this.defaultOptions = defaultOptions
     }
 
-    fun bindView(bottomTabs: BottomTabs, tabSelector: TabSelector, animator: BottomTabsAnimator) {
+    fun bindView(bottomTabs: BottomTabs, tabSelector: TabSelector) {
         this.bottomTabs = bottomTabs
         this.tabSelector = tabSelector
-        tabsAnimator = animator
+        animator.bindView(bottomTabs)
     }
 
     fun mergeOptions(options: Options, view: ViewController<*>) {
@@ -59,7 +61,6 @@ class BottomTabsPresenter(private val tabs: List<ViewController<*>>, private var
 
     private fun mergeBottomTabsOptions(options: Options, view: ViewController<*>) {
         val bottomTabsOptions = options.bottomTabsOptions
-//        val animations = options.animations
         if (options.layout.direction.hasValue()) bottomTabs.setLayoutDirection(options.layout.direction)
         if (bottomTabsOptions.preferLargeIcons.hasValue()) bottomTabs.setPreferLargeIcons(bottomTabsOptions.preferLargeIcons.get())
         if (bottomTabsOptions.titleDisplayMode.hasValue()) {
@@ -85,14 +86,14 @@ class BottomTabsPresenter(private val tabs: List<ViewController<*>>, private var
         if (view.isViewShown) {
             if (bottomTabsOptions.visible.isTrue) {
                 if (bottomTabsOptions.animate.isTrueOrUndefined) {
-//                    animator.show(new AnimationOptions(), 0);
+                    animator.show()
                 } else {
                     bottomTabs.restoreBottomNavigation(false)
                 }
             }
             if (bottomTabsOptions.visible.isFalse) {
                 if (bottomTabsOptions.animate.isTrueOrUndefined) {
-//                    animator.hide(new AnimationOptions(), 0, 0, null);
+                    animator.hide()
                 } else {
                     bottomTabs.hideBottomNavigation(false)
                 }
@@ -160,21 +161,21 @@ class BottomTabsPresenter(private val tabs: List<ViewController<*>>, private var
     }
 
     fun getPushAnimation(appearingOptions: Options): Animator {
-        return tabsAnimator.getPushAnimation(
+        return animator.getPushAnimation(
                 appearingOptions.animations.push.bottomTabs,
                 appearingOptions.bottomTabsOptions.visible
         )
     }
 
     fun getPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator {
-        return tabsAnimator.getPopAnimation(
+        return animator.getPopAnimation(
                 disappearingOptions.animations.pop.bottomTabs,
                 appearingOptions.bottomTabsOptions.visible
         )
     }
 
     fun getSetStackRootAnimation(appearingOptions: Options): Animator {
-        return tabsAnimator.getSetStackRootAnimation(
+        return animator.getSetStackRootAnimation(
                 appearingOptions.animations.setStackRoot.bottomTabs,
                 appearingOptions.bottomTabsOptions.visible
         )

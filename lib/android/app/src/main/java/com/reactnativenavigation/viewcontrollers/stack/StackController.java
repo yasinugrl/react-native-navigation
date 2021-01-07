@@ -92,7 +92,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void onAttachToParent() {
         if (!isEmpty() && !getCurrentChild().isDestroyed() && !isViewShown()) {
-            presenter.applyChildOptions(resolveCurrentOptions(), getCurrentChild());
+            presenter.applyChildOptions(resolveCurrentOptions(), this, getCurrentChild());
         }
     }
 
@@ -105,7 +105,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
-        presenter.applyChildOptions(resolveCurrentOptions(), child);
+        presenter.applyChildOptions(resolveCurrentOptions(), this, child);
         fabPresenter.applyOptions(this.options.fabOptions, child, getView());
         performOnParentController(parent ->
                 parent.applyChildOptions(
@@ -280,7 +280,6 @@ public class StackController extends ParentController<StackLayout> {
         if (appearingView.getParent() == null) {
             getView().addView(appearingView, 0);
         }
-        presenter.onChildWillAppear(this, appearing, disappearing);
         if (disappearingOptions.animations.pop.enabled.isTrueOrUndefined()) {
             Options appearingOptions = resolveChildOptions(appearing).withDefaultOptions(presenter.getDefaultOptions());
             animator.pop(
@@ -354,6 +353,10 @@ public class StackController extends ParentController<StackLayout> {
 
     public boolean isEmpty() {
         return stack.isEmpty();
+    }
+
+    public boolean isChildInTransition(ViewController child) {
+        return animator.isChildInTransition(child);
     }
 
     @Override

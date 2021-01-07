@@ -6,11 +6,12 @@ import com.reactnativenavigation.options.animations.ViewAnimationOptions
 import org.json.JSONObject
 
 
-fun createEnterExitAnimation(): ViewAnimationOptions {
+fun createEnterExitAnimation(duration: Int = 300): ViewAnimationOptions {
     val alpha = JSONObject().apply {
         put("alpha", JSONObject().apply {
             put("from", 0)
             put("to", 0)
+            put("duration", duration)
         })
     }
     val animation = JSONObject().apply {

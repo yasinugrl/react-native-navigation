@@ -2,13 +2,14 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs
 
 import com.reactnativenavigation.views.animations.BaseViewAnimator
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
+import com.reactnativenavigation.views.stack.topbar.TopBar
 
-class BottomTabsAnimator(private val bottomTabs: BottomTabs) : BaseViewAnimator<BottomTabs>(HideDirection.Down, bottomTabs) {
+class BottomTabsAnimator(view: BottomTabs? = null) : BaseViewAnimator<BottomTabs>(HideDirection.Down, view) {
     override fun onShowAnimationEnd() {
-        bottomTabs.restoreBottomNavigation(false)
+        view.restoreBottomNavigation(false)
     }
 
     override fun onHideAnimationEnd() {
-        bottomTabs.hideBottomNavigation(false)
+        view.hideBottomNavigation(false)
     }
 }

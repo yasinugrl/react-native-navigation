@@ -11,6 +11,7 @@ import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.utils.CollectionUtils
 import com.reactnativenavigation.utils.ViewUtils
+import com.reactnativenavigation.utils.resetViewProperties
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController
 import com.reactnativenavigation.views.stack.StackLayout
@@ -70,6 +71,7 @@ open class TopBarController {
 
     fun show() {
         if (ViewUtils.isVisible(view) || animator.isAnimatingShow()) return
+        view.resetViewProperties()
         view.visibility = View.VISIBLE
     }
 

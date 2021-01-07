@@ -37,6 +37,12 @@ open class StackAnimator @JvmOverloads constructor(
 
     fun cancelPushAnimations() = runningPushAnimations.values.forEach(Animator::cancel)
 
+    open fun isChildInTransition(child: ViewController<*>?): Boolean {
+        return runningPushAnimations.containsKey(child) ||
+                runningPopAnimations.containsKey(child) ||
+                runningSetRootAnimations.containsKey(child)
+    }
+
     fun setRoot(
             appearing: ViewController<*>,
             disappearing: ViewController<*>,
