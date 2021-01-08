@@ -171,7 +171,7 @@ class StackControllerTest : BaseTest() {
         child2.options.topBar.buttons.left = ArrayList(setOf(TitleBarHelper.iconButton("someButton", "icon.png")))
         uut.push(child2, CommandListenerAdapter())
         ShadowLooper.idleMainLooper()
-        assertThat(topBarController.view.titleBar.navigationIcon).isNotNull()
+        assertThat(topBarController.leftButtonsCount).isOne();
         verify(topBarController.view, never()).setBackButton(any())
     }
 
@@ -284,12 +284,12 @@ class StackControllerTest : BaseTest() {
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
         ShadowLooper.idleMainLooper()
-        assertThat(uut.topBar.titleBar.navigationIcon).isNotNull()
+        assertThat(uut.topBar.navigationIcon).isNotNull()
         uut.setRoot(listOf(child3), object : CommandListenerAdapter() {
             override fun onSuccess(childId: String) {
                 assertContainsOnlyId(child3.id)
                 ShadowLooper.idleMainLooper()
-                assertThat(uut.topBar.titleBar.navigationIcon).isNull()
+                assertThat(uut.topBar.navigationIcon).isNull()
             }
         })
     }
@@ -304,7 +304,7 @@ class StackControllerTest : BaseTest() {
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
         ShadowLooper.idleMainLooper()
-        assertThat(uut.topBar.titleBar.navigationIcon).isNotNull()
+        assertThat(uut.topBar.navigationIcon).isNotNull()
         uut.setRoot(listOf(child3, child4), object : CommandListenerAdapter() {
             override fun onSuccess(childId: String) {
                 assertContainsOnlyId(child3.id, child4.id)

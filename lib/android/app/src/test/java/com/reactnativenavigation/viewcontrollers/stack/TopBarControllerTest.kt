@@ -43,13 +43,13 @@ class TopBarControllerTest : BaseTest() {
     @Test
     fun setButton_setsTextButton() {
         uut.applyRightButtons(rightButtons(textButton1)!!)
-        uut.setLeftButtons(leftButton(leftButton))
+        uut.applyLeftButtons(leftButton(leftButton))
         assertThat(uut.getRightButton(0).title.toString()).isEqualTo(textButton1.text.get())
     }
 
     @Test
     fun setButton_setsCustomButton() {
-        uut.setLeftButtons(leftButton(leftButton))
+        uut.applyLeftButtons(leftButton(leftButton))
         uut.applyRightButtons(rightButtons(componentButton)!!)
         val btnView = uut.getRightButton(0).actionView as ReactView
         assertThat(btnView.componentName).isEqualTo(componentButton.component.name.get())
@@ -57,9 +57,9 @@ class TopBarControllerTest : BaseTest() {
 
     @Test
     fun applyRightButtons_emptyButtonsListClearsRightButtons() {
-        uut.setLeftButtons(ArrayList())
+        uut.applyLeftButtons(leftButton(leftButton))
         uut.applyRightButtons(rightButtons(componentButton, textButton1)!!)
-        uut.setLeftButtons(ArrayList())
+        uut.applyLeftButtons(leftButton(leftButton))
         uut.applyRightButtons(ArrayList())
         assertThat(uut.rightButtonsCount).isEqualTo(0)
     }
@@ -74,7 +74,7 @@ class TopBarControllerTest : BaseTest() {
 
     @Test
     fun applyRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() {
-        uut.setLeftButtons(ArrayList())
+        uut.applyLeftButtons(leftButton(leftButton))
         uut.applyRightButtons(rightButtons(textButton1, componentButton)!!)
         assertThat(uut.getRightButton(1).title.toString()).isEqualTo(textButton1.text.get())
     }
@@ -99,12 +99,12 @@ class TopBarControllerTest : BaseTest() {
 
     @Test
     fun setLeftButtons_emptyButtonsListClearsLeftButton() {
-        uut.setLeftButtons(leftButton(leftButton))
+        uut.applyLeftButtons(leftButton(leftButton))
         uut.applyRightButtons(rightButtons(componentButton)!!)
-        assertThat(uut.leftButton).isNotNull()
-        uut.setLeftButtons(ArrayList())
+        assertThat(uut.leftButtonsCount).isNotZero();
+        uut.applyLeftButtons(emptyList())
         uut.applyRightButtons(rightButtons(textButton1)!!)
-        assertThat(uut.leftButton).isNull()
+        assertThat(uut.leftButtonsCount).isZero();
     }
 
     @Test
@@ -135,7 +135,7 @@ class TopBarControllerTest : BaseTest() {
         return button
     }
 
-    private fun leftButton(leftButton: ButtonOptions?): List<ButtonController?> {
+    private fun leftButton(leftButton: ButtonOptions): List<ButtonController> {
         return listOf(TitleBarHelper.createButtonController(activity, leftButton))
     }
 

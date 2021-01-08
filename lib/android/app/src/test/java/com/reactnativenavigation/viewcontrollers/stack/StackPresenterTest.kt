@@ -6,12 +6,12 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.TestUtils
 import com.reactnativenavigation.mocks.*
-import com.reactnativenavigation.mocks.ImageLoaderMock.mock
 import com.reactnativenavigation.options.*
 import com.reactnativenavigation.options.params.*
 import com.reactnativenavigation.options.parsers.TypefaceLoader
@@ -23,6 +23,7 @@ import com.reactnativenavigation.utils.UiUtils
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
+import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
@@ -32,12 +33,12 @@ import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBarReactView
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.json.JSONObject
 import org.junit.Test
-import org.robolectric.annotation.LooperMode
+import org.mockito.ArgumentCaptor
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
 import kotlin.collections.ArrayList
 
-@LooperMode(LooperMode.Mode.PAUSED)
+
 class StackPresenterTest : BaseTest() {
     private lateinit var parent: StackController
     private lateinit var uut: StackPresenter
@@ -55,6 +56,8 @@ class StackPresenterTest : BaseTest() {
     private lateinit var topBarController: TopBarController
     private lateinit var childRegistry: ChildControllersRegistry
     private lateinit var typefaceLoader: TypefaceLoader
+    private lateinit var iconResolver: IconResolver
+    private lateinit var buttonCreator: TitleBarButtonCreatorMock
 
     override fun beforeEach() {
         activity = spy(newActivity())
@@ -65,7 +68,18 @@ class StackPresenterTest : BaseTest() {
         }
         renderChecker = spy(RenderChecker())
         typefaceLoader = createTypeFaceLoader()
-        uut = spy(StackPresenter(activity, titleViewCreator, TopBarBackgroundViewCreatorMock(), TitleBarButtonCreatorMock(), IconResolver(activity, mock()), typefaceLoader, renderChecker, Options()))
+        iconResolver = IconResolver(activity, mock())
+        buttonCreator = TitleBarButtonCreatorMock()
+        uut = spy(StackPresenter(
+                activity,
+                titleViewCreator,
+                TopBarBackgroundViewCreatorMock(),
+                buttonCreator,
+                iconResolver,
+                typefaceLoader,
+                renderChecker,
+                Options()
+        ))
         createTopBarController()
         parent = TestUtils.newStackController(activity)
                 .setTopBarController(topBarController)
@@ -83,13 +97,15 @@ class StackPresenterTest : BaseTest() {
         o1.topBar.title.component = component(Alignment.Default)
         o1.topBar.background.component = component(Alignment.Default)
         o1.topBar.buttons.right = ArrayList(listOf(componentBtn1))
+        o1.topBar.buttons.left = ArrayList(listOf(componentBtn2))
+
         uut.applyChildOptions(o1, parent, child)
         uut.isRendered(child.view)
 
         val controllers = argumentCaptor<Collection<ViewController<*>>>()
         verify(renderChecker).areRendered(controllers.capture())
         val items = controllers.firstValue
-        assertThat(items.size).isEqualTo(3)
+        assertThat(items.size).isEqualTo(4)
         assertThat(items.containsAll(listOf(
                 uut.getComponentButtons(child.view)[0],
                 uut.titleComponents[child.view] as ViewController<*>,
@@ -154,16 +170,19 @@ class StackPresenterTest : BaseTest() {
     fun mergeButtons() {
         uut.mergeChildOptions(EMPTY_OPTIONS, EMPTY_OPTIONS, parent, child)
         verify(topBarController, never()).applyRightButtons(any())
-        verify(topBarController, never()).setLeftButtons(any())
+        verify(topBarController, never()).applyLeftButtons(any())
+
         val options = Options()
         val button = ButtonOptions()
         button.text = Text("btn")
         options.topBar.buttons.right = ArrayList(setOf(button))
+        options.topBar.buttons.left = ArrayList(setOf(button))
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
+
         verify(topBarController).mergeRightButtons(any(), any())
         options.topBar.buttons.left = ArrayList()
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
-        verify(topBarController).setLeftButtons(any())
+        verify(topBarController).mergeLeftButtons(any(), any());
     }
 
     @Test
@@ -243,18 +262,19 @@ class StackPresenterTest : BaseTest() {
         disablePushAnimation(child, pushedChild)
 
         parent.push(child, CommandListenerAdapter())
-        assertThat(topBar.titleBar.navigationIcon).isNull()
+        assertThat(topBar.navigationIcon).isNull()
 
         parent.push(pushedChild, CommandListenerAdapter())
         ShadowLooper.idleMainLooper()
 
         verify(pushedChild).onViewWillAppear()
-        assertThat(topBar.titleBar.navigationIcon).isInstanceOf(BackDrawable::class.java)
+        assertThat(topBar.navigationIcon).isInstanceOf(BackDrawable::class.java)
+
         val backButtonHidden = Options()
         backButtonHidden.topBar.buttons.back.setHidden()
         uut.mergeChildOptions(backButtonHidden, backButtonHidden, parent, child)
         ShadowLooper.idleMainLooper()
-        assertThat(topBar.titleBar.navigationIcon).isNull()
+        assertThat(topBar.navigationIcon).isNull()
     }
 
     @Test
@@ -269,7 +289,7 @@ class StackPresenterTest : BaseTest() {
 
         assertThat(toMerge.topBar.buttons.back.hasValue()).isTrue()
         uut.mergeChildOptions(toMerge, Options.EMPTY, parent, child)
-        verify(topBarController).setLeftButtons(any())
+        verify(topBarController).mergeLeftButtons(any(), any())
         verify(topBar, never()).clearLeftButtons()
     }
 
@@ -501,7 +521,7 @@ class StackPresenterTest : BaseTest() {
         assertThat(rightCaptor.firstValue[0]).isNotEqualTo(rightButton1)
         assertThat(rightCaptor.firstValue[1]).isNotEqualTo(rightButton2)
         val leftCaptor = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).setLeftButtons(leftCaptor.capture())
+        verify(topBarController).applyLeftButtons(leftCaptor.capture())
         assertThat(leftCaptor.firstValue[0].button.color).isEqualTo(options.topBar.leftButtonColor)
         assertThat(leftCaptor.firstValue[0]).isNotEqualTo(leftButton)
     }
@@ -516,6 +536,61 @@ class StackPresenterTest : BaseTest() {
         uut.applyChildOptions(o, parent, Mocks.viewController())
         assertThat(uut.backgroundComponents.size).isOne()
     }
+
+    @Test
+    fun mergeChildOptions_applyTopBarButtonsColor() {
+        val mergeOptions = Options()
+        val initialOptions = Options()
+        val rightButton = ButtonOptions()
+        val leftButton = ButtonOptions()
+        initialOptions.topBar.buttons.right = ArrayList(listOf(rightButton))
+        initialOptions.topBar.buttons.left = ArrayList(listOf(leftButton))
+
+        //add buttons
+        uut.applyChildOptions(initialOptions, parent, child)
+
+        //Merge color change for right and left buttons
+        mergeOptions.topBar.rightButtonColor = Colour(100)
+        mergeOptions.topBar.leftButtonColor = Colour(10)
+        val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock()))
+        val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock()))
+        uut.setComponentsButtonController(child.view, rightController, leftController)
+        uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
+        val rightColorCaptor = ArgumentCaptor.forClass(Colour::class.java)
+        verify(rightController, times(1)).applyColor(any(), rightColorCaptor.capture())
+        assertThat(rightColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.rightButtonColor)
+        val leftColorCaptor = ArgumentCaptor.forClass(Colour::class.java)
+        verify(leftController, times(1)).applyColor(any(), leftColorCaptor.capture())
+        assertThat(leftColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.leftButtonColor)
+    }
+
+    @Test
+    fun mergeChildOptions_applyTopBarButtonsDisabledColor() {
+        val mergeOptions = Options()
+        val initialOptions = Options()
+        val rightButton = ButtonOptions()
+        val leftButton = ButtonOptions()
+        initialOptions.topBar.buttons.right = ArrayList(listOf(rightButton))
+        initialOptions.topBar.buttons.left = ArrayList(listOf(leftButton))
+
+        //add buttons
+        uut.applyChildOptions(initialOptions, parent, child)
+
+        //Merge color change for right and left buttons
+        mergeOptions.topBar.rightButtonDisabledColor = Colour(100)
+        mergeOptions.topBar.leftButtonDisabledColor = Colour(10)
+        val rightController = spy(ButtonController(activity, ButtonPresenter(activity, rightButton, iconResolver), rightButton, buttonCreator, mock {  }))
+        val leftController = spy(ButtonController(activity, ButtonPresenter(activity, leftButton, iconResolver), leftButton, buttonCreator, mock {  }))
+        uut.setComponentsButtonController(child.view, rightController, leftController)
+        uut.mergeChildOptions(mergeOptions, initialOptions, parent, child)
+        val rightColorCaptor = ArgumentCaptor.forClass(Colour::class.java)
+        verify(rightController, times(1)).applyDisabledColor(any(), rightColorCaptor.capture())
+        assertThat(rightColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.rightButtonDisabledColor)
+        val leftColorCaptor = ArgumentCaptor.forClass(Colour::class.java)
+        verify(leftController, times(1)).applyDisabledColor(any(), leftColorCaptor.capture())
+        assertThat(leftColorCaptor.allValues[0]).isEqualTo(mergeOptions.topBar.leftButtonDisabledColor)
+    }
+
 
     @Test
     fun mergeChildOptions_buttonColorIsResolvedFromAppliedOptions() {
@@ -539,7 +614,7 @@ class StackPresenterTest : BaseTest() {
         assertThat(rightCaptor.firstValue[0]).isNotEqualTo(rightButton1)
         assertThat(rightCaptor.firstValue[1]).isNotEqualTo(rightButton2)
         val leftCaptor = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).setLeftButtons(leftCaptor.capture())
+        verify(topBarController).applyLeftButtons(leftCaptor.capture());
         assertThat(leftCaptor.firstValue[0].button.color.get()).isEqualTo(appliedOptions.topBar.leftButtonColor.get())
         assertThat(leftCaptor.firstValue[0]).isNotEqualTo(leftButton)
     }
@@ -566,7 +641,7 @@ class StackPresenterTest : BaseTest() {
         assertThat(rightCaptor.firstValue[0]).isNotEqualTo(rightButton1)
         assertThat(rightCaptor.firstValue[1]).isNotEqualTo(rightButton2)
         val leftCaptor = argumentCaptor<List<ButtonController>>()
-        verify(topBarController).setLeftButtons(leftCaptor.capture())
+        verify(topBarController).applyLeftButtons(leftCaptor.capture());
         assertThat(leftCaptor.firstValue[0].button.color.get()).isEqualTo(resolvedOptions.topBar.leftButtonColor.get())
         assertThat(leftCaptor.firstValue[0]).isNotEqualTo(leftButton)
     }
@@ -580,7 +655,7 @@ class StackPresenterTest : BaseTest() {
         val rightCaptor = argumentCaptor<List<ButtonController>>()
         val leftCaptor = argumentCaptor<List<ButtonController>>()
         verify(topBarController).applyRightButtons(rightCaptor.capture())
-        verify(topBarController).setLeftButtons(leftCaptor.capture())
+        verify(topBarController).applyLeftButtons(leftCaptor.capture());
         assertThat(rightCaptor.firstValue.size).isOne()
         assertThat(leftCaptor.firstValue.size).isOne()
     }
@@ -667,6 +742,23 @@ class StackPresenterTest : BaseTest() {
     fun applyTopInsets_delegatesToChild() {
         uut.applyTopInsets(parent, child)
         verify(child).applyTopInset()
+    }
+
+    @Test
+    fun applyChildOptions_shouldNotChangeTopMargin() {
+        val options = Options()
+        (topBar.layoutParams as ViewGroup.MarginLayoutParams).topMargin = 20
+        uut.applyChildOptions(options, parent, child)
+        assertThat((topBar.layoutParams as ViewGroup.MarginLayoutParams).topMargin).isEqualTo(20)
+    }
+
+    @Test
+    fun applyChildOptions_shouldChangeTopMargin() {
+        val options = Options()
+        (topBar.layoutParams as ViewGroup.MarginLayoutParams).topMargin = 20
+        options.topBar.topMargin = Number(10)
+        uut.applyChildOptions(options, parent, child)
+        assertThat((topBar.layoutParams as ViewGroup.MarginLayoutParams).topMargin).isEqualTo(10)
     }
 
     private fun assertTopBarOptions(options: Options, t: Int) {

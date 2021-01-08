@@ -16,12 +16,20 @@
     return self;
 }
 
+- (void)mergeOptions:(ViewAnimationOptions *)options {
+    [super mergeOptions:options];
+    if (options.sharedElementTransitions)
+        self.sharedElementTransitions = options.sharedElementTransitions;
+    if (options.elementTransitions)
+        self.elementTransitions = options.elementTransitions;
+}
+
 - (BOOL)hasAnimation {
     return super.hasAnimation || self.sharedElementTransitions || self.elementTransitions;
 }
 
 - (BOOL)shouldWaitForRender {
-    return [self.waitForRender getWithDefaultValue:NO] || self.hasAnimation;
+    return [self.waitForRender withDefault:NO] || self.hasAnimation;
 }
 
 - (NSTimeInterval)maxDuration {

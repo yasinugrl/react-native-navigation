@@ -15,6 +15,8 @@ import { Options } from '../interfaces/Options';
 import { LayoutProcessor } from '../processors/LayoutProcessor';
 import { LayoutProcessorsStore } from '../processors/LayoutProcessorsStore';
 import { CommandName } from '../interfaces/CommandName';
+import { OptionsCrawler } from './OptionsCrawler';
+import React from 'react';
 
 describe('Commands', () => {
   let uut: Commands;
@@ -47,7 +49,8 @@ describe('Commands', () => {
       commandsObserver,
       uniqueIdProvider,
       optionsProcessor,
-      layoutProcessor
+      layoutProcessor,
+      new OptionsCrawler(instance(mockedStore))
     );
   });
 
@@ -135,7 +138,30 @@ describe('Commands', () => {
         root: { component: { name: 'com.example.MyScreen' } },
       });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
+        { component: { name: 'com.example.MyScreen', options: {} } },
+        CommandName.SetRoot
+      );
+    });
+
+    it('pass component static options to layoutProcessor', () => {
+      when(mockedStore.getComponentClassForName('com.example.MyScreen')).thenReturn(
+        () =>
+          class extends React.Component {
+            static options(): Options {
+              return {
+                topBar: {
+                  visible: false,
+                },
+              };
+            }
+          }
+      );
+
+      uut.setRoot({
+        root: { component: { name: 'com.example.MyScreen' } },
+      });
+      expect(layoutProcessor.process).toBeCalledWith(
+        { component: { name: 'com.example.MyScreen', options: { topBar: { visible: false } } } },
         CommandName.SetRoot
       );
     });
@@ -208,7 +234,7 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.showModal({ component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
+        { component: { name: 'com.example.MyScreen', options: {} } },
         CommandName.ShowModal
       );
     });
@@ -293,7 +319,7 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.push('theComponentId', { component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
+        { component: { name: 'com.example.MyScreen', options: {} } },
         CommandName.Push
       );
     });
@@ -390,7 +416,7 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.setStackRoot('theComponentId', [{ component: { name: 'com.example.MyScreen' } }]);
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
+        { component: { name: 'com.example.MyScreen', options: {} } },
         CommandName.SetStackRoot
       );
     });
@@ -436,7 +462,7 @@ describe('Commands', () => {
     it('process layout with layoutProcessor', () => {
       uut.showOverlay({ component: { name: 'com.example.MyScreen' } });
       expect(layoutProcessor.process).toBeCalledWith(
-        { component: { name: 'com.example.MyScreen' } },
+        { component: { name: 'com.example.MyScreen', options: {} } },
         CommandName.ShowOverlay
       );
     });
@@ -490,7 +516,8 @@ describe('Commands', () => {
         commandsObserver,
         instance(anotherMockedUniqueIdProvider),
         instance(mockedOptionsProcessor),
-        new LayoutProcessor(new LayoutProcessorsStore())
+        new LayoutProcessor(new LayoutProcessorsStore()),
+        new OptionsCrawler(instance(mockedStore))
       );
     });
 
@@ -517,6 +544,7 @@ describe('Commands', () => {
         setStackRoot: ['id', [{}]],
         showOverlay: [{}],
         dismissOverlay: ['id'],
+        dismissAllOverlays: [{}],
         getLaunchArgs: ['id'],
       };
       const paramsForMethodName: Record<string, object> = {
@@ -541,6 +569,7 @@ describe('Commands', () => {
         },
         showOverlay: { commandId: 'showOverlay+UNIQUE_ID', layout: null },
         dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
+        dismissAllOverlays: { commandId: 'dismissAllOverlays+UNIQUE_ID' },
         getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' },
       };
       forEach(getAllMethodsOfUut(), (m) => {
