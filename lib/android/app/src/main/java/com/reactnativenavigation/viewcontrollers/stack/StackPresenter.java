@@ -255,8 +255,7 @@ public class StackPresenter {
     }
 
     private void applyTopBarVisibilityIfChildIsNotBeingAnimated(TopBarOptions options, StackController stack, ViewController child) {
-        if (!stack.isChildInTransition(child))
-        applyTopBarVisibility(options);
+        if (!stack.isChildInTransition(child)) applyTopBarVisibility(options);
     }
 
     private void applyTopBarVisibility(TopBarOptions options) {

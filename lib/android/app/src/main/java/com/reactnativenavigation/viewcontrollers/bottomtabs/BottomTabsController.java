@@ -219,11 +219,6 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         return tabs.get(bottomTabs.getCurrentItem()).getView();
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    public BottomTabs getBottomTabs() {
-        return bottomTabs;
-    }
-
     public Animator getPushAnimation(Options appearingOptions) {
         return presenter.getPushAnimation(appearingOptions);
     }
@@ -234,5 +229,10 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
 
     public Animator getPopAnimation(Options appearingOptions, Options disappearingOptions) {
         return presenter.getPopAnimation(appearingOptions, disappearingOptions);
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public BottomTabs getBottomTabs() {
+        return bottomTabs;
     }
 }
