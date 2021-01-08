@@ -1,10 +1,10 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs
 
 import android.animation.Animator
+import android.animation.AnimatorSet
 import android.graphics.Color
 import android.view.ViewGroup
 import androidx.annotation.IntRange
-import androidx.core.view.forEachIndexed
 import androidx.core.view.updateMargins
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState
 import com.reactnativenavigation.options.Options
@@ -21,8 +21,8 @@ class BottomTabsPresenter(
     private lateinit var tabSelector: TabSelector
     private val defaultTitleState: TitleState
         get() {
-            bottomTabs.forEachIndexed { index, _ ->
-                if (bottomTabs.getItem(index).hasIcon()) return TitleState.SHOW_WHEN_ACTIVE
+            for (i in 0 until bottomTabs.itemsCount) {
+                if (bottomTabs.getItem(i).hasIcon()) return TitleState.SHOW_WHEN_ACTIVE
             }
             return TitleState.ALWAYS_SHOW
         }
