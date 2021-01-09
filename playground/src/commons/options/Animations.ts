@@ -11,13 +11,10 @@ const height = Math.round(Dimensions.get('window').height);
 const width = Math.round(Dimensions.get('window').width);
 const SCREEN_ANIMATION_DURATION = 300 * (useSlowOpenScreenAnimations ? 2.5 : 1);
 
-const baseSlideAnimation: OptionsAnimationPropertyConfig = {
+const baseAnimation: OptionsAnimationPropertyConfig = {
   duration: SCREEN_ANIMATION_DURATION,
   interpolation: {
-    type: 'spring',
-    damping: 500,
-    stiffness: 200,
-    mass: 5,
+    type: 'fastOutSlowIn',
   },
 };
 
@@ -25,7 +22,7 @@ const slideInFromRight: ViewAnimationOptions = {
   translationX: {
     from: width,
     to: 0,
-    ...baseSlideAnimation,
+    ...baseAnimation,
   },
 };
 
@@ -33,7 +30,7 @@ const slideInFromLeft: ViewAnimationOptions = {
   translationX: {
     from: -50,
     to: 0,
-    ...baseSlideAnimation,
+    ...baseAnimation,
   },
 };
 
@@ -41,7 +38,7 @@ const slideOutToLeft: ViewAnimationOptions = {
   translationX: {
     from: 0,
     to: -50,
-    ...baseSlideAnimation,
+    ...baseAnimation,
   },
 };
 
@@ -49,7 +46,34 @@ const slideOutToRight: ViewAnimationOptions = {
   translationX: {
     from: 0,
     to: width,
-    ...baseSlideAnimation,
+    ...baseAnimation,
+  },
+};
+
+const slideOutAndExit: ViewAnimationOptions = {
+  scaleX: {
+    from: 1,
+    to: 0.9,
+    ...baseAnimation,
+  },
+  scaleY: {
+    from: 1,
+    to: 0.9,
+    ...baseAnimation,
+  },
+  alpha: {
+    ...baseAnimation,
+    from: 1,
+    to: 0,
+    interpolation: {
+      type: 'decelerate',
+      factor: 0.8,
+    },
+  },
+  translationY: {
+    from: 0,
+    to: 100,
+    ...baseAnimation,
   },
 };
 
@@ -71,7 +95,7 @@ const slideAnimations: AnimationOptions = {
     waitForRender: true,
     content: {
       enter: slideInFromRight,
-      exit: slideOutToLeft,
+      exit: slideOutAndExit,
     },
   },
 };
