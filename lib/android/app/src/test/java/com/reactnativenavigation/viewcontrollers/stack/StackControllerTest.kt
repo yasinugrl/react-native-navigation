@@ -20,6 +20,7 @@ import com.reactnativenavigation.react.events.EventEmitter
 import com.reactnativenavigation.utils.*
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.parent.ParentController
+import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarAnimator
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver
@@ -50,6 +51,7 @@ class StackControllerTest : BaseTest() {
     private var child3View: SimpleView? = null
     private lateinit var child4: ViewController<*>
     private lateinit var animator: StackAnimator
+    private lateinit var topBarAnimator: TopBarAnimator
     private lateinit var topBarController: TopBarController
     private lateinit var presenter: StackPresenter
     private lateinit var backButtonHelper: BackButtonHelper
@@ -811,7 +813,7 @@ class StackControllerTest : BaseTest() {
         assertThat(uut.topBar.visibility).isEqualTo(View.VISIBLE)
 
         uut.pop(Options.EMPTY, CommandListenerAdapter())
-        assertThat(topBarController.animator.isAnimatingHide()).isTrue()
+        assertThat(topBarAnimator.isAnimatingHide()).isTrue()
     }
 
     @Test
@@ -823,9 +825,10 @@ class StackControllerTest : BaseTest() {
         assertThat(uut.topBar.visibility).isEqualTo(View.VISIBLE)
         uut.push(child1, CommandListenerAdapter())
         child1.onViewWillAppear()
-        assertThat(topBarController.animator.isAnimatingHide()).isFalse()
+        assertThat(topBarAnimator.isAnimatingHide()).isFalse()
         assertThat(uut.topBar.visibility).isEqualTo(View.GONE)
     }
+
     @Test
     fun popTo_CallsDestroyOnPoppedChild() {
         child1 = spy(child1)
@@ -1079,7 +1082,8 @@ class StackControllerTest : BaseTest() {
     }
 
     private fun createTopBarController() {
-        topBarController = spy(object : TopBarController() {
+        topBarAnimator = TopBarAnimator()
+        topBarController = spy(object : TopBarController(topBarAnimator) {
             override fun createTopBar(context: Context, stackLayout: StackLayout): TopBar {
                 val spy = spy(super.createTopBar(context, stackLayout))
                 spy.layout(0, 0, 1000, UiUtils.getTopBarHeight(activity))

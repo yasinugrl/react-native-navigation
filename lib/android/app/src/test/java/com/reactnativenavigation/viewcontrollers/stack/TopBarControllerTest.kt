@@ -1,19 +1,21 @@
 package com.reactnativenavigation.viewcontrollers.stack
 
+import android.animation.AnimatorSet
 import android.app.Activity
 import android.content.Context
 import android.view.View
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.options.ButtonOptions
+import com.reactnativenavigation.options.Options
+import com.reactnativenavigation.options.params.Bool
 import com.reactnativenavigation.options.params.Text
 import com.reactnativenavigation.react.Constants
 import com.reactnativenavigation.react.ReactView
 import com.reactnativenavigation.utils.CollectionUtils
 import com.reactnativenavigation.utils.TitleBarHelper
 import com.reactnativenavigation.utils.resetViewProperties
+import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarAnimator
 import com.reactnativenavigation.viewcontrollers.stack.topbar.TopBarController
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController
 import com.reactnativenavigation.views.stack.StackLayout
@@ -29,11 +31,13 @@ class TopBarControllerTest : BaseTest() {
     private lateinit var textButton1: ButtonOptions
     private lateinit var textButton2: ButtonOptions
     private lateinit var componentButton: ButtonOptions
+    private lateinit var animator: TopBarAnimator
     private val topBar: View
         get() = uut.view
 
     override fun beforeEach() {
         activity = newActivity()
+        animator = spy(TopBarAnimator())
         uut = createTopBarController()
         val stack = mock<StackLayout>()
         uut.createView(activity, stack)
@@ -117,6 +121,68 @@ class TopBarControllerTest : BaseTest() {
         assertVisible(topBar)
     }
 
+    @Test
+    fun getPushAnimation_returnsNullIfAnimateFalse() {
+        val appearing = Options()
+        appearing.topBar.animate = Bool(false)
+        assertThat(uut.getPushAnimation(appearing)).isNull()
+    }
+
+    @Test
+    fun getPushAnimation_delegatesToAnimator() {
+        val someAnimator = AnimatorSet()
+        val options = Options.EMPTY
+        doReturn(someAnimator).whenever(animator).getPushAnimation(
+                options.animations.push.topBar,
+                options.topBar.visible,
+                0f
+        )
+        val result = uut.getPushAnimation(options)
+        assertThat(result).isEqualTo(someAnimator)
+    }
+
+    @Test
+    fun getPopAnimation_returnsNullIfAnimateFalse() {
+        val appearing = Options()
+        val disappearing = Options()
+        disappearing.topBar.animate = Bool(false)
+        assertThat(uut.getPopAnimation(appearing, disappearing)).isNull()
+    }
+
+    @Test
+    fun getPopAnimation_delegatesToAnimator() {
+        val someAnimator = AnimatorSet()
+        val appearing = Options.EMPTY
+        val disappearing = Options.EMPTY
+        doReturn(someAnimator).whenever(animator).getPopAnimation(
+                disappearing.animations.pop.topBar,
+                appearing.topBar.visible,
+                0f
+        )
+        val result = uut.getPopAnimation(appearing, disappearing)
+        assertThat(result).isEqualTo(someAnimator)
+    }
+
+    @Test
+    fun getSetStackRootAnimation_returnsNullIfAnimateFalse() {
+        val appearing = Options()
+        appearing.topBar.animate = Bool(false)
+        assertThat(uut.getSetStackRootAnimation(appearing)).isNull()
+    }
+
+    @Test
+    fun getSetStackRootAnimation_delegatesToAnimator() {
+        val someAnimator = AnimatorSet()
+        val options = Options.EMPTY
+        doReturn(someAnimator).whenever(animator).getSetStackRootAnimation(
+                options.animations.setStackRoot.topBar,
+                options.topBar.visible,
+                0f
+        )
+        val result = uut.getSetStackRootAnimation(options)
+        assertThat(result).isEqualTo(someAnimator)
+    }
+
     private fun createButtons() {
         leftButton = ButtonOptions()
         leftButton.id = Constants.BACK_BUTTON_ID
@@ -143,7 +209,7 @@ class TopBarControllerTest : BaseTest() {
         return CollectionUtils.map(listOf(*buttons)) { button: ButtonOptions? -> TitleBarHelper.createButtonController(activity, button) }
     }
 
-    private fun createTopBarController() = spy(object : TopBarController() {
+    private fun createTopBarController() = spy(object : TopBarController(animator) {
         override fun createTopBar(context: Context, stackLayout: StackLayout): TopBar {
             return spy(super.createTopBar(context, stackLayout))
         }

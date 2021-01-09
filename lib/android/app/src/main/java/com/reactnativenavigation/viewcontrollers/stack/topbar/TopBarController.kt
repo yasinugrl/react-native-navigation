@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.stack.topbar
 
 import android.animation.Animator
+import android.animation.AnimatorSet
 import android.content.Context
 import android.view.MenuItem
 import android.view.View
@@ -9,7 +10,6 @@ import androidx.core.view.doOnPreDraw
 import androidx.viewpager.widget.ViewPager
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.utils.CollectionUtils
 import com.reactnativenavigation.utils.CollectionUtils.forEachIndexed
 import com.reactnativenavigation.utils.ViewUtils
 import com.reactnativenavigation.utils.resetViewProperties
@@ -21,11 +21,11 @@ import com.reactnativenavigation.views.stack.topbar.titlebar.LeftButtonsBar
 import com.reactnativenavigation.views.stack.topbar.titlebar.TitleBar
 
 
-open class TopBarController {
+open class TopBarController(private val animator: TopBarAnimator = TopBarAnimator()) {
     lateinit var view: TopBar
     private lateinit var titleBar: TitleBar
     private lateinit var leftButtonsBar: LeftButtonsBar
-    @VisibleForTesting var animator: TopBarAnimator = TopBarAnimator()
+
 
     val height: Int
         get() = view.height
@@ -54,7 +54,8 @@ open class TopBarController {
 
     fun clearTopTabs() = view.clearTopTabs()
 
-    fun getPushAnimation(appearingOptions: Options, additionalDy: Float = 0f): Animator {
+    fun getPushAnimation(appearingOptions: Options, additionalDy: Float = 0f): Animator? {
+        if (appearingOptions.topBar.animate.isFalse) return null
         return animator.getPushAnimation(
                 appearingOptions.animations.push.topBar,
                 appearingOptions.topBar.visible,
@@ -62,11 +63,16 @@ open class TopBarController {
         )
     }
 
-    fun getPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator {
-        return animator.getPopAnimation(disappearingOptions.animations.pop.topBar, appearingOptions.topBar.visible)
+    fun getPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator? {
+        if (appearingOptions.topBar.animate.isFalse) return null
+        return animator.getPopAnimation(
+                disappearingOptions.animations.pop.topBar,
+                appearingOptions.topBar.visible
+        )
     }
 
-    fun getSetStackRootAnimation(appearingOptions: Options, additionalDy: Float = 0f): Animator {
+    fun getSetStackRootAnimation(appearingOptions: Options, additionalDy: Float = 0f): Animator? {
+        if (appearingOptions.topBar.animate.isFalse) return null
         return animator.getSetStackRootAnimation(
                 appearingOptions.animations.setStackRoot.topBar,
                 appearingOptions.topBar.visible,
