@@ -171,7 +171,7 @@ class BottomTabsPresenter(
     }
 
     fun getPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator? {
-        if (disappearingOptions.bottomTabsOptions.animate.isFalse) return null
+        if (appearingOptions.bottomTabsOptions.animate.isFalse) return null
         return animator.getPopAnimation(
                 disappearingOptions.animations.pop.bottomTabs,
                 appearingOptions.bottomTabsOptions.visible
