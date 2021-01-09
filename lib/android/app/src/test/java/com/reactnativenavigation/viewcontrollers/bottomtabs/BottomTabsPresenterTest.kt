@@ -1,5 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs
 
+import android.animation.AnimatorSet
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
@@ -81,5 +82,67 @@ class BottomTabsPresenterTest : BaseTest() {
         verify(tabSelector).selectTab(1)
         uut.applyChildOptions(Options.EMPTY, tabs[0])
         verifyNoMoreInteractions(tabSelector)
+    }
+
+    @Test
+    fun getPushAnimation_returnsNullIfAnimateFalse() {
+        val appearing = Options()
+        appearing.bottomTabsOptions.animate = Bool(false)
+        assertThat(uut.getPushAnimation(appearing)).isNull()
+    }
+
+    @Test
+    fun getPushAnimation_delegatesToAnimator() {
+        val someAnimator = AnimatorSet()
+        val options = Options.EMPTY
+        doReturn(someAnimator).whenever(animator).getPushAnimation(
+                options.animations.push.bottomTabs,
+                options.bottomTabsOptions.visible,
+                0f
+        )
+        val result = uut.getPushAnimation(options)
+        assertThat(result).isEqualTo(someAnimator)
+    }
+
+    @Test
+    fun getPopAnimation_returnsNullIfAnimateFalse() {
+        val appearing = Options()
+        val disappearing = Options()
+        disappearing.bottomTabsOptions.animate = Bool(false)
+        assertThat(uut.getPopAnimation(appearing, disappearing)).isNull()
+    }
+
+    @Test
+    fun getPopAnimation_delegatesToAnimator() {
+        val someAnimator = AnimatorSet()
+        val appearing = Options.EMPTY
+        val disappearing = Options.EMPTY
+        doReturn(someAnimator).whenever(animator).getPopAnimation(
+                disappearing.animations.pop.bottomTabs,
+                appearing.bottomTabsOptions.visible,
+                0f
+        )
+        val result = uut.getPopAnimation(appearing, disappearing)
+        assertThat(result).isEqualTo(someAnimator)
+    }
+
+    @Test
+    fun getSetStackRootAnimation_returnsNullIfAnimateFalse() {
+        val appearing = Options()
+        appearing.bottomTabsOptions.animate = Bool(false)
+        assertThat(uut.getSetStackRootAnimation(appearing)).isNull()
+    }
+
+    @Test
+    fun getSetStackRootAnimation_delegatesToAnimator() {
+        val someAnimator = AnimatorSet()
+        val options = Options.EMPTY
+        doReturn(someAnimator).whenever(animator).getSetStackRootAnimation(
+                options.animations.setStackRoot.bottomTabs,
+                options.bottomTabsOptions.visible,
+                0f
+        )
+        val result = uut.getSetStackRootAnimation(options)
+        assertThat(result).isEqualTo(someAnimator)
     }
 }

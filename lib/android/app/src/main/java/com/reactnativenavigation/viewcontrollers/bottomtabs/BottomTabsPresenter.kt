@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.bottomtabs
 
 import android.animation.Animator
-import android.animation.AnimatorSet
 import android.graphics.Color
 import android.view.ViewGroup
 import androidx.annotation.IntRange
@@ -136,12 +135,14 @@ class BottomTabsPresenter(
         }
         if (bottomTabsOptions.visible.isTrueOrUndefined) {
             if (bottomTabsOptions.animate.isTrueOrUndefined) {
+                animator.show()
             } else {
                 bottomTabs.restoreBottomNavigation(false)
             }
         }
         if (bottomTabsOptions.visible.isFalse) {
             if (bottomTabsOptions.animate.isTrueOrUndefined) {
+                animator.hide()
             } else {
                 bottomTabs.hideBottomNavigation(false)
             }
@@ -161,21 +162,24 @@ class BottomTabsPresenter(
         return if (resolvedOptions.withDefaultOptions(defaultOptions).bottomTabsOptions.isHiddenOrDrawBehind) 0 else bottomTabs.height
     }
 
-    fun getPushAnimation(appearingOptions: Options): Animator {
+    fun getPushAnimation(appearingOptions: Options): Animator? {
+        if (appearingOptions.bottomTabsOptions.animate.isFalse) return null
         return animator.getPushAnimation(
                 appearingOptions.animations.push.bottomTabs,
                 appearingOptions.bottomTabsOptions.visible
         )
     }
 
-    fun getPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator {
+    fun getPopAnimation(appearingOptions: Options, disappearingOptions: Options): Animator? {
+        if (disappearingOptions.bottomTabsOptions.animate.isFalse) return null
         return animator.getPopAnimation(
                 disappearingOptions.animations.pop.bottomTabs,
                 appearingOptions.bottomTabsOptions.visible
         )
     }
 
-    fun getSetStackRootAnimation(appearingOptions: Options): Animator {
+    fun getSetStackRootAnimation(appearingOptions: Options): Animator? {
+        if (appearingOptions.bottomTabsOptions.animate.isFalse) return null
         return animator.getSetStackRootAnimation(
                 appearingOptions.animations.setStackRoot.bottomTabs,
                 appearingOptions.bottomTabsOptions.visible

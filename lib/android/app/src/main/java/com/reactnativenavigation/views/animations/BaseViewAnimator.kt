@@ -90,7 +90,7 @@ open class BaseViewAnimator<T : View>(
 
     fun isAnimatingShow() = showAnimator.isRunning
 
-    fun getPushAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator {
+    fun getPushAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator? {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
             hideAnimator = animation.exit.getAnimation(view, defaultAnimatorCreator.getHideAnimator(view, hideDirection, additionalDy))
@@ -103,10 +103,10 @@ open class BaseViewAnimator<T : View>(
             return showAnimator
         }
 
-        return AnimatorSet()
+        return null
     }
 
-    fun getPopAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator {
+    fun getPopAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator? {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
             hideAnimator = animation.exit.getAnimation(view, defaultAnimatorCreator.getHideAnimator(view, hideDirection, additionalDy))
@@ -119,10 +119,10 @@ open class BaseViewAnimator<T : View>(
             return showAnimator
         }
 
-        return AnimatorSet()
+        return null
     }
 
-    fun getSetStackRootAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator {
+    fun getSetStackRootAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator? {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
             hideAnimator = animation.exit.getAnimation(view, defaultAnimatorCreator.getHideAnimator(view, hideDirection, additionalDy))
@@ -135,7 +135,7 @@ open class BaseViewAnimator<T : View>(
             return showAnimator
         }
 
-        return AnimatorSet()
+        return null
     }
 
     fun show(options: AnimationOptions = AnimationOptions(), translationStartDy: Float = 0f) {
