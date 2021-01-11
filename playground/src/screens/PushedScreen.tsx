@@ -63,7 +63,23 @@ export default class PushedScreen extends NavigationComponent<Props> {
     super(props);
     Navigation.events().bindComponent(this);
   }
-
+  changeTopBar = () => {
+    Navigation.mergeOptions(this, {
+      topBar: {
+        backButton: {
+          visible: false,
+        },
+        title: {
+          text: 'Updated',
+        },
+        leftButtons: [
+          {
+            icon: require('../../img/star.png'),
+          },
+        ],
+      },
+    });
+  };
   navigationButtonPressed({ buttonId }: NavigationButtonPressedEvent) {
     if (buttonId === 'backPress') alert('back button clicked');
   }
@@ -76,6 +92,11 @@ export default class PushedScreen extends NavigationComponent<Props> {
           <Button label="Push" testID={PUSH_BTN} onPress={this.push} marginH-5 />
           <Button label="Pop" testID={POP_BTN} onPress={this.pop} marginH-5 />
         </View>
+        <Button
+          label="ChangeTopBarOptions"
+          testID={'ChangeTopBarOptionsBtn'}
+          onPress={this.changeTopBar}
+        />
         <Button
           label="Push Without Animation"
           testID={PUSH_NO_ANIM_BTN}
