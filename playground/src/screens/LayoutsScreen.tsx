@@ -43,6 +43,11 @@ export default class LayoutsScreen extends NavigationComponent {
         <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button
+          label="ChangeTopBarOptions"
+          testID={'ChangeTopBarOptionsBtn'}
+          onPress={this.changeTopBar}
+        />
+        <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
           platform="ios"
@@ -51,7 +56,23 @@ export default class LayoutsScreen extends NavigationComponent {
       </Root>
     );
   }
-
+  changeTopBar = () => {
+    Navigation.mergeOptions(this, {
+      topBar: {
+        backButton: {
+          visible: false,
+        },
+        title: {
+          text: 'Updated',
+        },
+        leftButtons: [
+          {
+            icon: require('../../img/star.png'),
+          },
+        ],
+      },
+    });
+  };
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 
   bottomTabs = () =>
