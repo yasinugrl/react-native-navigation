@@ -132,6 +132,7 @@ public class TopBarController {
 
     public void applyLeftButtons(List<ButtonController> toAdd) {
         leftButtonsBar.setMinimumWidth(leftButtonsBar.getWidth());
+        topBar.clearBackButton();
         topBar.clearLeftButtons();
         forEachIndexed(toAdd, (b, i) -> b.addToMenu(leftButtonsBar, (toAdd.size() - i) * 10));
         runOnPreDrawOnce(leftButtonsBar, () -> leftButtonsBar.setMinimumWidth(0));
@@ -139,6 +140,7 @@ public class TopBarController {
 
     public void mergeLeftButtons(List<ButtonController> toAdd, List<ButtonController> toRemove) {
         leftButtonsBar.setMinimumWidth(leftButtonsBar.getWidth());
+        topBar.clearBackButton();
         forEach(toRemove, btn -> topBar.removeLeftButton(btn));
         forEachIndexed(toAdd, (b, i) -> b.addToMenu(leftButtonsBar, (toAdd.size() - i) * 10));
         runOnPreDrawOnce(leftButtonsBar, () -> leftButtonsBar.setMinimumWidth(0));
