@@ -14,7 +14,7 @@ public class SideMenu extends DrawerLayout {
     @Override
     public void openDrawer(int gravity, boolean animate) {
         try {
-            super.openDrawer(gravity, animate);
+            super.openDrawer(gravity, false);
         } catch (IllegalArgumentException e) {
             Log.w("RNN", "Tried to open sideMenu, but it's not defined");
         }
