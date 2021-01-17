@@ -168,9 +168,6 @@ public class TitleBar extends Toolbar {
                 boolean isRTL = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
                 int direction = isRTL ? -1 : 1;
                 component.setX((getWidth() - component.getWidth() - direction * getStart()) / 2f);
-            } else if (lp.gravity == Gravity.START) {
-                boolean isRTL = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
-                component.setX(isRTL ? getWidth() - component.getWidth() - getStart() : 0);
             }
         });
     }

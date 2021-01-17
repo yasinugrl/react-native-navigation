@@ -84,21 +84,6 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void setComponent_alignedStartRTLAfterMeasure() {
-        ViewGroup parent = new FrameLayout(activity);
-        parent.layout(0, 0, UUT_WIDTH, UUT_HEIGHT);
-        when(uut.getParent()).thenReturn(parent);
-        uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT);
-        when(uut.getLayoutDirection()).thenReturn(View.LAYOUT_DIRECTION_RTL);
-        View component = new View(activity);
-        component.layout(0, 0, COMPONENT_WIDTH, COMPONENT_HEIGHT);
-        component.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.START));
-        uut.setComponent(component);
-        uut.onLayout(true, 0, 0, 0, 0);
-        assertThat(component.getX()).isEqualTo(UUT_WIDTH - COMPONENT_WIDTH);
-    }
-
-    @Test
     public void setComponent_alignedCenterAfterMeasure() {
         uut.layout(0, 0, UUT_WIDTH, UUT_HEIGHT);
         View component = new View(activity);
