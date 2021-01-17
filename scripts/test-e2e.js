@@ -15,8 +15,8 @@ function run() {
   const suffix = release ? `release` : `debug`;
   const configuration = `${prefix}.${suffix}`;
   const headless$ = android ? (headless ? `--headless` : ``) : ``;
-  const workers = multi ? 3 : 1;
-  const loglevel = verbose ? '--loglevel verbose' : '';
+  const workers = multi ? 1 : 1;
+  const loglevel = verbose ? '--loglevel verbose' : '--loglevel trace';
 
   if (!android) {
     exec.execSync('npm run build');
@@ -26,7 +26,7 @@ function run() {
     exec.execSync(`detox build --configuration ${configuration}`);
   }
   exec.execSync(
-    `detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel}`
+    `detox test --configuration ${configuration} ${headless$} -w ${workers} ${loglevel} --record-videos failing`
     // "Buttons.test.js" --loglevel trace`
   );
 }
