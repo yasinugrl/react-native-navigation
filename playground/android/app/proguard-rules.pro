@@ -65,3 +65,8 @@
 # stetho
 
 -dontwarn com.facebook.stetho.**
+
+# kotlin
+-keep class kotlin.Metadata { *; }
+
+-keepattributes RuntimeVisibleAnnotations
