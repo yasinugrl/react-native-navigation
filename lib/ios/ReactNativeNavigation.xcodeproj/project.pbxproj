@@ -445,6 +445,7 @@
 		B84F6E53252C5ECE007D78A1 /* AccelerateInterpolator.h in Headers */ = {isa = PBXBuildFile; fileRef = B84F6E4B252C5ECE007D78A1 /* AccelerateInterpolator.h */; };
 		B8B2BB6524FFCC9500FC6575 /* CornerRadiusTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = B8B2BB6324FFCC9500FC6575 /* CornerRadiusTransition.h */; };
 		B8B2BB6624FFCC9500FC6575 /* CornerRadiusTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B2BB6424FFCC9500FC6575 /* CornerRadiusTransition.m */; };
+		B8D0E2F425BC5DFF00FFE727 /* AnimatedUIImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D0E2F325BC5DFF00FFE727 /* AnimatedUIImageView.m */; };
 		C2A57A1C21E815F80066711C /* InteractivePopGestureDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C2A57A1A21E815F80066711C /* InteractivePopGestureDelegate.h */; };
 		C2A57A1D21E815F80066711C /* InteractivePopGestureDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A57A1B21E815F80066711C /* InteractivePopGestureDelegate.m */; };
 		E33AC20020B5BA0B0090DB8A /* RNNSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC1FF20B5BA0B0090DB8A /* RNNSplitViewController.m */; };
@@ -973,6 +974,8 @@
 		B84F6E4B252C5ECE007D78A1 /* AccelerateInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccelerateInterpolator.h; sourceTree = "<group>"; };
 		B8B2BB6324FFCC9500FC6575 /* CornerRadiusTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornerRadiusTransition.h; sourceTree = "<group>"; };
 		B8B2BB6424FFCC9500FC6575 /* CornerRadiusTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CornerRadiusTransition.m; sourceTree = "<group>"; };
+		B8D0E2F225BC5DED00FFE727 /* AnimatedUIImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatedUIImageView.h; sourceTree = "<group>"; };
+		B8D0E2F325BC5DFF00FFE727 /* AnimatedUIImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnimatedUIImageView.m; sourceTree = "<group>"; };
 		C2A57A1A21E815F80066711C /* InteractivePopGestureDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InteractivePopGestureDelegate.h; sourceTree = "<group>"; };
 		C2A57A1B21E815F80066711C /* InteractivePopGestureDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InteractivePopGestureDelegate.m; sourceTree = "<group>"; };
 		D8AFADBD1BEE6F3F00A4592D /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeNavigation.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1366,8 +1369,10 @@
 				B8B2BB6424FFCC9500FC6575 /* CornerRadiusTransition.m */,
 				50B92C24253DDC6D0056FC26 /* ViewAnimationOptions.h */,
 				50B92C25253DDC6D0056FC26 /* ViewAnimationOptions.m */,
-				50E38DDC23A7A306009817F6 /* AnimatedImageView.m */,
 				50E38DDB23A7A306009817F6 /* AnimatedImageView.h */,
+				50E38DDC23A7A306009817F6 /* AnimatedImageView.m */,
+				B8D0E2F225BC5DED00FFE727 /* AnimatedUIImageView.h */,
+				B8D0E2F325BC5DFF00FFE727 /* AnimatedUIImageView.m */,
 				50EA541823AEE1C6006F881A /* AnimatedReactView.h */,
 				50EA541923AEE1C6006F881A /* AnimatedReactView.m */,
 				50EAF67D23A7B9260006A86D /* AnimatedTextView.h */,
@@ -2142,6 +2147,7 @@
 				B841531D251E088100467F37 /* OvershootInterpolator.m in Sources */,
 				50DE2E46238EA14E005CD5F4 /* NSArray+utils.m in Sources */,
 				50495943216F5E5D006D2B81 /* NullBool.m in Sources */,
+				B8D0E2F425BC5DFF00FFE727 /* AnimatedUIImageView.m in Sources */,
 				5022EDBE2405237100852BA6 /* BottomTabPresenterCreator.m in Sources */,
 				5038A3C7216E2D93009280BC /* Number.m in Sources */,
 				E5F6C3A622DB4D0F0093C2CE /* UIViewController+Utils.m in Sources */,
