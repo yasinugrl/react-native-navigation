@@ -9,7 +9,8 @@
                                toElement:(UIView *)toElement
                        transitionOptions:(SharedElementTransitionOptions *)transitionOptions {
     switch (element.viewType) {
-    case ViewTypeImage:
+    case ViewTypeRCTImage:
+    case ViewTypeUIImage:
         return [[AnimatedImageView alloc] initElement:element
                                             toElement:toElement
                                     transitionOptions:transitionOptions];

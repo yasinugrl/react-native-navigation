@@ -13,8 +13,10 @@
 }
 
 - (ViewType)viewType {
-    if ([self isKindOfClass:[RCTImageView class]]) {
-        return ViewTypeImage;
+    if ([self isKindOfClass:[UIImageView class]]) {
+        return ViewTypeUIImage;
+    } else if ([self isKindOfClass:[RCTImageView class]]) {
+        return ViewTypeRCTImage;
     } else if ([self isKindOfClass:[RCTTextView class]]) {
         return ViewTypeText;
     }
