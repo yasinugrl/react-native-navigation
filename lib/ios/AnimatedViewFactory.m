@@ -1,5 +1,6 @@
 #import "AnimatedViewFactory.h"
 #import "AnimatedImageView.h"
+#import "AnimatedUIImageView.h"
 #import "AnimatedTextView.h"
 #import "UIVIew+Utils.h"
 
@@ -10,10 +11,13 @@
                        transitionOptions:(SharedElementTransitionOptions *)transitionOptions {
     switch (element.viewType) {
     case ViewTypeRCTImage:
-    case ViewTypeUIImage:
         return [[AnimatedImageView alloc] initElement:element
                                             toElement:toElement
                                     transitionOptions:transitionOptions];
+    case ViewTypeUIImage:
+        return [[AnimatedUIImageView alloc] initElement:element
+											  toElement:toElement
+									  transitionOptions:transitionOptions];
     case ViewTypeText:
         return [[AnimatedTextView alloc] initElement:element
                                            toElement:toElement

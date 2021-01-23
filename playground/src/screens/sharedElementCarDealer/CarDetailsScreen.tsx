@@ -111,7 +111,7 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
           source={car.image}
           // @ts-ignore nativeID isn't included in react-native-fast-image props.
           nativeID={`image${car.id}Dest`}
-          resizeMode="cover"
+          resizeMode="contain"
           style={StyleSheet.absoluteFill}
         />
       </ReanimatedTouchableOpacity>
