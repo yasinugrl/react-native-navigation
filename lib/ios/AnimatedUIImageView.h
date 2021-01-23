@@ -14,10 +14,10 @@
 
 @interface AnimatedUIImageView : AnimatedReactView
 
-@property (nonatomic) CGSize fromSize;
-@property (nonatomic) UIViewContentMode fromContentMode;
-@property (nonatomic) CGSize toSize;
-@property (nonatomic) UIViewContentMode toContentMode;
+@property(nonnull) CGSize fromSize;
+@property(nonnull) UIViewContentMode fromContentMode;
+@property(nonnull) CGSize toSize;
+@property(nonnull) UIViewContentMode toContentMode;
 
 @end
 
