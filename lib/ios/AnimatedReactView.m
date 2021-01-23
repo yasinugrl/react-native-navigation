@@ -85,6 +85,9 @@
     _reactView.frame = self.bounds;
 }
 
+/**
+ Returns a size where the given `element` looks exactly the same with the given `contentMode` as it does currently without it.
+ */
 - (CGRect)getSizeWithContentMode:(UIImageView *)element
                      contentMode:(UIViewContentMode)contentMode {
     // TODO: We want to run different scaling techniques depending on the resize mode.
@@ -101,6 +104,10 @@
     // right now, and style it the same way with the new resize mode. (Basically make resizeMode
     // "contain" look the same as "cover" by changing the view's frame/bounds)
     
+    if (contentMode == element.contentMode) {
+        return element.bounds;
+    }
+    
     switch (contentMode) {
         case UIViewContentModeScaleAspectFill: {
             CGSize fromImageSize = CGSizeMake(element.image.size.width / element.image.scale,
@@ -110,11 +117,11 @@
             
             CGFloat newWidth, newHeight;
             if (fromWidthRatio > fromHeightRatio) {
-                newWidth = element.bounds.size.width * fromHeightRatio;
+                newWidth = element.bounds.size.width / fromHeightRatio;
                 newHeight = element.bounds.size.height;
             } else {
                 newWidth = element.bounds.size.width;
-                newHeight = element.bounds.size.height * fromWidthRatio;
+                newHeight = element.bounds.size.height / fromWidthRatio;
             }
             
             return CGRectMake(element.bounds.origin.x - ((newWidth - element.bounds.size.width) / 2),
@@ -131,11 +138,11 @@
             
             CGFloat newWidth, newHeight;
             if (fromWidthRatio > fromHeightRatio) {
-                newWidth = element.bounds.size.width / fromHeightRatio;
+                newWidth = element.bounds.size.width * fromHeightRatio;
                 newHeight = element.bounds.size.height;
             } else {
                 newWidth = element.bounds.size.width;
-                newHeight = element.bounds.size.height / fromWidthRatio;
+                newHeight = element.bounds.size.height * fromWidthRatio;
             }
             
             return CGRectMake(element.bounds.origin.x - ((newWidth - element.bounds.size.width) / 2),
