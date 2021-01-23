@@ -108,41 +108,45 @@
         return element.bounds;
     }
     
+    // TODO: This is still a bit off. See: https://github.com/vitoziv/VICMAImageView/blob/master/VICMAImageView/VICMAImageView.m#L156-L278
+    // TODO: Update center
+    
     switch (contentMode) {
         case UIViewContentModeScaleAspectFill: {
-            CGSize fromImageSize = CGSizeMake(element.image.size.width / element.image.scale,
+            CGSize imageSize = CGSizeMake(element.image.size.width / element.image.scale,
                                               element.image.size.height / element.image.scale);
-            CGFloat fromWidthRatio = fromImageSize.width / element.bounds.size.width;
-            CGFloat fromHeightRatio = fromImageSize.height / element.bounds.size.height;
+            CGFloat imageAspectRatio = imageSize.width / imageSize.height;
             
             CGFloat newWidth, newHeight;
-            if (fromWidthRatio > fromHeightRatio) {
-                newWidth = element.bounds.size.width / fromHeightRatio;
+            if (imageAspectRatio > 1) {
+                // width is longer edge
+                newWidth = element.bounds.size.width * imageAspectRatio;
                 newHeight = element.bounds.size.height;
             } else {
+                // height is longer edge
                 newWidth = element.bounds.size.width;
-                newHeight = element.bounds.size.height / fromWidthRatio;
+                newHeight = element.bounds.size.height * imageAspectRatio;
             }
             
             return CGRectMake(element.bounds.origin.x - ((newWidth - element.bounds.size.width) / 2),
                               element.bounds.origin.y - ((newHeight - element.bounds.size.height) / 2),
                               newWidth,
                               newHeight);
-            break;
         }
         case UIViewContentModeScaleAspectFit: {
-            CGSize fromImageSize = CGSizeMake(element.image.size.width / element.image.scale,
-                                              element.image.size.height / element.image.scale);
-            CGFloat fromWidthRatio = fromImageSize.width / element.bounds.size.width;
-            CGFloat fromHeightRatio = fromImageSize.height / element.bounds.size.height;
+            CGSize imageSize = CGSizeMake(element.image.size.width / element.image.scale,
+                                          element.image.size.height / element.image.scale);
+            CGFloat imageAspectRatio = imageSize.width / imageSize.height;
             
             CGFloat newWidth, newHeight;
-            if (fromWidthRatio > fromHeightRatio) {
-                newWidth = element.bounds.size.width * fromHeightRatio;
-                newHeight = element.bounds.size.height;
-            } else {
+            if (imageAspectRatio > 1) {
+                // width is longer edge
                 newWidth = element.bounds.size.width;
-                newHeight = element.bounds.size.height * fromWidthRatio;
+                newHeight = element.bounds.size.height * imageAspectRatio;
+            } else {
+                // height is longer edge
+                newWidth = element.bounds.size.width * imageAspectRatio;
+                newHeight = element.bounds.size.height;
             }
             
             return CGRectMake(element.bounds.origin.x - ((newWidth - element.bounds.size.width) / 2),
