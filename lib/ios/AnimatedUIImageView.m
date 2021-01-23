@@ -29,22 +29,54 @@
     // right now, and style it the same way with the new resize mode. (Basically make resizeMode
     // "contain" look the same as "cover" by changing the view's frame/bounds)
     
-    CGSize fromImageSize = CGSizeMake(element.image.size.width / element.image.scale,
-                                      element.image.size.height / element.image.scale);
-    CGFloat fromWidthRatio = fromImageSize.width / element.frame.size.width;
-    CGFloat fromHeightRatio = fromImageSize.height / element.frame.size.height;
-    
-    CGSize toImageSize = CGSizeMake(toElement.image.size.width / toElement.image.scale,
-                                    toElement.image.size.height / toElement.image.scale);
-    CGFloat toWidthRatio = toImageSize.width / toElement.frame.size.width;
-    CGFloat toHeightRatio = toImageSize.height / toElement.frame.size.height;
-    
-    CGFloat newWidth = element.frame.size.width * fromWidthRatio;
-    CGFloat newHeight = element.frame.size.height * fromHeightRatio;
-    element.frame = CGRectMake(element.frame.origin.x - ((newWidth - element.frame.size.width) / 2),
-                               element.frame.origin.y - ((newHeight - element.frame.size.height) / 2),
-                               newWidth,
-                               newHeight);
+    switch (element.contentMode) {
+        case UIViewContentModeScaleAspectFill: {
+            CGSize fromImageSize = CGSizeMake(element.image.size.width / element.image.scale,
+                                              element.image.size.height / element.image.scale);
+            CGFloat fromWidthRatio = fromImageSize.width / element.frame.size.width;
+            CGFloat fromHeightRatio = fromImageSize.height / element.frame.size.height;
+            
+            CGFloat newWidth, newHeight;
+            if (fromWidthRatio > fromHeightRatio) {
+                newWidth = element.frame.size.width * fromHeightRatio;
+                newHeight = element.frame.size.height;
+            } else {
+                newWidth = element.frame.size.width;
+                newHeight = element.frame.size.height * fromWidthRatio;
+            }
+            
+            element.contentMode = UIViewContentModeScaleAspectFit;
+            element.frame = CGRectMake(element.frame.origin.x - ((newWidth - element.frame.size.width) / 2),
+                                       element.frame.origin.y - ((newHeight - element.frame.size.height) / 2),
+                                       newWidth,
+                                       newHeight);
+        }
+        case UIViewContentModeScaleAspectFit: {
+            CGSize fromImageSize = CGSizeMake(element.image.size.width / element.image.scale,
+                                              element.image.size.height / element.image.scale);
+            CGFloat fromWidthRatio = fromImageSize.width / element.frame.size.width;
+            CGFloat fromHeightRatio = fromImageSize.height / element.frame.size.height;
+            
+            CGFloat newWidth, newHeight;
+            if (fromWidthRatio > fromHeightRatio) {
+                newWidth = element.frame.size.width * fromHeightRatio;
+                newHeight = element.frame.size.height;
+            } else {
+                newWidth = element.frame.size.width;
+                newHeight = element.frame.size.height * fromWidthRatio;
+            }
+            
+            element.contentMode = UIViewContentModeScaleAspectFit;
+            element.frame = CGRectMake(element.frame.origin.x - ((newWidth - element.frame.size.width) / 2),
+                                       element.frame.origin.y - ((newHeight - element.frame.size.height) / 2),
+                                       newWidth,
+                                       newHeight);
+        }
+        default: {
+            // TODO: Other resizeModes are not yet implemented.
+            break;
+        }
+    }
     
     
     
@@ -55,46 +87,7 @@
 	_toSize = toElement.image.size;
 	_toContentMode = toElement.contentMode;
 	
-	self.contentMode = element.contentMode;
-     
-    
-    /*
-    CGFloat scale = toElement.image.scale;
-    CGSize imageSize = CGSizeMake(toElement.image.size.width / scale, toElement.image.size.height / scale);
-    CGFloat widthRatio = imageSize.width / element.bounds.size.width;
-    CGFloat heightRatio = imageSize.height / element.bounds.size.height;
-     */
-    
-    /*
-    switch (element.contentMode) {
-        case UIViewContentModeScaleToFill:
-        {
-            // "stretch"
-            break;
-        }
-        case UIViewContentModeScaleAspectFit:
-        {
-            // "contain"
-            CGFloat ratio = MAX(widthRatio, heightRatio);
-            imageSize = CGSizeMake(imageSize.width / ratio, imageSize.height / ratio);
-            self.location.fromFrame = CGRectMake(0, 0, imageSize.width, imageSize.height);
-            break;
-        }
-        case UIViewContentModeScaleAspectFill:
-        {
-            // "cover"
-            CGFloat ratio = MAX(widthRatio, heightRatio);
-            imageSize = CGSizeMake(imageSize.width / ratio, imageSize.height / ratio);
-            self.location.fromFrame = CGRectMake(0, 0, imageSize.width, imageSize.height);
-            break;
-        }
-        default:
-        {
-            // TODO: Other resizeModes are not yet implemented.
-            break;
-        }
-    }
-    */
+	//self.contentMode = element.contentMode;
     
 	return self;
 }
