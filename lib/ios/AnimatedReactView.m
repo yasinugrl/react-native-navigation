@@ -5,6 +5,7 @@
 @implementation AnimatedReactView {
     UIView *_originalParent;
     CGRect _originalFrame;
+    UIViewContentMode _originalContentMode;
     CGFloat _originalCornerRadius;
     CGRect _originalLayoutBounds;
     CATransform3D _originalTransform;
@@ -48,8 +49,16 @@
     _originalFrame = _reactView.frame;
     _originalTransform = element.layer.transform;
     _originalLayoutBounds = element.layer.bounds;
+    _originalContentMode = element.contentMode;
     self.contentMode = element.contentMode;
     self.frame = self.location.fromFrame;
+    
+    if ([element isKindOfClass:UIImageView.class]) {
+        element.bounds = [self getSizeWithContentMode:(UIImageView *)element contentMode:_toElement.contentMode];
+        element.layer.bounds = element.bounds;
+        element.contentMode = _toElement.contentMode;
+    }
+    
     _originalParent = _reactView.superview;
     _originalCornerRadius = element.layer.cornerRadius;
     _reactView.frame = self.bounds;
@@ -64,6 +73,7 @@
     _reactView.bounds = _originalLayoutBounds;
     _reactView.layer.bounds = _originalLayoutBounds;
     _reactView.layer.transform = _originalTransform;
+    _reactView.contentMode = _originalContentMode;
     [_originalParent insertSubview:_reactView atIndex:self.location.index];
     _toElement.hidden = NO;
     _reactView.backgroundColor = _fromColor;
@@ -73,6 +83,73 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     _reactView.frame = self.bounds;
+}
+
+- (CGRect)getSizeWithContentMode:(UIImageView *)element
+                     contentMode:(UIViewContentMode)contentMode {
+    // TODO: We want to run different scaling techniques depending on the resize mode.
+    // In general, we want to scale/resize the element/toElement directly, since that
+    // is contained in the AnimatedReactView. This means, the AnimatedReactView will
+    // manage the bounds animation, and we just want to silently update the contentMode
+    // so it still looks the same but has different bounds.
+    
+    // Example 1: element has resizeMode "cover", so it's image is larger than the view.
+    // We want to update element's resizeMode to whatever resizeMode the toElement has,
+    // and cancel out the visual change this will result in. So if we change from "cover"
+    // to "contain", the image will get smaller so that it exactly fits in the view's bounds.
+    // That means we have to know how big the image is, how far it goes beyond the view's bounds
+    // right now, and style it the same way with the new resize mode. (Basically make resizeMode
+    // "contain" look the same as "cover" by changing the view's frame/bounds)
+    
+    switch (contentMode) {
+        case UIViewContentModeScaleAspectFill: {
+            CGSize fromImageSize = CGSizeMake(element.image.size.width / element.image.scale,
+                                              element.image.size.height / element.image.scale);
+            CGFloat fromWidthRatio = fromImageSize.width / element.bounds.size.width;
+            CGFloat fromHeightRatio = fromImageSize.height / element.bounds.size.height;
+            
+            CGFloat newWidth, newHeight;
+            if (fromWidthRatio > fromHeightRatio) {
+                newWidth = element.bounds.size.width * fromHeightRatio;
+                newHeight = element.bounds.size.height;
+            } else {
+                newWidth = element.bounds.size.width;
+                newHeight = element.bounds.size.height * fromWidthRatio;
+            }
+            
+            return CGRectMake(element.bounds.origin.x - ((newWidth - element.bounds.size.width) / 2),
+                              element.bounds.origin.y - ((newHeight - element.bounds.size.height) / 2),
+                              newWidth,
+                              newHeight);
+            break;
+        }
+        case UIViewContentModeScaleAspectFit: {
+            CGSize fromImageSize = CGSizeMake(element.image.size.width / element.image.scale,
+                                              element.image.size.height / element.image.scale);
+            CGFloat fromWidthRatio = fromImageSize.width / element.bounds.size.width;
+            CGFloat fromHeightRatio = fromImageSize.height / element.bounds.size.height;
+            
+            CGFloat newWidth, newHeight;
+            if (fromWidthRatio > fromHeightRatio) {
+                newWidth = element.bounds.size.width / fromHeightRatio;
+                newHeight = element.bounds.size.height;
+            } else {
+                newWidth = element.bounds.size.width;
+                newHeight = element.bounds.size.height / fromWidthRatio;
+            }
+            
+            return CGRectMake(element.bounds.origin.x - ((newWidth - element.bounds.size.width) / 2),
+                              element.bounds.origin.y - ((newHeight - element.bounds.size.height) / 2),
+                              newWidth,
+                              newHeight);
+        }
+        default: {
+            // TODO: Other resizeModes are not yet implemented.
+            return element.bounds;
+        }
+    }
+    
+    
 }
 
 @end
