@@ -54,7 +54,9 @@
     self.frame = self.location.fromFrame;
     
     if ([element isKindOfClass:UIImageView.class]) {
-        element.bounds = [self getSizeWithContentMode:(UIImageView *)element contentMode:_toElement.contentMode];
+        CGRect before = element.bounds;
+        [self resizeViewToContentMode:(UIImageView *)element contentMode:_toElement.contentMode];
+        CGRect after = element.bounds;
         element.layer.bounds = element.bounds;
         element.contentMode = _toElement.contentMode;
     }
@@ -86,10 +88,10 @@
 }
 
 /**
- Returns a size where the given `element` looks exactly the same with the given `contentMode` as it does currently without it.
+ Resizes the given view to a size where it looks exactly the same with the given `contentMode` as it does currently without it.
  */
-- (CGRect)getSizeWithContentMode:(UIImageView *)element
-                     contentMode:(UIViewContentMode)contentMode {
+- (void)resizeViewToContentMode:(UIImageView *)element
+                    contentMode:(UIViewContentMode)contentMode {
     // TODO: We want to run different scaling techniques depending on the resize mode.
     // In general, we want to scale/resize the element/toElement directly, since that
     // is contained in the AnimatedReactView. This means, the AnimatedReactView will
@@ -105,62 +107,93 @@
     // "contain" look the same as "cover" by changing the view's frame/bounds)
     
     if (contentMode == element.contentMode) {
-        return element.bounds;
+        return;
     }
     
     // TODO: This is still a bit off. See: https://github.com/vitoziv/VICMAImageView/blob/master/VICMAImageView/VICMAImageView.m#L156-L278
     // TODO: Update center
     
     switch (contentMode) {
-        case UIViewContentModeScaleAspectFill: {
-            CGSize imageSize = CGSizeMake(element.image.size.width / element.image.scale,
-                                              element.image.size.height / element.image.scale);
-            CGFloat imageAspectRatio = imageSize.width / imageSize.height;
-            
-            CGFloat newWidth, newHeight;
-            if (imageAspectRatio > 1) {
-                // width is longer edge
-                newWidth = element.bounds.size.width * imageAspectRatio;
-                newHeight = element.bounds.size.height;
-            } else {
-                // height is longer edge
-                newWidth = element.bounds.size.width;
-                newHeight = element.bounds.size.height * imageAspectRatio;
-            }
-            
-            return CGRectMake(element.bounds.origin.x - ((newWidth - element.bounds.size.width) / 2),
-                              element.bounds.origin.y - ((newHeight - element.bounds.size.height) / 2),
-                              newWidth,
-                              newHeight);
-        }
-        case UIViewContentModeScaleAspectFit: {
-            CGSize imageSize = CGSizeMake(element.image.size.width / element.image.scale,
-                                          element.image.size.height / element.image.scale);
-            CGFloat imageAspectRatio = imageSize.width / imageSize.height;
-            
-            CGFloat newWidth, newHeight;
-            if (imageAspectRatio > 1) {
-                // width is longer edge
-                newWidth = element.bounds.size.width;
-                newHeight = element.bounds.size.height * imageAspectRatio;
-            } else {
-                // height is longer edge
-                newWidth = element.bounds.size.width * imageAspectRatio;
-                newHeight = element.bounds.size.height;
-            }
-            
-            return CGRectMake(element.bounds.origin.x - ((newWidth - element.bounds.size.width) / 2),
-                              element.bounds.origin.y - ((newHeight - element.bounds.size.height) / 2),
-                              newWidth,
-                              newHeight);
-        }
+        case UIViewContentModeScaleAspectFill:
+            [self updateViewToAspectFill:element];
+            break;
+        case UIViewContentModeScaleAspectFit:
+            [self updateViewToAspectFit:element];
+            break;
+        case UIViewContentModeScaleToFill:
+            [self updateViewToScaleToFill:element];
+            break;
+        case UIViewContentModeCenter:
+            [self updateViewToCenter:element];
+            break;
         default: {
             // TODO: Other resizeModes are not yet implemented.
-            return element.bounds;
+            break;
         }
     }
+}
+
+
+
+- (void)updateViewToAspectFit:(UIImageView*)imageView
+{
+    CGSize imageSize = CGSizeMake(imageView.image.size.width / imageView.image.scale,
+                                  imageView.image.size.height / imageView.image.scale);
     
+    CGFloat widthRatio = imageSize.width / self.bounds.size.width;
+    CGFloat heightRatio = imageSize.height / self.bounds.size.height;
     
+    if (widthRatio > heightRatio) {
+        imageSize = CGSizeMake(imageSize.width / widthRatio, imageSize.height / widthRatio);
+    } else {
+        imageSize = CGSizeMake(imageSize.width / heightRatio, imageSize.height / heightRatio);
+    }
+    
+    imageView.bounds = CGRectMake(0, 0, imageSize.width, imageSize.height);
+    imageView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+}
+
+- (void)updateViewToAspectFill:(UIImageView*)imageView
+{
+    CGSize imageSize = CGSizeMake(imageView.image.size.width / imageView.image.scale,
+                                  imageView.image.size.height / imageView.image.scale);
+    
+    CGFloat widthRatio = imageSize.width / self.bounds.size.width;
+    CGFloat heightRatio = imageSize.height / self.bounds.size.height;
+    
+    if (widthRatio > heightRatio) {
+        imageSize = CGSizeMake(imageSize.width / heightRatio, imageSize.height / heightRatio);
+    } else {
+        imageSize = CGSizeMake(imageSize.width / widthRatio, imageSize.height / widthRatio);
+    }
+    
+    imageView.bounds = CGRectMake(0, 0, imageSize.width, imageSize.height);
+    [self centerImageViewToSuperView:imageView];
+}
+
+- (void)updateViewToScaleToFill:(UIImageView*)imageView
+{
+    imageView.bounds = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    [self centerImageViewToSuperView:imageView];
+}
+
+- (void)updateViewToCenter:(UIImageView*)imageView
+{
+    [self fitImageViewSizeToImageSize:imageView];
+    [self centerImageViewToSuperView:imageView];
+}
+
+- (void)fitImageViewSizeToImageSize:(UIImageView*)imageView
+{
+    CGSize imageSize = CGSizeMake(imageView.image.size.width / imageView.image.scale,
+                                  imageView.image.size.height / imageView.image.scale);
+    
+    imageView.bounds = CGRectMake(0, 0, imageSize.width, imageSize.height);
+}
+
+- (void)centerImageViewToSuperView:(UIImageView*)imageView
+{
+    imageView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
 }
 
 @end
