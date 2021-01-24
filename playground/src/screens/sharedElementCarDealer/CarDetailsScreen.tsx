@@ -122,9 +122,9 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
   );
 };
 CarDetailsScreen.options = {
-  statusBar: {
-    visible: false,
-  },
+  // statusBar: {
+  //   visible: false,
+  // },
   topBar: {
     visible: false,
   },
