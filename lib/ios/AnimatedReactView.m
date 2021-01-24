@@ -50,15 +50,15 @@
     _originalTransform = element.layer.transform;
     _originalLayoutBounds = element.layer.bounds;
     _originalContentMode = element.contentMode;
-    self.contentMode = element.contentMode;
+    //self.contentMode = element.contentMode;
     self.frame = self.location.fromFrame;
     
-    if ([element isKindOfClass:UIImageView.class]) {
+    if ([_reactView isKindOfClass:UIImageView.class]) {
         CGRect before = element.bounds;
-        [self resizeViewToContentMode:(UIImageView *)element contentMode:_toElement.contentMode];
+        NSLog(@"We're going from %d to %d", element.contentMode, _toElement.contentMode);
+        [self resizeViewToContentMode:(UIImageView *)_reactView contentMode:_toElement.contentMode];
         CGRect after = element.bounds;
-        element.layer.bounds = element.bounds;
-        element.contentMode = _toElement.contentMode;
+        _reactView.contentMode = _toElement.contentMode;
     }
     
     _originalParent = _reactView.superview;
@@ -90,7 +90,7 @@
 /**
  Resizes the given view to a size where it looks exactly the same with the given `contentMode` as it does currently without it.
  */
-- (void)resizeViewToContentMode:(UIImageView *)element
+- (void)resizeViewToContentMode:(UIImageView *)imageView
                     contentMode:(UIViewContentMode)contentMode {
     // TODO: We want to run different scaling techniques depending on the resize mode.
     // In general, we want to scale/resize the element/toElement directly, since that
@@ -106,26 +106,39 @@
     // right now, and style it the same way with the new resize mode. (Basically make resizeMode
     // "contain" look the same as "cover" by changing the view's frame/bounds)
     
-    if (contentMode == element.contentMode) {
+    if (contentMode == imageView.contentMode) {
         return;
     }
     
     // TODO: This is still a bit off. See: https://github.com/vitoziv/VICMAImageView/blob/master/VICMAImageView/VICMAImageView.m#L156-L278
-    // TODO: Update center
     
+    CGSize imageSize = CGSizeMake(imageView.image.size.width / imageView.image.scale,
+                                  imageView.image.size.height / imageView.image.scale);
     switch (contentMode) {
-        case UIViewContentModeScaleAspectFill:
-            [self updateViewToAspectFill:element];
+        case UIViewContentModeScaleAspectFill: {
+            // "???" -> "cover"
+            // image is going to be larger than view (clipped)
+            CGFloat widthRatio = imageView.bounds.size.width / imageSize.width;
+            CGFloat heightRatio = imageView.bounds.size.height / imageSize.height;
+            CGFloat scale = MIN(widthRatio, heightRatio);
+            CGFloat imageWidth = imageSize.width / scale;
+            CGFloat imageHeight = imageSize.height / scale;
+            imageView.bounds = CGRectMake(0, 0, imageWidth, imageHeight);
+            imageView.center = CGPointMake(imageWidth / 2, imageHeight / 2);
             break;
-        case UIViewContentModeScaleAspectFit:
-            [self updateViewToAspectFit:element];
+        }
+        case UIViewContentModeScaleAspectFit: {
+            // "???" -> "contain"
+            // image is going to fit in view with one side being an exact match
+            CGFloat widthRatio = imageView.bounds.size.width / imageSize.width;
+            CGFloat heightRatio = imageView.bounds.size.height / imageSize.height;
+            CGFloat scale = MIN(widthRatio, heightRatio);
+            CGFloat imageWidth = scale * imageSize.width;
+            CGFloat imageHeight = scale * imageSize.height;
+            imageView.bounds = CGRectMake(0, 0, imageWidth, imageHeight);
+            imageView.center = CGPointMake(imageWidth / 2, imageHeight / 2);
             break;
-        case UIViewContentModeScaleToFill:
-            [self updateViewToScaleToFill:element];
-            break;
-        case UIViewContentModeCenter:
-            [self updateViewToCenter:element];
-            break;
+        }
         default: {
             // TODO: Other resizeModes are not yet implemented.
             break;
@@ -134,7 +147,7 @@
 }
 
 
-
+/*
 - (void)updateViewToAspectFit:(UIImageView*)imageView
 {
     CGSize imageSize = CGSizeMake(imageView.image.size.width / imageView.image.scale,
@@ -195,5 +208,6 @@
 {
     imageView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
 }
+*/
 
 @end
