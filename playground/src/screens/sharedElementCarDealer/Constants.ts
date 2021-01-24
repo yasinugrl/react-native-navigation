@@ -3,7 +3,7 @@ import { CarItem } from '../../assets/cars';
 
 const SPRING_CONFIG = { mass: 3, damping: 500, stiffness: 200 };
 
-export const SET_DURATION = 500;
+export const SET_DURATION = 5000;
 export function buildSharedElementAnimations(car: CarItem): AnimationOptions {
   return {
     showModal: {
