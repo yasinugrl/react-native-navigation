@@ -111,6 +111,7 @@
     }
     
     // TODO: This is still a bit off. See: https://github.com/vitoziv/VICMAImageView/blob/master/VICMAImageView/VICMAImageView.m#L156-L278
+    // Maybe helpful: https://gist.github.com/tomasbasham/10533743
     
     CGSize imageSize = CGSizeMake(imageView.image.size.width / imageView.image.scale,
                                   imageView.image.size.height / imageView.image.scale);
