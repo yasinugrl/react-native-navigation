@@ -1,5 +1,5 @@
 // tslint:disable jsdoc-format
-import { ImageRequireSource, Insets } from 'react-native';
+import { ImageRequireSource, ImageSourcePropType, Insets } from 'react-native';
 
 // TODO: Import ColorValue instead when upgrading @types/react-native to 0.63+
 // Only assign PlatformColor or DynamicColorIOS as a Color symbol!
@@ -376,6 +376,17 @@ export interface OptionsTopBarBackButton {
    * Set testID for reference in E2E tests
    */
   testID?: string;
+  /**
+   * Enables iOS 14 back button menu display
+   * #### (iOS specific)
+   * @default true
+   */
+  enableMenu?: boolean;
+  /**
+   * Allows the NavBar to be translucent (blurred)
+   * #### (iOS specific)
+   */
+  displayMode?: 'default' | 'generic' | 'minimal';
 }
 
 export interface OptionsTopBarScrollEdgeAppearanceBackground {
@@ -393,6 +404,16 @@ export interface OptionsTopBarScrollEdgeAppearanceBackground {
 export interface OptionsTopBarScrollEdgeAppearance {
   background?: OptionsTopBarScrollEdgeAppearanceBackground;
   active: boolean;
+  /**
+   * Disable the border on bottom of the navbar
+   * #### (iOS specific)
+   * @default false
+   */
+  noBorder?: boolean;
+  /**
+   * Change the navbar border color
+   */
+  borderColor?: Color;
 }
 
 export interface OptionsTopBarBackground {
@@ -517,6 +538,10 @@ export interface OptionsTopBarButton {
    */
   disabledColor?: Color;
   /**
+   * Set icon background style
+   */
+  iconBackground?: IconBackgroundOptions;
+  /**
    * Set testID for reference in E2E tests
    */
   testID?: string;
@@ -529,6 +554,7 @@ export interface OptionsTopBarButton {
 
 export interface OptionsSearchBar {
   visible?: boolean;
+  focus?: boolean;
   hideOnScroll?: boolean;
   hideTopBarOnFocus?: boolean;
   obscuresBackgroundDuringPresentation?: boolean;
@@ -726,6 +752,12 @@ export interface OptionsBottomTabs {
    */
   animate?: boolean;
   /**
+   * Controls wether tab selection is animated or not
+   * #### (android specific)
+   * @default true
+   */
+  animateTabSelection?: boolean;
+  /**
    * Use large icons when possible, even when three tabs without titles are displayed
    * #### (android specific)
    * @default false
@@ -805,7 +837,7 @@ export interface ImageSystemSource {
   fallback?: ImageRequireSource | string;
 }
 
-export type ImageResource = ImageRequireSource | string | ImageSystemSource;
+export type ImageResource = ImageSourcePropType | string | ImageSystemSource;
 
 export interface OptionsBottomTab {
   dotIndicator?: DotIndicatorOptions;
@@ -840,6 +872,16 @@ export interface OptionsBottomTab {
    */
   iconColor?: Color;
   /**
+   * Set the icon width
+   * #### (Android specific)
+   */
+  iconWidth?: number;
+  /**
+   * Set the icon height
+   * #### (Android specific)
+   */
+  iconHeight?: number;
+  /**
    * Set the text color
    */
   textColor?: Color;
@@ -871,7 +913,6 @@ export interface OptionsBottomTab {
   fontSize?: number;
   /**
    * Set the insets of the icon
-   * #### (iOS specific)
    */
   iconInsets?: Insets;
   /**
@@ -1143,15 +1184,30 @@ export interface StackAnimationOptions {
   /**
    * Configure animations for the top bar
    */
-  topBar?: ViewAnimationOptions;
+  topBar?:
+    | ViewAnimationOptions
+    | {
+        enter?: ViewAnimationOptions;
+        exit?: ViewAnimationOptions;
+      };
   /**
    * Configure animations for the bottom tabs
    */
-  bottomTabs?: ViewAnimationOptions;
+  bottomTabs?:
+    | ViewAnimationOptions
+    | {
+        enter?: ViewAnimationOptions;
+        exit?: ViewAnimationOptions;
+      };
   /**
    * Configure animations for the content (Screen)
    */
-  content?: ViewAnimationOptions;
+  content?:
+    | ViewAnimationOptions
+    | {
+        enter?: ViewAnimationOptions;
+        exit?: ViewAnimationOptions;
+      };
   /**
    * Animations to be applied on elements which are shared between the appearing and disappearing screens
    */
@@ -1169,13 +1225,14 @@ export interface AnimationOptions {
   /**
    * Configure the setStackRoot animation
    */
-  setStackRoot?: ViewAnimationOptions;
+  setStackRoot?: ViewAnimationOptions | StackAnimationOptions;
   /**
    * Configure the setRoot animation
    */
   setRoot?: ViewAnimationOptions;
   /**
-   * Configure what animates when a screen is pushed
+   * Configure the animation of the pushed screen
+   * #### (Android specific)
    */
   push?: StackAnimationOptions;
   /**
@@ -1208,6 +1265,29 @@ export interface WindowOptions {
    * Configure the background color of the application's main window.
    */
   backgroundColor?: Color;
+}
+
+export interface IconBackgroundOptions {
+  /**
+   * Set background color
+   */
+  color: Color;
+  /**
+   * Set background color on disabled state
+   */
+  disabledColor?: Color;
+  /**
+   * Set corner radius
+   */
+  cornerRadius?: number;
+  /**
+   * Set width
+   */
+  width?: number;
+  /**
+   * Set height
+   */
+  height?: number;
 }
 
 export interface Options {
