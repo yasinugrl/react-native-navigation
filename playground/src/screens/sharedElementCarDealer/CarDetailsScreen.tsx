@@ -14,6 +14,7 @@ import useDismissGesture from './useDismissGesture';
 import { buildFullScreenSharedElementAnimations, SET_DURATION } from './Constants';
 import PressableScale from '../../components/PressableScale';
 import colors from '../../commons/Colors';
+import Video from 'react-native-video';
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
 const ReanimatedFastImage = Reanimated.createAnimatedComponent(FastImage);
@@ -101,6 +102,24 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
         <Text style={styles.title} nativeID={`title${car.id}Dest`}>
           {car.name}
         </Text>
+        <Video
+          source={require('./asap.mp4')}
+          style={{
+            width: '100%',
+            aspectRatio: 16 / 9,
+          }}
+          paused={false}
+          allowsExternalPlayback={false}
+          automaticallyWaitsToMinimizeStalling={false}
+          disableFocus={true}
+          repeat={true}
+          useTextureView={false}
+          controls={false}
+          playWhenInactive={true}
+          posterResizeMode="contain"
+          resizeMode="contain"
+          ignoreSilentSwitch="ignore"
+        />
         <Text style={styles.description}>{car.description}</Text>
         <PressableScale weight="medium" activeScale={0.95} style={styles.buyButton}>
           <Text style={styles.buyText}>Buy</Text>
