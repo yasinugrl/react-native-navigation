@@ -124,7 +124,7 @@ public class ModalStackTest extends BaseTest {
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.dismissModal(modal4.getId(), root, listener);
         verify(listener).onSuccess(stack.getId());
-        verify(emitter).emitModalDismissed(stack.getId(), modal4.getCurrentComponentName(), 1);
+        verify(emitter).emitModalDismissed(stack.getId(), modal4.currentComponentName, 1);
     }
 
     @SuppressWarnings("Convert2Lambda")
