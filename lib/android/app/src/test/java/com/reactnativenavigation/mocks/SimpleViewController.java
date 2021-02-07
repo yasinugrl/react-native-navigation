@@ -18,6 +18,8 @@ import org.mockito.Mockito;
 
 import androidx.annotation.NonNull;
 
+import java.util.Objects;
+
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class SimpleViewController extends ChildController<SimpleViewController.SimpleView> {
@@ -55,13 +57,13 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public int getTopInset() {
-        int statusBarInset = resolveCurrentOptions().statusBar.isHiddenOrDrawBehind() ? 0 : 63;
+        int statusBarInset = Objects.requireNonNull(resolveCurrentOptions()).statusBar.isHiddenOrDrawBehind() ? 0 : 63;
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 
     @Override
     public void applyBottomInset() {
-        if (view != null) presenter.applyBottomInset(view, getBottomInset());
+        presenter.applyBottomInset(getView(), getBottomInset());
     }
 
     @Override

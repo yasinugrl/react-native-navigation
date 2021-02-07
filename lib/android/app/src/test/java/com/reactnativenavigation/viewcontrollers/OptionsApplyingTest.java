@@ -90,7 +90,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void initialOptionsAppliedOnAppear() {
-        uut.options.topBar.title.text = new Text("the title");
+        uut.getOptions().topBar.title.text = new Text("the title");
         StackController stackController = TestUtils.newStackController(activity).build();
         stackController.ensureViewIsCreated();
         stackController.push(uut, new CommandListenerAdapter());
@@ -102,11 +102,11 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void mergeNavigationOptionsUpdatesCurrentOptions() {
-        assertThat(uut.options.topBar.title.text.get("")).isEmpty();
+        assertThat(uut.getOptions().topBar.title.text.get("")).isEmpty();
         Options options = new Options();
         options.topBar.title.text = new Text("new title");
         uut.mergeOptions(options);
-        assertThat(uut.options.topBar.title.text.get()).isEqualTo("new title");
+        assertThat(uut.getOptions().topBar.title.text.get()).isEqualTo("new title");
     }
 
     @Test
@@ -123,7 +123,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBackBackgroundColor() {
-        uut.options.topBar.background.color = new Colour(Color.RED);
+        uut.getOptions().topBar.background.color = new Colour(Color.RED);
         stack.push(uut, new CommandListenerAdapter());
         idleMainLooper();
         assertThat(((ColorDrawable) stack.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
@@ -133,7 +133,7 @@ public class OptionsApplyingTest extends BaseTest {
     public void appliesTopBarVisible() {
         stack.push(uut, new CommandListenerAdapter());
 
-        assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
+        assertThat(uut.getInitialOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBar.title.text = new Text("the title");
         assertThat(stack.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
 

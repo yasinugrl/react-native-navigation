@@ -56,6 +56,6 @@ public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChan
     }
 
     private Options getTabOptions(int position) {
-        return tabs.get(position).options;
+        return tabs.get(position).getOptions();
     }
 }

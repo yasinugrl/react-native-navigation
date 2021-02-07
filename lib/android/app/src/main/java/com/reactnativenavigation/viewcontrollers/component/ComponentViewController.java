@@ -17,6 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ComponentViewController extends ChildController<ComponentLayout> {
@@ -58,20 +62,20 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public ScrollEventListener getScrollEventListener() {
-        return perform(view, null, ComponentLayout::getScrollEventListener);
+        return perform(getView(), null, ComponentLayout::getScrollEventListener);
     }
 
     @Override
     public void onViewDidAppear() {
         super.onViewDidAppear();
-        if (view != null && lastVisibilityState == VisibilityState.Disappear) view.sendComponentStart();
+        if ( lastVisibilityState == VisibilityState.Disappear) getView().sendComponentStart();
         lastVisibilityState = VisibilityState.Appear;
     }
 
     @Override
     public void onViewDisappear() {
         lastVisibilityState = VisibilityState.Disappear;
-        if (view != null) view.sendComponentStop();
+     getView().sendComponentStop();
         super.onViewDisappear();
     }
 
@@ -90,7 +94,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public boolean isViewShown() {
-        return super.isViewShown() && view != null && view.isReady();
+        return super.isViewShown() &&  getView().isReady();
     }
 
     @NonNull
@@ -109,34 +113,37 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void applyTopInset() {
-        if (view != null) presenter.applyTopInsets(view, getTopInset());
+         presenter.applyTopInsets(getView(), getTopInset());
     }
 
     @Override
     public int getTopInset() {
-        int statusBarInset = resolveCurrentOptions(presenter.defaultOptions).statusBar.isHiddenOrDrawBehind() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
+        int statusBarInset = Objects.requireNonNull(resolveCurrentOptions(presenter.defaultOptions)).statusBar.isHiddenOrDrawBehind() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 
     @Override
     public void applyBottomInset() {
-        if (view != null) presenter.applyBottomInset(view, getBottomInset());
+  presenter.applyBottomInset(getView(), getBottomInset());
     }
 
+    @NotNull
     @Override
     protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
-        ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
-                insets.getSystemWindowInsetLeft(),
-                insets.getSystemWindowInsetTop(),
-                insets.getSystemWindowInsetRight(),
-                Math.max(insets.getSystemWindowInsetBottom() - getBottomInset(), 0)
-        ));
+        if (view != null) {
+            ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
+                    insets.getSystemWindowInsetLeft(),
+                    insets.getSystemWindowInsetTop(),
+                    insets.getSystemWindowInsetRight(),
+                    Math.max(insets.getSystemWindowInsetBottom() - getBottomInset(), 0)
+            ));
+        }
         return insets;
     }
 
     @Override
     public void destroy() {
-        final boolean blurOnUnmount = options != null && options.modal.blurOnUnmount.isTrue();
+        final boolean blurOnUnmount = getOptions().modal.blurOnUnmount.isTrue();
         if (blurOnUnmount) {
             blurActivityFocus();
         }

@@ -174,17 +174,17 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut.onViewWillAppear();
         ViewController currentTab = tab(0);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(currentTab));
-        assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(0));
+        assertThat(uut.getOptions().topBar.title.text.get()).isEqualTo(createTabTopBarTitle(0));
 
         uut.switchToTab(1);
         currentTab = tab(1);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(currentTab));
-        assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(1));
+        assertThat(uut.getOptions().topBar.title.text.get()).isEqualTo(createTabTopBarTitle(1));
 
         uut.switchToTab(0);
         currentTab = tab(0);
         verify(uut, times(2)).applyChildOptions(any(Options.class), eq(currentTab));
-        assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(0));
+        assertThat(uut.getOptions().topBar.title.text.get()).isEqualTo(createTabTopBarTitle(0));
     }
 
     private TestReactView getActualTabView(int index) {

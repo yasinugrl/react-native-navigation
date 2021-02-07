@@ -28,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.Objects;
+
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static com.reactnativenavigation.utils.CollectionUtils.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -139,7 +141,7 @@ public class SideMenuControllerTest extends BaseTest {
     public void applyChildOptions() {
         uut.applyChildOptions(new Options(), child);
         verify(presenter).applyChildOptions(eq(resolvedOptions));
-        verify(parent).applyChildOptions(uut.options, child);
+        verify(parent).applyChildOptions(uut.getOptions(), child);
     }
 
     @Test
@@ -166,10 +168,10 @@ public class SideMenuControllerTest extends BaseTest {
 
     @Test
     public void mergeOptions_optionsAreClearedAfterMerge() {
-        Options initialOptions = uut.options;
+        Options initialOptions = uut.getOptions();
         Options options = new Options();
         uut.mergeOptions(options);
-        assertThat(uut.options.sideMenuRootOptions).isNotEqualTo(initialOptions.sideMenuRootOptions);
+        assertThat(uut.getOptions().sideMenuRootOptions).isNotEqualTo(initialOptions.sideMenuRootOptions);
     }
 
     @Test
@@ -183,7 +185,7 @@ public class SideMenuControllerTest extends BaseTest {
     @Test
     public void resolveCurrentOptions_centerOptionsAreMergedEvenIfDrawerIsOpen() {
         uut.setLeftController(left);
-        center.options.topBar.title.text = new Text("Center");
+        center.getOptions().topBar.title.text = new Text("Center");
         assertThat(uut.resolveCurrentOptions().topBar.title.text.hasValue()).isTrue();
 
         openLeftMenu();
@@ -202,7 +204,7 @@ public class SideMenuControllerTest extends BaseTest {
         Options rightVisible = new Options();
         rightVisible.sideMenuRootOptions.right.visible = new Bool(true);
         right.mergeOptions(rightVisible);
-        assertThat(uut.resolveCurrentOptions().sideMenuRootOptions.left.enabled.get()).isFalse();
+        assertThat(Objects.requireNonNull(uut.resolveCurrentOptions()).sideMenuRootOptions.left.enabled.get()).isFalse();
     }
 
     @Test
@@ -210,7 +212,7 @@ public class SideMenuControllerTest extends BaseTest {
         SideMenuOptions options = new SideMenuOptions();
         assertThat(options.width.hasValue()).isFalse();
         assertThat(options.height.hasValue()).isFalse();
-        uut.options.sideMenuRootOptions.left = options;
+        uut.getOptions().sideMenuRootOptions.left = options;
 
         SimpleComponentViewController componentViewController = new SimpleComponentViewController(activity, childRegistry, "left", new Options());
         uut.setLeftController(componentViewController);
@@ -225,7 +227,7 @@ public class SideMenuControllerTest extends BaseTest {
         SideMenuOptions options = new SideMenuOptions();
         options.height = new Number(100);
         options.width = new Number(200);
-        uut.options.sideMenuRootOptions.left = options;
+        uut.getOptions().sideMenuRootOptions.left = options;
 
         SimpleComponentViewController componentViewController = new SimpleComponentViewController(activity, childRegistry, "left", new Options());
         uut.setLeftController(componentViewController);
@@ -243,7 +245,7 @@ public class SideMenuControllerTest extends BaseTest {
         SideMenuOptions options = new SideMenuOptions();
         assertThat(options.width.hasValue()).isFalse();
         assertThat(options.height.hasValue()).isFalse();
-        uut.options.sideMenuRootOptions.left = options;
+        uut.getOptions().sideMenuRootOptions.left = options;
 
         SimpleComponentViewController componentViewController = new SimpleComponentViewController(activity, childRegistry, "right", new Options());
         uut.setRightController(componentViewController);
@@ -258,7 +260,7 @@ public class SideMenuControllerTest extends BaseTest {
         SideMenuOptions options = new SideMenuOptions();
         options.height = new Number(100);
         options.width = new Number(200);
-        uut.options.sideMenuRootOptions.left = options;
+        uut.getOptions().sideMenuRootOptions.left = options;
 
         SimpleComponentViewController componentViewController = new SimpleComponentViewController(activity, childRegistry, "left", new Options());
         uut.setLeftController(componentViewController);

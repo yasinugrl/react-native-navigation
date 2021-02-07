@@ -62,7 +62,7 @@ public class BackButtonHelperTest extends BaseTest {
     public void addToChild_doesNotAddIfBackButtonHidden() {
         disablePushAnimation(child1, child2);
         stack.push(child1, new CommandListenerAdapter());
-        child2.options.topBar.buttons.back.visible = new Bool(false);
+        child2.getOptions().topBar.buttons.back.visible = new Bool(false);
         stack.push(child2, new CommandListenerAdapter());
 
         verify(child2, times(0)).mergeOptions(any());
@@ -70,8 +70,8 @@ public class BackButtonHelperTest extends BaseTest {
 
     @Test
     public void clear() {
-        child1.options.topBar.buttons.back.visible = new Bool(true);
+        child1.getOptions().topBar.buttons.back.visible = new Bool(true);
         uut.clear(child1);
-        assertThat(child1.options.topBar.buttons.back.visible.get()).isFalse();
+        assertThat(child1.getOptions().topBar.buttons.back.visible.get()).isFalse();
     }
 }

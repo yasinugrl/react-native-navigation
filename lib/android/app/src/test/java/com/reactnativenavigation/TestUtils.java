@@ -46,7 +46,7 @@ public class TestUtils {
     }
 
     public static void hideBackButton(ViewController viewController) {
-        viewController.options.topBar.buttons.back.visible = new Bool(false);
+        viewController.getOptions().topBar.buttons.back.visible = new Bool(false);
     }
 
     public static <T extends View> T spyOn(T child) {

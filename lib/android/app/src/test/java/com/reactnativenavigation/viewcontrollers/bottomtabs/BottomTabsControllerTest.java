@@ -187,7 +187,7 @@ public class BottomTabsControllerTest extends BaseTest {
         ParentController parent = Mockito.mock(ParentController.class);
         uut.setParentController(parent);
 
-        child1.options.bottomTabsOptions.backgroundColor = new Colour(Color.RED);
+        child1.getOptions().bottomTabsOptions.backgroundColor = new Colour(Color.RED);
         child1.onViewWillAppear();
 
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
@@ -364,8 +364,8 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(uut.getSelectedIndex()).isZero();
         uut.mergeOptions(options);
         assertThat(uut.getSelectedIndex()).isOne();
-        assertThat(uut.options.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
-        assertThat(uut.initialOptions.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
+        assertThat(uut.getOptions().bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
+        assertThat(uut.getInitialOptions().bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
     }
 
     @Test
@@ -398,7 +398,7 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(child1.getTopInset()).isEqualTo(getStatusBarHeight());
         assertThat(child2.getTopInset()).isEqualTo(getStatusBarHeight());
 
-        child1.options.statusBar.drawBehind = new Bool(true);
+        child1.getOptions().statusBar.drawBehind = new Bool(true);
         assertThat(child1.getTopInset()).isEqualTo(0);
         assertThat(child2.getTopInset()).isEqualTo(getStatusBarHeight());
 

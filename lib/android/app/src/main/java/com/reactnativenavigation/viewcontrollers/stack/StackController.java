@@ -106,10 +106,10 @@ public class StackController extends ParentController<StackLayout> {
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), this, child);
-        fabPresenter.applyOptions(this.options.fabOptions, child, getView());
+        fabPresenter.applyOptions(this.getOptions().fabOptions, child, getView());
         performOnParentController(parent ->
                 parent.applyChildOptions(
-                        this.options.copy()
+                        this.getOptions().copy()
                                 .clearTopBarOptions()
                                 .clearAnimationOptions()
                                 .clearFabOptions()

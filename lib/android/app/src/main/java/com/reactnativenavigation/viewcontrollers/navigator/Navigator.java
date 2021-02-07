@@ -42,6 +42,7 @@ public class Navigator extends ParentController {
     private final CoordinatorLayout overlaysLayout;
     private ViewGroup contentLayout;
     private Options defaultOptions = new Options();
+    boolean removeSplashView = true;
 
     @Override
     public void setDefaultOptions(Options defaultOptions) {
@@ -65,12 +66,14 @@ public class Navigator extends ParentController {
     public void setContentLayout(ViewGroup contentLayout) {
         this.contentLayout = contentLayout;
         contentLayout.addView(rootLayout);
-        modalsLayout.setVisibility(View.GONE); contentLayout.addView(modalsLayout);
-        overlaysLayout.setVisibility(View.GONE); contentLayout.addView(overlaysLayout);
+        modalsLayout.setVisibility(View.GONE);
+        contentLayout.addView(modalsLayout);
+        overlaysLayout.setVisibility(View.GONE);
+        contentLayout.addView(overlaysLayout);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
-        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
+        super(activity, childRegistry, "navigator" + CompatUtils.generateViewId(), new Presenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
         this.rootPresenter = rootPresenter;
@@ -139,8 +142,7 @@ public class Navigator extends ParentController {
     public void setRoot(final ViewController viewController, CommandListener commandListener, ReactInstanceManager reactInstanceManager) {
         previousRoot = root;
         modalStack.destroy();
-        final boolean removeSplashView = isRootNotCreated();
-        if (isRootNotCreated()) getView();
+        getView();
         root = viewController;
         root.setOverlay(new RootOverlay(getActivity(), contentLayout));
         rootPresenter.setRoot(root, defaultOptions, new CommandListenerAdapter(commandListener) {
@@ -148,6 +150,7 @@ public class Navigator extends ParentController {
             public void onSuccess(String childId) {
                 root.onViewDidAppear();
                 if (removeSplashView) contentLayout.removeViewAt(0);
+                removeSplashView = false;
                 destroyPreviousRoot();
                 super.onSuccess(childId);
             }
@@ -191,7 +194,7 @@ public class Navigator extends ParentController {
     }
 
     public void dismissModal(final String componentId, CommandListener listener) {
-        if (isRootNotCreated() && modalStack.size() == 1) {
+        if (removeSplashView && modalStack.size() == 1) {
             listener.onError("Can not dismiss modal if root is not set and only one modal is displayed.");
             return;
         }
@@ -240,9 +243,6 @@ public class Navigator extends ParentController {
         }
     }
 
-    private boolean isRootNotCreated() {
-        return view == null;
-    }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     CoordinatorLayout getModalsLayout() {

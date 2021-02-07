@@ -25,7 +25,7 @@ import com.reactnativenavigation.views.component.Renderable
 import java.util.*
 
 abstract class ViewController<T : ViewGroup?>(
-        private val activity: Activity,
+        open val activity: Activity,
         val id: String,
         private val yellowBoxDelegate: YellowBoxDelegate,
         var initialOptions: Options,
@@ -48,28 +48,26 @@ abstract class ViewController<T : ViewGroup?>(
         fun onViewDisappear(view: View?): Boolean
     }
 
-    var options: Options
+     open var options: Options = initialOptions.copy()
 
     //    val newOptions: com.reactnativenavigation.newoptions.Options = com.reactnativenavigation.newoptions.Options()
-    var view: T? = null
-        get() {
-            if (field == null) {
-                if (isDestroyed) {
-                    throw RuntimeException("Tried to create view after it has already been destroyed")
-                }
-                field = createView()
-                field?.setOnHierarchyChangeListener(this)
-                field?.viewTreeObserver?.addOnGlobalLayoutListener(this)
-            }
-            return field
+    open val view: T by lazy {
+        if (isDestroyed) {
+            throw RuntimeException("Tried to create view after it has already been destroyed")
         }
-    private var parentController: ParentController<out ViewGroup>? = null
+        val field = createView()
+        field?.setOnHierarchyChangeListener(this)
+        field?.viewTreeObserver?.addOnGlobalLayoutListener(this)
+        field
+    }
+
+    var parentController: ParentController<out ViewGroup>? = null
     private var isShown = false
-    var isDestroyed = false
-        private set
+    open var isDestroyed = false
+        protected set
     private var viewVisibilityListener: ViewVisibilityListener = ViewVisibilityListenerAdapter()
     abstract val currentComponentName: String?
-    fun setOverlay(overlay: ViewControllerOverlay) {
+    open fun setOverlay(overlay: ViewControllerOverlay) {
         this.overlay = overlay
     }
 
@@ -80,7 +78,7 @@ abstract class ViewController<T : ViewGroup?>(
     open val scrollEventListener: ScrollEventListener?
         get() = null
 
-    fun addOnAppearedListener(onAppearedListener: Runnable) {
+    open fun addOnAppearedListener(onAppearedListener: Runnable) {
         if (isShown) {
             onAppearedListener.run()
         } else {
@@ -88,7 +86,7 @@ abstract class ViewController<T : ViewGroup?>(
         }
     }
 
-    fun removeOnAppearedListener(onAppearedListener: Runnable?) {
+    open fun removeOnAppearedListener(onAppearedListener: Runnable?) {
         onAppearedListeners.remove(onAppearedListener)
     }
 
@@ -129,7 +127,7 @@ abstract class ViewController<T : ViewGroup?>(
     open fun mergeOptions(options: Options?) {
         initialOptions = initialOptions.mergeWith(options)
         this.options = this.options.mergeWith(options)
-        if (getParentController() != null) {
+        if (parentController != null) {
             this.options.clearOneTimeOptions()
             initialOptions.clearOneTimeOptions()
         }
@@ -140,9 +138,6 @@ abstract class ViewController<T : ViewGroup?>(
     }
 
     open fun setDefaultOptions(defaultOptions: Options?) {}
-    open fun getActivity(): Activity? {
-        return activity
-    }
 
     fun performOnView(task: Func1<View?>) {
         if (view != null) task.run(view)
@@ -152,17 +147,11 @@ abstract class ViewController<T : ViewGroup?>(
         if (parentController != null) task.run(parentController)
     }
 
-    fun getParentController(): ParentController<*>? {
-        return parentController
-    }
 
     fun requireParentController(): ParentController<*>? {
         return parentController
     }
 
-    fun setParentController(parentController: ParentController<*>?) {
-        this.parentController = parentController
-    }
 
     fun performOnParentStack(task: Func1<StackController?>) {
         if (parentController is StackController) {
@@ -234,15 +223,12 @@ abstract class ViewController<T : ViewGroup?>(
         if (view is Destroyable) {
             (view as Destroyable).destroy()
         }
-        if (view != null) {
-            view?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-            view?.setOnHierarchyChangeListener(null)
-            if (view?.parent is ViewGroup) {
-                (view?.parent as ViewManager).removeView(view)
-            }
-            view = null
-            isDestroyed = true
+        view?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+        view?.setOnHierarchyChangeListener(null)
+        if (view?.parent is ViewGroup) {
+            (view?.parent as ViewManager).removeView(view)
         }
+        isDestroyed = true
     }
 
     override fun onGlobalLayout() {
@@ -307,7 +293,5 @@ abstract class ViewController<T : ViewGroup?>(
     val bottomInset: Int
         get() = ObjectUtils.perform<ParentController<out ViewGroup>?, Int>(parentController, 0, FuncR1 { p: ParentController<out ViewGroup>? -> p?.getBottomInset(this) })
 
-    init {
-        options = initialOptions.copy()
-    }
+
 }

@@ -41,7 +41,7 @@ public class ComponentViewControllerTest extends BaseTest {
             public Options resolveCurrentOptions(Options defaultOptions) {
                 // Hacky way to return the same instance of resolvedOptions without copying it.
                 return resolvedOptions
-                        .withDefaultOptions(uut.options)
+                        .withDefaultOptions(uut.getOptions())
                         .withDefaultOptions(defaultOptions);
             }
         });
@@ -167,8 +167,8 @@ public class ComponentViewControllerTest extends BaseTest {
 
     @Test
     public void getTopInset_drawBehind() {
-        uut.options.statusBar.drawBehind = new Bool(true);
-        uut.options.topBar.drawBehind = new Bool(true);
+        uut.getOptions().statusBar.drawBehind = new Bool(true);
+        uut.getOptions().topBar.drawBehind = new Bool(true);
         Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(0);
     }
 
@@ -178,7 +178,7 @@ public class ComponentViewControllerTest extends BaseTest {
         defaultOptions.statusBar.drawBehind = new Bool(true);
         uut.setDefaultOptions(defaultOptions);
 
-        uut.options.topBar.drawBehind = new Bool(true);
+        uut.getOptions().topBar.drawBehind = new Bool(true);
         Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(0);
     }
 

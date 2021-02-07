@@ -54,11 +54,11 @@ open class StackAnimator @JvmOverloads constructor(
         runningSetRootAnimations[appearing] = set
         val setRoot = options.animations.setStackRoot
         if (setRoot.waitForRender.isTrue) {
-            appearing.view.alpha = 0f
-            appearing.addOnAppearedListener {
-                appearing.view.alpha = 1f
+            appearing.view?.alpha = 0f
+            appearing.addOnAppearedListener(Runnable {
+                appearing.view?.alpha = 1f
                 animateSetRoot(set, setRoot, appearing, disappearing, additionalAnimations)
-            }
+            })
         } else {
             animateSetRoot(set, setRoot, appearing, disappearing, additionalAnimations)
         }
@@ -122,7 +122,7 @@ open class StackAnimator @JvmOverloads constructor(
         val pop = resolvedOptions.animations.pop
         val fade = if (pop.content.exit.isFadeAnimation()) pop else FadeOutAnimation()
         val transitionAnimators = transitionAnimatorCreator.create(pop, fade.content.exit, disappearing, appearing)
-        set.playTogether(fade.content.exit.getAnimation(disappearing.view), transitionAnimators)
+        set.playTogether(disappearing.view?.let { fade.content.exit.getAnimation(it) }, transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()
         set.start()
@@ -136,10 +136,10 @@ open class StackAnimator @JvmOverloads constructor(
             additionalAnimations: List<Animator>
     ) {
         val pop = disappearingOptions.animations.pop
-        val animators = mutableListOf(pop.content.exit.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
+        val animators = mutableListOf(disappearing.view?.let { pop.content.exit.getAnimation(it, getDefaultPopAnimation(disappearing.view)) })
         animators.addAll(additionalAnimations)
         if (pop.content.enter.hasValue()) {
-            animators.add(pop.content.enter.getAnimation(appearing.view))
+            animators.add(appearing.view?.let { pop.content.enter.getAnimation(it) })
         }
 
         set.playTogether(animators.toList())
@@ -211,11 +211,11 @@ open class StackAnimator @JvmOverloads constructor(
             set: AnimatorSet
     ) = GlobalScope.launch(Dispatchers.Main.immediate) {
         appearing.setWaitForRender(Bool(true))
-        appearing.view.alpha = 0f
+        appearing.view?.alpha = 0f
         appearing.awaitRender()
         val fade = if (options.animations.push.content.enter.isFadeAnimation()) options.animations.push.content.enter else FadeInAnimation().content.enter
         val transitionAnimators = transitionAnimatorCreator.create(options.animations.push, fade, disappearing, appearing)
-        set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
+        set.playTogether(appearing.view?.let { fade.getAnimation(it) }, transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()
         set.start()
@@ -230,11 +230,11 @@ open class StackAnimator @JvmOverloads constructor(
     ) {
         val push = resolvedOptions.animations.push
         if (push.waitForRender.isTrue) {
-            appearing.view.alpha = 0f
-            appearing.addOnAppearedListener {
-                appearing.view.alpha = 1f
+            appearing.view?.alpha = 0f
+            appearing.addOnAppearedListener(Runnable {
+                appearing.view?.alpha = 1f
                 animatePushWithoutElementTransitions(set, push, appearing, disappearing, additionalAnimations)
-            }
+            })
         } else {
             animatePushWithoutElementTransitions(set, push, appearing, disappearing, additionalAnimations)
         }
@@ -247,14 +247,14 @@ open class StackAnimator @JvmOverloads constructor(
             disappearing: ViewController<*>,
             additionalAnimations: List<Animator>
     ) {
-        val animators = mutableListOf(push.content.enter.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
+        val animators = mutableListOf(appearing.view?.let { push.content.enter.getAnimation(it, getDefaultPushAnimation(appearing.view)) })
         animators.addAll(additionalAnimations)
         if (push.content.exit.hasValue()) {
-            animators.add(push.content.exit.getAnimation(disappearing.view))
+            disappearing.view?.let { push.content.exit.getAnimation(it) }?.let { animators.add(it) }
         }
         set.playTogether(animators.toList())
         set.doOnEnd {
-            if (!disappearing.isDestroyed) disappearing.view.resetViewProperties()
+            if (!disappearing.isDestroyed) disappearing.view?.resetViewProperties()
         }
         set.start()
     }
@@ -266,13 +266,15 @@ open class StackAnimator @JvmOverloads constructor(
             disappearing: ViewController<*>,
             additionalAnimations: List<Animator>
     ) {
-        val animators = mutableListOf(setRoot.content.enter.getAnimation(
-                appearing.view,
-                getDefaultSetStackRootAnimation(appearing.view)
-        ))
+        val animators = mutableListOf(appearing.view?.let {
+            setRoot.content.enter.getAnimation(
+                    it,
+                    getDefaultSetStackRootAnimation(appearing.view)
+            )
+        })
         animators.addAll(additionalAnimations)
         if (setRoot.content.exit.hasValue()) {
-            animators.add(setRoot.content.exit.getAnimation(disappearing.view))
+            animators.add(disappearing.view?.let { setRoot.content.exit.getAnimation(it) })
         }
         set.playTogether(animators.toList())
         set.start()
@@ -283,7 +285,7 @@ open class StackAnimator @JvmOverloads constructor(
     @RestrictTo(RestrictTo.Scope.TESTS)
     fun endPushAnimation(view: ViewController<*>) {
         if (runningPushAnimations.containsKey(view)) {
-            runningPushAnimations[view]!!.end()
+            runningPushAnimations[view]?.end()
         }
     }
 }

@@ -114,8 +114,8 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         presenter.applyOptions(options);
         tabPresenter.applyOptions();
         bottomTabs.enableItemsCreation();
-        this.options.bottomTabsOptions.clearOneTimeOptions();
-        this.initialOptions.bottomTabsOptions.clearOneTimeOptions();
+        this.getOptions().bottomTabsOptions.clearOneTimeOptions();
+        this.getInitialOptions().bottomTabsOptions.clearOneTimeOptions();
     }
 
     @Override
@@ -123,8 +123,8 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         presenter.mergeOptions(options, this);
         tabPresenter.mergeOptions(options);
         super.mergeOptions(options);
-        this.options.bottomTabsOptions.clearOneTimeOptions();
-        this.initialOptions.bottomTabsOptions.clearOneTimeOptions();
+        this.getOptions().bottomTabsOptions.clearOneTimeOptions();
+        this.getInitialOptions().bottomTabsOptions.clearOneTimeOptions();
     }
 
     @Override
@@ -132,7 +132,7 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions(), child);
         performOnParentController(parent -> parent.applyChildOptions(
-                this.options.copy()
+                this.getOptions().copy()
                         .clearBottomTabsOptions()
                         .clearBottomTabOptions(),
                 child

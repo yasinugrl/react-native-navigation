@@ -19,6 +19,10 @@ import com.reactnativenavigation.views.ExternalComponentLayout;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 import static com.reactnativenavigation.utils.ObjectUtils.perform;
 
 public class ExternalComponentViewController extends ChildController<ExternalComponentLayout> {
@@ -66,18 +70,19 @@ public class ExternalComponentViewController extends ChildController<ExternalCom
 
     @Override
     public void applyTopInset() {
-        if (view != null) presenter.applyTopInsets(view, getTopInset());
+        presenter.applyTopInsets(getView(), getTopInset());
     }
 
     @Override
     public int getTopInset() {
-        int statusBarInset = resolveCurrentOptions().statusBar.drawBehind.isTrue() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
+        int statusBarInset = Objects.requireNonNull(resolveCurrentOptions()).statusBar.drawBehind.isTrue() ? 0 : StatusBarUtils.getStatusBarHeight(getActivity());
         return statusBarInset + perform(getParentController(), 0, p -> p.getTopInset(this));
     }
 
     @Override
     public void applyBottomInset() {
-        if (view != null) presenter.applyBottomInset(view, getBottomInset());
+        getView();
+        presenter.applyBottomInset(getView(), getBottomInset());
     }
 
     @Override
@@ -85,6 +90,7 @@ public class ExternalComponentViewController extends ChildController<ExternalCom
         return externalComponent.name.get();
     }
 
+    @NotNull
     public FragmentActivity getActivity() {
         return (FragmentActivity) super.getActivity();
     }

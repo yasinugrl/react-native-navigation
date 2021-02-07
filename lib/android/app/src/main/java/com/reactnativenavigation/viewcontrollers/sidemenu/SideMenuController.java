@@ -90,14 +90,14 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(resolveCurrentOptions());
-        performOnParentController(parent -> parent.applyChildOptions(this.options, child));
+        performOnParentController(parent -> parent.applyChildOptions(this.getOptions(), child));
     }
 
     @Override
     public void mergeChildOptions(Options options, ViewController child) {
         super.mergeChildOptions(options, child);
         presenter.mergeOptions(options.sideMenuRootOptions);
-        mergeLockMode(this.initialOptions, options.sideMenuRootOptions);
+        mergeLockMode(this.getInitialOptions(), options.sideMenuRootOptions);
         performOnParentController(parent -> parent.mergeChildOptions(options, child));
     }
 
@@ -174,13 +174,13 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
 
     public void setLeftController(ViewController controller) {
         left = controller;
-        getView().setLeft(left, options);
+        getView().setLeft(left, getOptions());
         presenter.bindLeft(left);
     }
 
     public void setRightController(ViewController controller) {
         right = controller;
-        getView().setRight(right, options);
+        getView().setRight(right, getOptions());
         presenter.bindRight(right);
     }
 

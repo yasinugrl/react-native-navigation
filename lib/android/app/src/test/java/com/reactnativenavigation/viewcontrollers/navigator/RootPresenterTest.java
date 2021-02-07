@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.app.Activity;
+import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
@@ -97,7 +98,7 @@ public class RootPresenterTest extends BaseTest {
 
     @Test
     public void setRoot_waitForRenderIsSet() {
-        root.options.animations.setRoot.waitForRender = new Bool(true);
+        root.getOptions().animations.setRoot.waitForRender = new Bool(true);
         ViewController spy = spy(root);
 
         uut.setRoot(spy, defaultOptions, new CommandListenerAdapter(), reactInstanceManager);
@@ -109,7 +110,7 @@ public class RootPresenterTest extends BaseTest {
 
     @Test
     public void setRoot_waitForRender() {
-        root.options.animations.setRoot.waitForRender = new Bool(true);
+        root.getOptions().animations.setRoot.waitForRender = new Bool(true);
 
         ViewController spy = spy(root);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
@@ -135,7 +136,7 @@ public class RootPresenterTest extends BaseTest {
     private RootAnimator createAnimator() {
         return new RootAnimator() {
             @Override
-            public void setRoot(@NotNull ViewController<?> root, @NotNull AnimationOptions setRoot, @NotNull Runnable onAnimationEnd) {
+            public void setRoot(@NotNull ViewController<ViewGroup> root, @NotNull AnimationOptions setRoot, @NotNull Runnable onAnimationEnd) {
                 onAnimationEnd.run();
             }
         };

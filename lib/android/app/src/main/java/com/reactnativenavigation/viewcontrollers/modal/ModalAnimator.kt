@@ -31,7 +31,7 @@ open class ModalAnimator @JvmOverloads constructor(
             if (show.hasElementTransitions() && disappearing != null) {
                 setupShowModalWithSharedElementTransition(disappearing, appearing, show, set)
             } else {
-                set.playTogether(show.getAnimation(appearing.view, getDefaultPushAnimation(appearing.view)))
+                set.playTogether(appearing.view?.let { show.getAnimation(it, getDefaultPushAnimation(appearing.view)) })
             }
             set.start()
         }
@@ -47,7 +47,7 @@ open class ModalAnimator @JvmOverloads constructor(
                 if (dismiss.hasElementTransitions() && appearing != null) {
                     setupDismissAnimationWithSharedElementTransition(disappearing, appearing, dismiss, set)
                 } else {
-                    set.play(dismiss.getAnimation(disappearing.view, getDefaultPopAnimation(disappearing.view)))
+                    set.play(disappearing.view?.let { dismiss.getAnimation(it, getDefaultPopAnimation(disappearing.view)) })
                 }
                 set.start()
             }
@@ -84,7 +84,7 @@ open class ModalAnimator @JvmOverloads constructor(
     ) {
         val fade = if (show.isFadeAnimation()) show else FadeInAnimation().content.enter
         val transitionAnimators = transitionAnimatorCreator.create(show, fade, disappearing, appearing)
-        set.playTogether(fade.getAnimation(appearing.view), transitionAnimators)
+        set.playTogether(appearing.view?.let { fade.getAnimation(it) }, transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()
     }
@@ -118,7 +118,7 @@ open class ModalAnimator @JvmOverloads constructor(
     ) {
         val fade = if (dismiss.isFadeAnimation()) dismiss else FadeOutAnimation().content.exit
         val transitionAnimators = transitionAnimatorCreator.create(dismiss, fade, disappearing, appearing)
-        set.playTogether(fade.getAnimation(disappearing.view), transitionAnimators)
+        set.playTogether(disappearing.view?.let { fade.getAnimation(it) }, transitionAnimators)
         transitionAnimators.listeners.forEach { listener: Animator.AnimatorListener -> set.addListener(listener) }
         transitionAnimators.removeAllListeners()
     }

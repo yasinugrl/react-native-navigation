@@ -93,7 +93,7 @@ public class ModalPresenterTest extends BaseTest {
         verify(animator, never()).show(
                 eq(modal1),
                 eq(root),
-                eq(modal1.options.animations.showModal),
+                eq(modal1.getOptions().animations.showModal),
                 any()
         );
         verify(listener).onSuccess(MODAL_ID_1);
@@ -158,7 +158,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void showModal_waitForRender() {
-        modal1.options.animations.showModal.waitForRender = new Bool(true);
+        modal1.getOptions().animations.showModal.waitForRender = new Bool(true);
         uut.showModal(modal1, root, new CommandListenerAdapter());
         verify(modal1).addOnAppearedListener(any());
         verifyZeroInteractions(animator);
@@ -223,7 +223,7 @@ public class ModalPresenterTest extends BaseTest {
         uut.dismissModal(modal1, root, root, new CommandListenerAdapter());
         verify(modal1).onViewDisappear();
         verify(modal1).destroy();
-        verify(animator, never()).dismiss(eq(root), any(), eq(modal1.options.animations.dismissModal), any());
+        verify(animator, never()).dismiss(eq(root), any(), eq(modal1.getOptions().animations.dismissModal), any());
     }
 
     @Test
@@ -264,7 +264,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void dismissModal_previousViewIsNotDetachedIfOverCurrentContext() {
-        modal1.options.modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
+        modal1.getOptions().modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
         disableShowModalAnimation(modal1, modal2);
 
         uut.showModal(modal1, root, new CommandListenerAdapter());

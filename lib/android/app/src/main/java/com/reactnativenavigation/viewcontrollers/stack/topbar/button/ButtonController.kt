@@ -36,28 +36,26 @@ open class ButtonController(activity: Activity,
 
     @SuppressLint("MissingSuperCall")
     override fun onViewWillAppear() {
-        getView()!!.sendComponentStart(ComponentType.Button)
+        view?.sendComponentStart(ComponentType.Button)
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onViewDisappear() {
-        getView()!!.sendComponentStop(ComponentType.Button)
+        view?.sendComponentStop(ComponentType.Button)
     }
 
-    override fun isRendered(): Boolean {
-        return !button.component.componentId.hasValue() || super.isRendered()
+    override val isRendered: Boolean get() = !button.component.componentId.hasValue() || super.isRendered
+
+    override fun sendOnNavigationButtonPressed(buttonId: String?) {
+        buttonId?.let {
+            view.sendOnNavigationButtonPressed(buttonId)
+        }
     }
 
-    override fun sendOnNavigationButtonPressed(buttonId: String) {
-        getView()!!.sendOnNavigationButtonPressed(buttonId)
-    }
-
-    override fun getCurrentComponentName(): String = button.component.name.get()
+    override val currentComponentName: String? get() = button.component.name.get()
 
     override fun createView(): TitleBarReactButtonView {
-        return viewCreator.create(activity, button.component).apply {
-            view = this
-        }
+        return viewCreator.create(super.activity, button.component)
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
@@ -88,7 +86,10 @@ open class ButtonController(activity: Activity,
                 order,
                 presenter.styledText)?.also { menuItem ->
             menuItem.setOnMenuItemClickListener(this@ButtonController)
-            presenter.applyOptions(buttonsBar, menuItem, this@ButtonController::getView)
+            presenter.applyOptions(buttonsBar, menuItem) {
+                this@ButtonController.view
+            }
         }
     }
+
 }

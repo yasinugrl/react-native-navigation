@@ -62,8 +62,8 @@ public class BottomTabPresenterTest extends BaseTest {
         uut.applyOptions();
         for (int i = 0; i < tabs.size(); i++) {
             verify(bottomTabs, times(1)).setNotification(any(AHNotification.class), eq(i));
-            verify(bottomTabs, times(1)).setTitleInactiveColor(i, tabs.get(i).options.bottomTabOptions.textColor.get(null));
-            verify(bottomTabs, times(1)).setTitleActiveColor(i, tabs.get(i).options.bottomTabOptions.selectedTextColor.get(null));
+            verify(bottomTabs, times(1)).setTitleInactiveColor(i, tabs.get(i).getOptions().bottomTabOptions.textColor.get(null));
+            verify(bottomTabs, times(1)).setTitleActiveColor(i, tabs.get(i).getOptions().bottomTabOptions.selectedTextColor.get(null));
         }
     }
 
@@ -85,7 +85,7 @@ public class BottomTabPresenterTest extends BaseTest {
     @Test
     public void mergeChildOptions() {
         for (int i = 0; i < 2; i++) {
-            Options options = tabs.get(i).options;
+            Options options = tabs.get(i).getOptions();
             uut.mergeChildOptions(options, tabs.get(i));
             verify(bottomTabs, times(1)).setNotification(any(AHNotification.class), eq(i));
             verify(bottomTabs, times(1)).setIconActiveColor(eq(i), anyInt());
@@ -96,7 +96,7 @@ public class BottomTabPresenterTest extends BaseTest {
 
     @Test
     public void mergeChildOptions_onlySetsDefinedOptions() {
-        uut.mergeChildOptions(child3.options, child3);
+        uut.mergeChildOptions(child3.getOptions(), child3);
         verify(bottomTabs, times(0)).setNotification(any(AHNotification.class), anyInt());
         verify(bottomTabs, times(0)).setIconInactiveColor(eq(2), anyInt());
         verify(bottomTabs, times(0)).setIconActiveColor(eq(2), anyInt());

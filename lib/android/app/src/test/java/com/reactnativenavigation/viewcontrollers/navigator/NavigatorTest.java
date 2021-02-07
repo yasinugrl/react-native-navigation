@@ -194,7 +194,7 @@ public class NavigatorTest extends BaseTest {
         ViewController initialRoot = spy(child2);
         uut.setRoot(initialRoot, new CommandListenerAdapter(), reactInstanceManager);
 
-        child3.options.animations.setRoot.waitForRender = new Bool(true);
+        child3.getOptions().animations.setRoot.waitForRender = new Bool(true);
         ViewController secondRoot = spy(child3);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
         uut.setRoot(secondRoot, listener, reactInstanceManager);
@@ -376,14 +376,14 @@ public class NavigatorTest extends BaseTest {
     public void mergeOptions_CallsApplyNavigationOptions() {
         ComponentViewController componentVc = new SimpleComponentViewController(activity, childRegistry, "theId", new Options());
         componentVc.setParentController(parentController);
-        assertThat(componentVc.options.topBar.title.text.get("")).isEmpty();
+        assertThat(componentVc.getOptions().topBar.title.text.get("")).isEmpty();
         uut.setRoot(componentVc, new CommandListenerAdapter(), reactInstanceManager);
 
         Options options = new Options();
         options.topBar.title.text = new Text("new title");
 
         uut.mergeOptions("theId", options);
-        assertThat(componentVc.options.topBar.title.text.get()).isEqualTo("new title");
+        assertThat(componentVc.getOptions().topBar.title.text.get()).isEqualTo("new title");
     }
 
     @Test
@@ -505,7 +505,7 @@ public class NavigatorTest extends BaseTest {
         spy.push(child2, new CommandListenerAdapter());
 
         StackController parent = newStack(spy);
-        parent.options.animations.setRoot.enabled = new Bool(false);
+        parent.getOptions().animations.setRoot.enabled = new Bool(false);
 
         uut.setRoot(parent, new CommandListenerAdapter(), reactInstanceManager);
 
@@ -647,7 +647,7 @@ public class NavigatorTest extends BaseTest {
         disablePushAnimation(child1);
 
         StackController spy = spy(parentController);
-        spy.options.animations.setRoot.enabled = new Bool(false);
+        spy.getOptions().animations.setRoot.enabled = new Bool(false);
         uut.setRoot(spy, new CommandListenerAdapter(), reactInstanceManager);
         spy.push(child1, new CommandListenerAdapter());
         activityController.destroy();

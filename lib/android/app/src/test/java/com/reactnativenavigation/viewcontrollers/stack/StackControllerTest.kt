@@ -151,7 +151,7 @@ class StackControllerTest : BaseTest() {
         assertThat(uut.isRendered).isTrue()
         child1.setWaitForRender(Bool(true))
         assertThat(uut.isRendered).isFalse()
-        child1.view.addView(View(activity))
+        child1.view?.addView(View(activity))
         assertThat(uut.isRendered).isTrue()
         whenever(presenter.isRendered(child1.view)).then { false }
         assertThat(uut.isRendered).isFalse()
@@ -163,7 +163,7 @@ class StackControllerTest : BaseTest() {
         val listener = spy(CommandListenerAdapter())
         uut.push(child1, listener)
         assertContainsOnlyId(child1.id)
-        assertThat((child1.view.layoutParams as CoordinatorLayout.LayoutParams).behavior).isInstanceOf(StackBehaviour::class.java)
+        assertThat((child1.view?.layoutParams as CoordinatorLayout.LayoutParams).behavior).isInstanceOf(StackBehaviour::class.java)
         verify(listener).onSuccess(child1.id)
     }
 
@@ -200,21 +200,21 @@ class StackControllerTest : BaseTest() {
     fun push_waitForRender() {
         disablePushAnimation(child1)
         uut.push(child1, CommandListenerAdapter())
-        assertThat(child1.view.parent).isEqualTo(uut.view)
+        assertThat(child1.view?.parent).isEqualTo(uut.view)
         child2.options.animations.push.waitForRender = Bool(true)
         uut.push(child2, CommandListenerAdapter())
 
         // Both children are attached
-        assertThat(child1.view.parent).isEqualTo(uut.view)
-        assertThat(child2.view.parent).isEqualTo(uut.view)
+        assertThat(child1.view?.parent).isEqualTo(uut.view)
+        assertThat(child2.view?.parent).isEqualTo(uut.view)
         assertThat(child2.isViewShown).isFalse()
         verify(child2, never()).onViewWillAppear()
-        child2.view.addView(View(activity))
+        child2.view?.addView(View(activity))
         ShadowLooper.idleMainLooper()
         verify(child2).onViewWillAppear()
         assertThat(child2.isViewShown).isTrue()
         animator.endPushAnimation(child2)
-        assertThat(child1.view.parent).isNull()
+        assertThat(child1.view?.parent).isNull()
     }
 
     @Test
@@ -235,12 +235,12 @@ class StackControllerTest : BaseTest() {
         child2.options.animations.push.waitForRender = Bool(waitForRender)
         uut.push(child2, pushListener)
         // both children are attached
-        assertThat(child1.view.parent).isEqualTo(uut.view)
-        assertThat(child2.view.parent).isEqualTo(uut.view)
+        assertThat(child1.view?.parent).isEqualTo(uut.view)
+        assertThat(child2.view?.parent).isEqualTo(uut.view)
         val backListener = spy(CommandListenerAdapter())
         uut.handleBack(backListener)
         assertThat(uut.size()).isOne()
-        assertThat(child1.view.parent).isEqualTo(uut.view)
+        assertThat(child1.view?.parent).isEqualTo(uut.view)
         assertThat(child2.isDestroyed).isTrue()
         val inOrder = inOrder(pushListener, backListener)
         inOrder.verify(pushListener).onSuccess(any())
@@ -595,8 +595,8 @@ class StackControllerTest : BaseTest() {
     fun pop_replacesViewWithPrevious() {
         disablePushAnimation(child1, child2)
         disablePopAnimation(child2)
-        val child2View: View = child2.view
-        val child1View: View = child1.view
+        val child2View: View = child2.view!!
+        val child1View: View = child1.view!!
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
 
@@ -1011,7 +1011,7 @@ class StackControllerTest : BaseTest() {
     fun onDependentViewChanged_delegatesToPresenter() {
         val parent = mock<CoordinatorLayout>()
         uut.push(child1, CommandListenerAdapter())
-        assertThat(uut.onDependentViewChanged(parent, child1.view, mock<TopBar>())).isFalse()
+        assertThat(uut.onDependentViewChanged(parent, child1.view!!, mock<TopBar>())).isFalse()
         verify(presenter).applyTopInsets(eq(uut), eq(child1))
     }
 

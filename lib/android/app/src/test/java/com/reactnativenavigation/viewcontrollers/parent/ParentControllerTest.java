@@ -165,13 +165,13 @@ public class ParentControllerTest extends BaseTest {
 
         child1.ensureViewIsCreated();
         child1.onViewWillAppear();
-        assertThat(uut.initialOptions.topBar.title.text.get()).isEqualTo(INITIAL_TITLE);
+        assertThat(uut.getInitialOptions().topBar.title.text.get()).isEqualTo(INITIAL_TITLE);
     }
 
     @Test
     public void resolveCurrentOptions_returnOptionsIfNoChildren() {
         assertThat(uut.getChildControllers().size()).isZero();
-        assertThat(uut.resolveCurrentOptions()).isEqualTo(uut.initialOptions);
+        assertThat(uut.resolveCurrentOptions()).isEqualTo(uut.getInitialOptions());
     }
 
     @Test
@@ -193,7 +193,7 @@ public class ParentControllerTest extends BaseTest {
         assertThat(uut.getCurrentChild()).isEqualTo(child1);
         uut.resolveCurrentOptions();
         verify(child1).resolveCurrentOptions();
-        verify(copiedChildOptions).withDefaultOptions(uut.initialOptions);
+        verify(copiedChildOptions).withDefaultOptions(uut.getInitialOptions());
     }
 
     @Test

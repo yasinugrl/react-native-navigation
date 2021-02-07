@@ -76,7 +76,7 @@ public class ModalStack {
             presenter.dismissModal(toDismiss, toAdd, root, new CommandListenerAdapter(listener) {
                 @Override
                 public void onSuccess(String childId) {
-                    eventEmitter.emitModalDismissed(toDismiss.getId(), toDismiss.currentComponentName, 1);
+                    eventEmitter.emitModalDismissed(toDismiss.getId(), toDismiss.getCurrentComponentName(), 1);
                     super.onSuccess(toDismiss.getId());
                 }
             });
@@ -93,7 +93,7 @@ public class ModalStack {
             return;
         }
         String topModalId = peek().getId();
-        String topModalName = peek().currentComponentName;
+        String topModalName = peek().getCurrentComponentName();
         int modalsDismissed = size();
 
         peek().mergeOptions(mergeOptions);

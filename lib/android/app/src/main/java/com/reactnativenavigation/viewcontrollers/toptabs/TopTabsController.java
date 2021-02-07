@@ -47,8 +47,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     @NonNull
     @Override
     public TopTabsViewPager createView() {
-        view = viewCreator.create();
-        return view;
+        return viewCreator.create();
     }
 
     @NonNull
@@ -90,7 +89,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     @Override
     public void applyChildOptions(Options options, ViewController child) {
         super.applyChildOptions(options, child);
-        performOnParentController(parentController -> parentController.applyChildOptions(this.options.copy(), child));
+        performOnParentController(parentController -> parentController.applyChildOptions(this.getOptions().copy(), child));
     }
 
     @CallSuper
