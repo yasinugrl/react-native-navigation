@@ -71,7 +71,7 @@ public class LayoutFactory {
         typefaceManager = new TypefaceLoader(activity);
     }
 
-	public ViewController create(final LayoutNode node) {
+	public ViewController create(final LayoutNode node, com.reactnativenavigation.newoptions.Options options) {
 		final ReactContext context = reactInstanceManager.getCurrentReactContext();
 		switch (node.type) {
 			case Component:
@@ -110,15 +110,15 @@ public class LayoutFactory {
 		for (LayoutNode child : node.children) {
 			switch (child.type) {
 				case SideMenuCenter:
-					childControllerCenter = create(child);
+					childControllerCenter = create(child, options);
 					childControllerCenter.setParentController(sideMenuController);
 					break;
 				case SideMenuLeft:
-					childControllerLeft = create(child);
+					childControllerLeft = create(child, options);
 					childControllerLeft.setParentController(sideMenuController);
 					break;
 				case SideMenuRight:
-					childControllerRight = create(child);
+					childControllerRight = create(child, options);
 					childControllerRight.setParentController(sideMenuController);
 					break;
 				default:
@@ -142,15 +142,15 @@ public class LayoutFactory {
 	}
 
 	private ViewController createSideMenuContent(LayoutNode node) {
-		return create(node.children.get(0));
+		return create(node.children.get(0), options);
 	}
 
 	private ViewController createSideMenuLeft(LayoutNode node) {
-		return create(node.children.get(0));
+		return create(node.children.get(0), options);
 	}
 
 	private ViewController createSideMenuRight(LayoutNode node) {
-		return create(node.children.get(0));
+		return create(node.children.get(0), options);
 	}
 
 	private ViewController createComponent(ReactContext context, LayoutNode node) {
@@ -205,13 +205,13 @@ public class LayoutFactory {
     private List<ViewController> createChildren(List<LayoutNode> children) {
         List<ViewController> result = new ArrayList<>();
         for (LayoutNode child : children) {
-            result.add(create(child));
+            result.add(create(child, options));
         }
         return result;
     }
 
     private ViewController createBottomTabs(ReactContext context, LayoutNode node) {
-        List<ViewController<?>> tabs = map(node.children, this::create);
+        List<ViewController<?>> tabs = map(node.children, node1 -> create(node1, options));
         BottomTabsPresenter bottomTabsPresenter = new BottomTabsPresenter(tabs, defaultOptions, new BottomTabsAnimator());
         return new BottomTabsController(activity,
                 tabs,
@@ -229,7 +229,7 @@ public class LayoutFactory {
     private ViewController createTopTabs(ReactContext context, LayoutNode node) {
         final List<ViewController> tabs = new ArrayList<>();
         for (int i = 0; i < node.children.size(); i++) {
-            ViewController tabController = create(node.children.get(i));
+            ViewController tabController = create(node.children.get(i), options);
             Options options = parse(context, typefaceManager, node.children.get(i).getOptions());
             options.setTopTabIndex(i);
             tabs.add(tabController);

@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.newoptions.BaseOptionsKt;
 import com.reactnativenavigation.options.LayoutFactory;
 import com.reactnativenavigation.options.LayoutNode;
 import com.reactnativenavigation.options.Options;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import org.json.JSONObject;
 
 import static com.reactnativenavigation.utils.UiUtils.pxToDp;
 
@@ -77,7 +80,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void getLaunchArgs(String commandId, Promise promise) {
         promise.resolve(LaunchArgsParser.parse(activity()));
     }
-    
+
     @ReactMethod
     public void getNavigationConstants(Promise promise) {
         ReactApplicationContext ctx = getReactApplicationContext();
@@ -91,9 +94,14 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setRoot(String commandId, ReadableMap rawLayoutTree, Promise promise) {
-        final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree).optJSONObject("root"));
+        JSONObject root = jsonParser.parse(rawLayoutTree).optJSONObject("root");
+        final LayoutNode layoutTree = LayoutNodeParser.parse(root);
+        final com.reactnativenavigation.newoptions.Options options = BaseOptionsKt.jsonOptionsParser(root);
+
+        // make controllers subscribe to each prop in options they need here maybe on push also
+        //lets start here and use merge options to checkout new changes 
         handle(() -> {
-            final ViewController viewController = layoutFactory.create(layoutTree);
+            final ViewController viewController = layoutFactory.create(layoutTree,options);
             navigator().setRoot(viewController, new NativeCommandListener("setRoot", commandId, promise, eventEmitter, now), reactInstanceManager);
         });
     }
@@ -116,7 +124,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void push(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
         handle(() -> {
-            final ViewController viewController = layoutFactory.create(layoutTree);
+            final ViewController viewController = layoutFactory.create(layoutTree, options);
             navigator().push(onComponentId, viewController, new NativeCommandListener("push", commandId, promise, eventEmitter, now));
         });
     }
@@ -127,7 +135,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
             ArrayList<ViewController> _children = new ArrayList<>();
             for (int i = 0; i < children.size(); i++) {
                 final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(children.getMap(i)));
-                _children.add(layoutFactory.create(layoutTree));
+                _children.add(layoutFactory.create(layoutTree, options));
             }
             navigator().setStackRoot(onComponentId, _children, new NativeCommandListener("setStackRoot", commandId, promise, eventEmitter, now));
         });
@@ -152,7 +160,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void showModal(String commandId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
         handle(() -> {
-            final ViewController viewController = layoutFactory.create(layoutTree);
+            final ViewController viewController = layoutFactory.create(layoutTree, options);
             navigator().showModal(viewController, new NativeCommandListener("showModal", commandId, promise, eventEmitter, now));
         });
     }
@@ -174,7 +182,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     public void showOverlay(String commandId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(jsonParser.parse(rawLayoutTree));
         handle(() -> {
-            final ViewController viewController = layoutFactory.create(layoutTree);
+            final ViewController viewController = layoutFactory.create(layoutTree, options);
             navigator().showOverlay(viewController, new NativeCommandListener("showOverlay", commandId, promise, eventEmitter, now));
         });
     }
@@ -196,7 +204,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     private Options parse(@Nullable ReadableMap mergeOptions) {
         ReactApplicationContext ctx = getReactApplicationContext();
         return mergeOptions ==
-               null ? Options.EMPTY : Options.parse(ctx, new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
+                null ? Options.EMPTY : Options.parse(ctx, new TypefaceLoader(activity()), jsonParser.parse(mergeOptions));
     }
 
     protected void handle(Runnable task) {

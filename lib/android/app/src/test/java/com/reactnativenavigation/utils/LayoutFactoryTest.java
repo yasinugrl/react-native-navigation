@@ -33,7 +33,7 @@ public class LayoutFactoryTest extends BaseTest {
 
     @Test
     public void sanity() throws JSONException {
-        assertThat(uut.create(component())).isNotNull();
+        assertThat(uut.create(component(), options)).isNotNull();
     }
 
     @Test
