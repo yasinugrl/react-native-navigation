@@ -121,24 +121,6 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void runOnPreDraw() {
-        Functions.Func1<View> task = Mockito.mock(Functions.Func1.class);
-        uut.runOnPreDraw(task);
-        dispatchPreDraw(uut.getView());
-        verify(task).run(uut.getView());
-    }
-
-    @Test
-    public void runOnPreDraw_doesNotInvokeTaskIfControllerIsDestroyed() {
-        Functions.Func1<View> task = Mockito.mock(Functions.Func1.class);
-        uut.runOnPreDraw(task);
-        View view = uut.getView();
-        uut.destroy();
-        dispatchPreDraw(view);
-        verify(task, times(1)).run(view);
-    }
-
-    @Test
     public void onChildViewAdded_delegatesToYellowBoxDelegate() {
         View child = new View(activity);
         ViewGroup view = new FrameLayout(activity);

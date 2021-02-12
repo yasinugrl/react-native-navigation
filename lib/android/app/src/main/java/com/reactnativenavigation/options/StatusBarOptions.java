@@ -82,4 +82,15 @@ public class StatusBarOptions {
     public boolean hasTransparency() {
         return translucent.isTrue() || visible.isFalse() || backgroundColor.hasTransparency();
     }
+
+    @Override
+    public String toString() {
+        return "StatusBarOptions{" +
+                "backgroundColor=" + backgroundColor +
+                ", textColorScheme=" + textColorScheme +
+                ", visible=" + visible +
+                ", drawBehind=" + drawBehind +
+                ", translucent=" + translucent +
+                '}';
+    }
 }

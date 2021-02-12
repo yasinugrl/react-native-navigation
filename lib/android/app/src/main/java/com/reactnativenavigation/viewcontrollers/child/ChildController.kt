@@ -17,7 +17,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay
 import com.reactnativenavigation.views.component.Component
 
-abstract class ChildController<T : ViewGroup>(
+abstract class ChildController<out T : ViewGroup>(
         activity: Activity,
         val childRegistry: ChildControllersRegistry,
         id: String,
@@ -35,7 +35,7 @@ abstract class ChildController<T : ViewGroup>(
 
     @CallSuper
     override fun setDefaultOptions(defaultOptions: Options?) {
-        presenter.setDefaultOptions(defaultOptions)
+        defaultOptions?.let { presenter.setDefaultOptions(it) }
     }
 
     override fun onViewWillAppear() {
@@ -49,17 +49,17 @@ abstract class ChildController<T : ViewGroup>(
     }
 
     fun onViewBroughtToFront() {
-        presenter.onViewBroughtToFront(resolveCurrentOptions())
+        resolveCurrentOptions().let { presenter.onViewBroughtToFront(it) }
     }
 
     override fun applyOptions(options: Options?) {
         super.applyOptions(options)
-        presenter.applyOptions(this, resolveCurrentOptions())
+        resolveCurrentOptions().let { presenter.applyOptions(this, it) }
     }
 
     override fun mergeOptions(options: Options?) {
         if (options === Options.EMPTY) return
-        if (isViewShown) presenter.mergeOptions(view, options)
+        if (isViewShown) options?.let { presenter.mergeOptions(view, it) }
         super.mergeOptions(options)
         performOnParentController(Func1 { parentController: ParentController<*> -> parentController.mergeChildOptions(options, this) })
     }

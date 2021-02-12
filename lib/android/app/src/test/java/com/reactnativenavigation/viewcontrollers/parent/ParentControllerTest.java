@@ -90,7 +90,7 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void mustHaveChildControllers() {
-        assertThat(uut.getChildControllers()).isNotNull();
+        assertThat(uut.childControllers).isNotNull();
     }
 
     @Test
@@ -170,7 +170,7 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void resolveCurrentOptions_returnOptionsIfNoChildren() {
-        assertThat(uut.getChildControllers().size()).isZero();
+        assertThat(uut.childControllers.size()).isZero();
         assertThat(uut.resolveCurrentOptions()).isEqualTo(uut.getInitialOptions());
     }
 
@@ -190,7 +190,7 @@ public class ParentControllerTest extends BaseTest {
         children.add(child1);
 
         uut.ensureViewIsCreated();
-        assertThat(uut.getCurrentChild()).isEqualTo(child1);
+        assertThat(uut.currentChild).isEqualTo(child1);
         uut.resolveCurrentOptions();
         verify(child1).resolveCurrentOptions();
         verify(copiedChildOptions).withDefaultOptions(uut.getInitialOptions());

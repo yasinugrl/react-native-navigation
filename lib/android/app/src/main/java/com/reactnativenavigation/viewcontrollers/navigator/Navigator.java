@@ -158,17 +158,17 @@ public class Navigator extends ParentController {
     }
 
     public void mergeOptions(final String componentId, Options options) {
-        ViewController target = findController(componentId);
+        ViewController<ViewGroup> target = findController(componentId);
         if (target != null) {
             target.mergeOptions(options);
         }
     }
 
-    public void push(final String id, final ViewController viewController, CommandListener listener) {
+    public void push(final String id, final ViewController<ViewGroup> viewController, CommandListener listener) {
         applyOnStack(id, listener, stack -> stack.push(viewController, listener));
     }
 
-    public void setStackRoot(String id, List<ViewController> children, CommandListener listener) {
+    public void setStackRoot(String id, List<ViewController<ViewGroup>> children, CommandListener listener) {
         applyOnStack(id, listener, stack -> stack.setRoot(children, listener));
     }
 
@@ -219,8 +219,8 @@ public class Navigator extends ParentController {
 
     @Nullable
     @Override
-    public ViewController findController(String id) {
-        ViewController controllerById = super.findController(id);
+    public ViewController<ViewGroup> findController(String id) {
+        ViewController<ViewGroup> controllerById = super.findController(id);
         if (controllerById == null) {
             controllerById = modalStack.findControllerById(id);
         }

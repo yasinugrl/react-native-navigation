@@ -96,14 +96,14 @@ public class BottomTabsControllerTest extends BaseTest {
         idleMainLooper();
         assertThat(uut.getView()).isInstanceOf(CoordinatorLayout.class);
         assertThat(uut.getView().getChildAt(uut.getView().getChildCount() - 1)).isInstanceOf(BottomTabsContainer.class);
-        assertThat(((CoordinatorLayout.LayoutParams) uut.getBottomTabsContainer().getLayoutParams()).gravity).isEqualTo(Gravity.BOTTOM);
+        assertThat(((CoordinatorLayout.LayoutParams) uut.bottomTabsContainer.getLayoutParams()).gravity).isEqualTo(Gravity.BOTTOM);
     }
 
     @Test
     public void createView_tabsWithoutIconsAreAccepted() {
         tabOptions.bottomTabOptions.icon = new NullText();
         prepareViewsForTests();
-        assertThat(uut.getBottomTabs().getItemsCount()).isEqualTo(tabs.size());
+        assertThat(uut.bottomTabs.getItemsCount()).isEqualTo(tabs.size());
     }
 
     @Test
@@ -236,7 +236,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void mergeOptions_drawBehind() {
-        assertThat(uut.getBottomInset(child1)).isEqualTo(uut.getBottomTabs().getHeight());
+        assertThat(uut.getBottomInset(child1)).isEqualTo(uut.bottomTabs.getHeight());
 
         Options o1 = new Options();
         o1.bottomTabsOptions.drawBehind = new Bool(true);

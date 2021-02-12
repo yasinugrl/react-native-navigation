@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.app.Activity;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.options.Options;
@@ -24,7 +25,7 @@ public class StackControllerBuilder {
     private BackButtonHelper backButtonHelper = new BackButtonHelper();
     private Presenter presenter;
     private StackPresenter stackPresenter;
-    private List<ViewController> children = new ArrayList<>();
+    private List<ViewController<ViewGroup>> children = new ArrayList<>();
     private EventEmitter eventEmitter;
     private FabPresenter fabPresenter = new FabPresenter();
 
@@ -40,11 +41,12 @@ public class StackControllerBuilder {
         return this;
     }
 
-    public StackControllerBuilder setChildren(ViewController... children) {
+    @SafeVarargs
+    public final StackControllerBuilder setChildren(ViewController<ViewGroup>... children) {
         return setChildren(Arrays.asList(children));
     }
 
-    public StackControllerBuilder setChildren(List<ViewController> children) {
+    public StackControllerBuilder setChildren(List<ViewController<ViewGroup>> children) {
         this.children = children;
         return this;
     }

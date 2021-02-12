@@ -5,7 +5,7 @@ import com.reactnativenavigation.BuildConfig
 
 const val MAIN_LIB_TAG = "RNN";
 fun logd(msg: String?, tag: String = MAIN_LIB_TAG) {
-    if (!BuildConfig.DEBUG) {
+    if (BuildConfig.DEBUG) {
         if (msg != null)
             Log.d(tag, msg)
         else
@@ -14,7 +14,7 @@ fun logd(msg: String?, tag: String = MAIN_LIB_TAG) {
 }
 
 fun wran(msg: String?, tag: String = MAIN_LIB_TAG) {
-    if (!BuildConfig.DEBUG) {
+    if (BuildConfig.DEBUG) {
         if (msg != null)
             Log.w(tag, msg)
         else

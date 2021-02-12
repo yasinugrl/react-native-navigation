@@ -6,6 +6,7 @@ import com.reactnativenavigation.options.ComponentOptions;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.YellowBoxDelegate;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.overlay.ViewControllerOverlay;
@@ -31,7 +32,7 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
     public void onViewWillAppear() {
         super.onViewWillAppear();
         if (!isDestroyed()) {
-            runOnPreDraw(view -> view.setLayoutParams(view.getLayoutParams()));
+            if (!isDestroyed()) UiUtils.runOnPreDrawOnce(this.getView(), view -> view.setLayoutParams(view.getLayoutParams()));
             getView().sendComponentStart(ComponentType.Title);
         }
     }

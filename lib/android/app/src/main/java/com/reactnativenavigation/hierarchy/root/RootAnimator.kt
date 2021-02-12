@@ -8,7 +8,7 @@ import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 
 open class RootAnimator {
-    open fun setRoot(root: ViewController<ViewGroup?>, setRoot: AnimationOptions, onAnimationEnd: Runnable) {
+    open fun setRoot(root: ViewController<ViewGroup>, setRoot: AnimationOptions, onAnimationEnd: Runnable) {
         root.view?.visibility = View.INVISIBLE
         val set = root.view?.let { setRoot.getAnimation(it) }
         set?.addListener(object : AnimatorListenerAdapter() {

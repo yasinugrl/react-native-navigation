@@ -57,7 +57,7 @@ public class NavigationModuleTest extends BaseTest {
         ReadableMap root = mock(ReadableMap.class);
         when(jsonParser.parse(root)).thenReturn(rootJson());
         ViewController rootViewController = mock(ViewController.class);
-        when(layoutFactory.create(any(LayoutNode.class), options)).thenReturn(rootViewController);
+        when(layoutFactory.create(any(LayoutNode.class))).thenReturn(rootViewController);
 
         uut.setRoot("1", root, mock(Promise.class));
         ShadowLooper.idleMainLooper();

@@ -24,13 +24,14 @@ import com.reactnativenavigation.views.component.Component
 import com.reactnativenavigation.views.component.Renderable
 import java.util.*
 
-abstract class ViewController<T : ViewGroup?>(
+abstract class ViewController<out T : ViewGroup>(
         open val activity: Activity,
         val id: String,
         private val yellowBoxDelegate: YellowBoxDelegate,
         var initialOptions: Options,
         private var overlay: ViewControllerOverlay
 ) : ViewTreeObserver.OnGlobalLayoutListener, ViewGroup.OnHierarchyChangeListener, BehaviourAdapter {
+
     private val onAppearedListeners: MutableList<Runnable> = ArrayList()
     private var appearEventPosted = false
     private var isFirstLayout = true
@@ -48,20 +49,19 @@ abstract class ViewController<T : ViewGroup?>(
         fun onViewDisappear(view: View?): Boolean
     }
 
-     open var options: Options = initialOptions.copy()
+    open var options: Options = initialOptions.copy()
 
-    //    val newOptions: com.reactnativenavigation.newoptions.Options = com.reactnativenavigation.newoptions.Options()
     open val view: T by lazy {
         if (isDestroyed) {
             throw RuntimeException("Tried to create view after it has already been destroyed")
         }
         val field = createView()
-        field?.setOnHierarchyChangeListener(this)
-        field?.viewTreeObserver?.addOnGlobalLayoutListener(this)
+        field.setOnHierarchyChangeListener(this)
+        field.viewTreeObserver?.addOnGlobalLayoutListener(this)
         field
     }
 
-    var parentController: ParentController<out ViewGroup>? = null
+    var parentController: ParentController<ViewGroup>? = null
     private var isShown = false
     open var isDestroyed = false
         protected set
@@ -114,12 +114,12 @@ abstract class ViewController<T : ViewGroup?>(
 
 
     @CheckResult
-    open fun resolveCurrentOptions(): Options? {
+    open fun resolveCurrentOptions(): Options {
         return options
     }
 
     @CheckResult
-    open fun resolveCurrentOptions(defaultOptions: Options?): Options? {
+    open fun resolveCurrentOptions(defaultOptions: Options?): Options {
         return options.copy().withDefaultOptions(defaultOptions)
     }
 
@@ -176,11 +176,11 @@ abstract class ViewController<T : ViewGroup?>(
         return StringUtils.isEqual(this.id, id)
     }
 
-    open fun findController(id: String?): ViewController<*>? {
+    open fun findController(id: String?): ViewController<ViewGroup>? {
         return if (isSameId(id)) this else null
     }
 
-    open fun findController(child: View): ViewController<*>? {
+    open fun findController(child: View): ViewController<ViewGroup>? {
         return if (view === child) this else null
     }
 
@@ -255,9 +255,6 @@ abstract class ViewController<T : ViewGroup?>(
     }
 
     override fun onChildViewRemoved(view: View, view1: View) {}
-    fun runOnPreDraw(task: Func1<T>?) {
-        if (!isDestroyed) UiUtils.runOnPreDrawOnce(this.view, task)
-    }
 
     abstract fun sendOnNavigationButtonPressed(buttonId: String?)
     open val isViewShown: Boolean
@@ -291,7 +288,7 @@ abstract class ViewController<T : ViewGroup?>(
 
     open fun applyBottomInset() {}
     val bottomInset: Int
-        get() = ObjectUtils.perform<ParentController<out ViewGroup>?, Int>(parentController, 0, FuncR1 { p: ParentController<out ViewGroup>? -> p?.getBottomInset(this) })
+        get() = ObjectUtils.perform<ParentController<ViewGroup>?, Int>(parentController, 0, FuncR1 { p: ParentController<ViewGroup>? -> p?.getBottomInset(this) })
 
 
 }

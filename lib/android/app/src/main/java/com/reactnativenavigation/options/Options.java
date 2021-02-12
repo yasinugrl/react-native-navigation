@@ -148,4 +148,5 @@ public class Options {
         bottomTabsOptions.currentTabIndex = new NullNumber();
         return this;
     }
+
 }
