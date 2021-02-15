@@ -134,14 +134,14 @@ public class NavigatorTest extends BaseTest {
     public void setContentLayout_modalAndOverlayLayoutsAreGONE() {
         ViewGroup contentLayout = Mockito.mock(ViewGroup.class);
         uut.setContentLayout(contentLayout);
-        assertThat(uut.getModalsLayout().getVisibility()).isEqualTo(View.GONE);
-        assertThat(uut.getOverlaysLayout().getVisibility()).isEqualTo(View.GONE);
+        assertThat(uut.modalsLayout.getVisibility()).isEqualTo(View.GONE);
+        assertThat(uut.overlaysLayout.getVisibility()).isEqualTo(View.GONE);
     }
 
     @Test
     public void bindViews() {
-        verify(rootPresenter).setRootContainer(uut.getRootLayout());
-        verify(modalStack).setModalsLayout(uut.getModalsLayout());
+        verify(rootPresenter).setRootContainer(uut.rootLayout);
+        verify(modalStack).setModalsLayout(uut.modalsLayout);
     }
 
     @Test
@@ -179,14 +179,14 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void setRoot_AddsChildControllerView() {
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
-        assertIsChild(uut.getRootLayout(), child1.getView());
+        assertIsChild(uut.rootLayout, child1.getView());
     }
 
     @Test
     public void setRoot_ReplacesExistingChildControllerViews() {
         uut.setRoot(child1, new CommandListenerAdapter(), reactInstanceManager);
         uut.setRoot(child2, new CommandListenerAdapter(), reactInstanceManager);
-        assertIsChild(uut.getRootLayout(), child2.getView());
+        assertIsChild(uut.rootLayout, child2.getView());
     }
 
     @Test
@@ -566,11 +566,11 @@ public class NavigatorTest extends BaseTest {
         disableModalAnimations(child1);
 
         uut.setRoot(parentController, new CommandListenerAdapter(), reactInstanceManager);
-        assertThat(ViewUtils.isChildOf(uut.getRootLayout(), parentController.getView())).isTrue();
+        assertThat(ViewUtils.isChildOf(uut.rootLayout, parentController.getView())).isTrue();
         uut.showModal(child1, new CommandListenerAdapter());
 
         uut.dismissModal(child1.getId(), new CommandListenerAdapter());
-        assertThat(ViewUtils.isChildOf(uut.getRootLayout(), parentController.getView())).isTrue();
+        assertThat(ViewUtils.isChildOf(uut.rootLayout, parentController.getView())).isTrue();
     }
 
     @Test
@@ -658,7 +658,7 @@ public class NavigatorTest extends BaseTest {
     public void destroy_destroyOverlayManager() {
         uut.setRoot(parentController, new CommandListenerAdapter(), reactInstanceManager);
         activityController.destroy();
-        verify(overlayManager).destroy(uut.getOverlaysLayout());
+        verify(overlayManager).destroy(uut.overlaysLayout);
     }
 
     @Test
