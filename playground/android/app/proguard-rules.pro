@@ -65,3 +65,6 @@
 # stetho
 
 -dontwarn com.facebook.stetho.**
+
+# turboModules
+-keep class com.facebook.react.turbomodule.** { *; }

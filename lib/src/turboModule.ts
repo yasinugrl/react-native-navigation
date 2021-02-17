@@ -1,4 +1,5 @@
-import { TurboModule, TurboModuleRegistry } from 'react-native-tscodegen-types';
+//@ts-ignore
+import { TurboModule, TurboModuleRegistry } from 'react-native';
 
 export interface ModuleSpec extends TurboModule {
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;

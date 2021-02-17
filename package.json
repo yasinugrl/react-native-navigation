@@ -98,8 +98,6 @@
     "react-native-fast-image": "8.x.x",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
-    "react-native-tscodegen": "^0.65.3",
-    "react-native-tscodegen-types": "^0.65.3",
     "react-native-ui-lib": "5.11.0",
     "react-redux": "5.x.x",
     "react-test-renderer": "16.13.1",

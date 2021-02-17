@@ -45,15 +45,6 @@ public abstract class NavigationApplication extends Application implements React
 
     private final ReactNativeHost mReactNativeHost =
             new ReactNativeHost(this) {
-                @Override
-                public String getJSMainModuleName() {
-                    return "packages/rn-tester/js/RNTesterApp.android";
-                }
-
-                @Override
-                public String getBundleAssetName() {
-                    return "RNTesterApp.android.bundle";
-                }
 
                 @Override
                 public boolean getUseDeveloperSupport() {
@@ -77,7 +68,7 @@ public abstract class NavigationApplication extends Application implements React
                                 // yet. For now, hardcode this information, though it's not necessary for most
                                 // modules.
                                 public ReactModuleInfoProvider getReactModuleInfoProvider() {
-                                    return (ReactModuleInfoProvider) () -> {
+                                    return () -> {
                                         final Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
                                         if (ReactFeatureFlags.useTurboModules) {
                                             moduleInfos.put(
@@ -115,7 +106,7 @@ public abstract class NavigationApplication extends Application implements React
 
                                         @Override
                                         public JSIModuleProvider getJSIModuleProvider() {
-                                            return (JSIModuleProvider) () -> {
+                                            return () -> {
                                                 final ReactInstanceManager reactInstanceManager =
                                                         getReactInstanceManager();
                                                 final List<ReactPackage> packages = reactInstanceManager.getPackages();
@@ -147,6 +138,11 @@ public abstract class NavigationApplication extends Application implements React
         instance = this;
         SoLoader.init(this, false);
         reactGateway = createReactGateway();
+    }
+
+    @Override
+    public ReactNativeHost getReactNativeHost() {
+        return mReactNativeHost;
     }
 
     /**
