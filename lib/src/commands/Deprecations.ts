@@ -75,6 +75,19 @@ export class Deprecations {
     if (key === 'interpolation' && typeof parentOptions[key] === 'string') {
       this.deprecateInterpolationOptions(parentOptions);
     }
+    if (key === 'badgeColor') {
+      console.warn(
+        `${key} is deprecated and will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6889`,
+        parentOptions
+      );
+    }
+
+    if (key === 'badge' && typeof parentOptions[key] === 'string') {
+      console.warn(
+        `${key} is deprecated as a string and will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6889`,
+        parentOptions
+      );
+    }
   }
 
   public onProcessDefaultOptions(_key: string, _parentOptions: Record<string, any>) {}
