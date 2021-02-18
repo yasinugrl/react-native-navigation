@@ -156,8 +156,8 @@ public class BottomTabPresenter {
                 builder.setBackgroundColor(oldOptions.badge.getBackgroundColor().get(0));
             if (tab.animateBadge.hasValue())
                 builder.animate(tab.animateBadge.get());
+            bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(builder.build(), index));
         }
-        bottomTabs.perform(bottomTabs -> bottomTabs.setNotification(builder.build(), index));
     }
 
     private void mergeDotIndicator(int index, DotIndicatorOptions dotIndicator) {
