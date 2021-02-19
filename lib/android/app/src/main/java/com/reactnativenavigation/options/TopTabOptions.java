@@ -3,15 +3,15 @@ package com.reactnativenavigation.options;
 import android.graphics.Typeface;
 import androidx.annotation.Nullable;
 
-import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.NullStringParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.options.parsers.TextParser;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 
 import org.json.JSONObject;
 
 public class TopTabOptions {
-    public Text title = new NullText();
+    public StringParam title = NullStringParam.INSTANCE;
     @Nullable public Typeface fontFamily;
     public int tabIndex;
 

@@ -7,10 +7,10 @@ import android.util.TypedValue.COMPLEX_UNIT_DIP
 import android.util.TypedValue.COMPLEX_UNIT_FRACTION
 import android.view.View
 import android.view.View.*
-import com.reactnativenavigation.options.params.Bool
-import com.reactnativenavigation.options.params.NullBool
-import com.reactnativenavigation.options.params.NullText
-import com.reactnativenavigation.options.params.Text
+import com.reactnativenavigation.options.params.BoolParam
+import com.reactnativenavigation.options.params.NullBoolParam
+import com.reactnativenavigation.options.params.NullStringParam
+import com.reactnativenavigation.options.params.StringParam
 import com.reactnativenavigation.options.parsers.BoolParser
 import com.reactnativenavigation.options.parsers.TextParser
 import com.reactnativenavigation.utils.CollectionUtils
@@ -21,9 +21,14 @@ import kotlin.math.max
 
 open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) : LayoutAnimation {
 
-    @JvmField var id: Text = NullText()
-    @JvmField var enabled: Bool = NullBool()
-    @JvmField var waitForRender: Bool = NullBool()
+    @JvmField
+    var id: StringParam = NullStringParam
+
+    @JvmField
+    var enabled: BoolParam = NullBoolParam
+
+    @JvmField
+    var waitForRender: BoolParam = NullBoolParam
     override var sharedElements = SharedElements()
     override var elementTransitions = ElementTransitions()
     private var valueOptions = HashSet<ValueAnimationOptions>()
@@ -79,12 +84,12 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
         return AnimatorSet().apply { playTogether(valueOptions.map { it.getAnimation(view) }) }
     }
 
-    fun shouldWaitForRender() = Bool(waitForRender.isTrue or hasElementTransitions())
+    fun shouldWaitForRender() = BoolParam(waitForRender.isTrue or hasElementTransitions())
 
     fun hasElementTransitions() = sharedElements.hasValue() or elementTransitions.hasValue()
 
     val duration: Int
-        get() = CollectionUtils.reduce(valueOptions, 0, { item: ValueAnimationOptions, currentValue: Int -> max(item.duration[currentValue], currentValue) })
+        get() = valueOptions.fold(0, { currentValue: Int, item: ValueAnimationOptions, -> max(item.duration[currentValue] ?: 0, currentValue) })
 
     open fun hasAnimation(): Boolean = valueOptions.isNotEmpty()
 

@@ -6,7 +6,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.options.ExternalComponent;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.react.events.EventEmitter;
@@ -90,7 +90,7 @@ public class ExternalComponentViewControllerTest extends BaseTest {
 
     private ExternalComponent createExternalComponent() {
         ExternalComponent component = new ExternalComponent();
-        component.name = new Text("fragmentComponent");
+        component.name = new StringParam("fragmentComponent");
         component.passProps = new JSONObject();
         return component;
     }

@@ -141,10 +141,10 @@ class BottomTabsPresenter(
     private fun applyBottomTabsOptions(options: Options) {
         val bottomTabsOptions = options.bottomTabsOptions
         bottomTabs.setLayoutDirection(options.layout.direction)
-        bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false])
+        bottomTabs.setPreferLargeIcons(options.bottomTabsOptions.preferLargeIcons[false] ?: false)
         bottomTabs.titleState = bottomTabsOptions.titleDisplayMode[defaultTitleState]
-        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor[Color.WHITE])
-        bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection.get(true))
+        bottomTabs.setBackgroundColor(bottomTabsOptions.backgroundColor[Color.WHITE] ?: Color.WHITE)
+        bottomTabs.setAnimateTabSelection(bottomTabsOptions.animateTabSelection[true] ?: true)
         if (bottomTabsOptions.currentTabIndex.hasValue()) {
             val tabIndex = bottomTabsOptions.currentTabIndex.get()
             if (tabIndex >= 0) {
@@ -203,7 +203,7 @@ class BottomTabsPresenter(
         } else {
             bottomTabsContainer.clearShadow()
         }
-        bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll[false]
+        bottomTabs.isBehaviorTranslationEnabled = bottomTabsOptions.hideOnScroll[false] ?: false
     }
 
     fun applyBottomInset(bottomInset: Int) {
@@ -238,6 +238,7 @@ class BottomTabsPresenter(
                 appearingOptions.bottomTabsOptions.visible
         )
     }
+
     fun findTabIndexByTabId(id: String?): Int {
         val index = bottomTabFinder.findByControllerId(id)
         return max(index, 0)

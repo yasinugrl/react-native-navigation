@@ -18,7 +18,7 @@ object NullShadowOptions : ShadowOptions() {
     override fun hasValue(): Boolean = false
 }
 
-open class ShadowOptions(var color: Colour = NullColor(), var radius: Fraction = NullFraction(), var opacity: Fraction = NullFraction()) {
+open class ShadowOptions(var color: Colour = NullColor, var radius: Fraction = NullFraction(), var opacity: Fraction = NullFraction()) {
 
     fun copy(): ShadowOptions = ShadowOptions(this.color, this.radius, this.opacity)
 

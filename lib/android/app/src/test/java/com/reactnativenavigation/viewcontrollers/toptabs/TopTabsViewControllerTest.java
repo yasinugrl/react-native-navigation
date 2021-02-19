@@ -9,8 +9,8 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TestComponentViewCreator;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.viewcontrollers.component.ComponentPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.events.ComponentType;
@@ -63,7 +63,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         TopTabsLayoutCreator layoutCreator = Mockito.mock(TopTabsLayoutCreator.class);
         Mockito.when(layoutCreator.create()).thenReturn(topTabsLayout);
         Presenter presenter = new Presenter(activity, new Options());
-        options.topBar.buttons.back.visible = new Bool(false);
+        options.topBar.buttons.back.visible = new BoolParam(false);
         uut = spy(new TopTabsController(activity, childRegistry, "componentId", tabControllers, layoutCreator, options, presenter));
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
@@ -76,8 +76,8 @@ public class TopTabsViewControllerTest extends BaseTest {
         ArrayList result = new ArrayList();
         for (int i = 0; i < SIZE; i++) {
             final Options options = new Options();
-            options.topTabOptions.title = new Text("Tab " + i);
-            options.topBar.title.text = new Text(createTabTopBarTitle(i));
+            options.topTabOptions.title = new StringParam("Tab " + i);
+            options.topBar.title.text = new StringParam(createTabTopBarTitle(i));
             result.add(options);
         }
         return result;

@@ -16,7 +16,7 @@ import com.reactnativenavigation.fakes.IconResolverFake
 import com.reactnativenavigation.mocks.*
 import com.reactnativenavigation.options.*
 import com.reactnativenavigation.options.params.*
-import com.reactnativenavigation.options.params.Number
+import com.reactnativenavigation.options.params.IntParam
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 import com.reactnativenavigation.react.CommandListenerAdapter
 import com.reactnativenavigation.utils.CollectionUtils
@@ -205,7 +205,7 @@ class StackPresenterTest : BaseTest() {
 
         val options = Options()
         val button = ButtonOptions()
-        button.text = Text("btn")
+        button.text = StringParam("btn")
         options.topBar.buttons.right = ArrayList(setOf(button))
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
         verify(topBarController).mergeRightButtons(any(), any())
@@ -313,7 +313,7 @@ class StackPresenterTest : BaseTest() {
         toMerge.topBar.buttons.left = ArrayList()
         val leftButton = ButtonOptions()
         leftButton.id = "id"
-        leftButton.icon = Text("")
+        leftButton.icon = StringParam("")
         toMerge.topBar.buttons.left!!.add(leftButton)
 
         assertThat(toMerge.topBar.buttons.back.hasValue()).isTrue()
@@ -328,28 +328,28 @@ class StackPresenterTest : BaseTest() {
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
         assertTopBarOptions(options, 0)
         val title = TitleOptions()
-        title.text = Text("abc")
+        title.text = StringParam("abc")
         title.color = Colour(0)
         title.fontSize = Fraction(1.0)
         title.font = FontOptions()
-        title.font.fontStyle = Text("bold")
+        title.font.fontStyle = StringParam("bold")
         options.topBar.title = title
         val subtitleOptions = SubtitleOptions()
-        subtitleOptions.text = Text("Sub")
+        subtitleOptions.text = StringParam("Sub")
         subtitleOptions.color = Colour(1)
-        subtitleOptions.font.fontStyle = Text("bold")
+        subtitleOptions.font.fontStyle = StringParam("bold")
         subtitleOptions.fontSize = Fraction(1.0)
         options.topBar.subtitle = subtitleOptions
         options.topBar.background.color = Colour(0)
-        options.topBar.testId = Text("test123")
-        options.topBar.animate = Bool(false)
-        options.topBar.visible = Bool(false)
-        options.topBar.drawBehind = Bool(false)
-        options.topBar.hideOnScroll = Bool(false)
+        options.topBar.testId = StringParam("test123")
+        options.topBar.animate = BoolParam(false)
+        options.topBar.visible = BoolParam(false)
+        options.topBar.drawBehind = BoolParam(false)
+        options.topBar.hideOnScroll = BoolParam(false)
         options.topBar.validate()
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
         assertTopBarOptions(options, 1)
-        options.topBar.drawBehind = Bool(true)
+        options.topBar.drawBehind = BoolParam(true)
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
     }
 
@@ -359,7 +359,7 @@ class StackPresenterTest : BaseTest() {
         defaultOptions.topBar.background.color = Colour(10)
         uut.defaultOptions = defaultOptions
         val toMerge = Options()
-        toMerge.topBar.title.text = Text("someText")
+        toMerge.topBar.title.text = StringParam("someText")
         uut.mergeOptions(toMerge, parent, child)
         verify(topBar, never()).setBackgroundColor(any())
     }
@@ -367,7 +367,7 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeOptions_resolvedTitleFontOptionsAreApplied() {
         val childOptions = Options()
-        childOptions.topBar.title.font.fontFamily = Text(SOME_FONT_FAMILY)
+        childOptions.topBar.title.font.fontFamily = StringParam(SOME_FONT_FAMILY)
         child.mergeOptions(childOptions)
         val parentOptions = Options()
         parentOptions.topBar.title.color = Colour(Color.RED)
@@ -376,7 +376,7 @@ class StackPresenterTest : BaseTest() {
         defaultOptions.topBar.title.fontSize = Fraction(9.0)
         uut.defaultOptions = defaultOptions
         val toMerge = Options()
-        toMerge.topBar.title.text = Text("New Title")
+        toMerge.topBar.title.text = StringParam("New Title")
         uut.mergeOptions(toMerge, parent, child)
         val title = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
@@ -388,7 +388,7 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun mergeOptions_resolvedSubtitleFontOptionsAreApplied() {
         val childOptions = Options()
-        childOptions.topBar.subtitle.font.fontFamily = Text(SOME_FONT_FAMILY)
+        childOptions.topBar.subtitle.font.fontFamily = StringParam(SOME_FONT_FAMILY)
         child.mergeOptions(childOptions)
         val parentOptions = Options()
         parentOptions.topBar.subtitle.color = Colour(Color.RED)
@@ -397,7 +397,7 @@ class StackPresenterTest : BaseTest() {
         defaultOptions.topBar.subtitle.fontSize = Fraction(9.0)
         uut.defaultOptions = defaultOptions
         val toMerge = Options()
-        toMerge.topBar.subtitle.text = Text("New Title")
+        toMerge.topBar.subtitle.text = StringParam("New Title")
         uut.mergeOptions(toMerge, parent, child)
         val subtitle = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getSubTitleTxtView()
         assertThat(subtitle).isNotNull()
@@ -412,10 +412,10 @@ class StackPresenterTest : BaseTest() {
         defaultOptions.topBar.title.fontSize = Fraction(9.0)
         uut.defaultOptions = defaultOptions
         val resolvedOptions = Options()
-        resolvedOptions.topBar.title.font.fontFamily = Text(SOME_FONT_FAMILY)
+        resolvedOptions.topBar.title.font.fontFamily = StringParam(SOME_FONT_FAMILY)
         resolvedOptions.topBar.title.color = Colour(Color.RED)
         val toMerge = Options()
-        toMerge.topBar.title.text = Text("New Title")
+        toMerge.topBar.title.text = StringParam("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
         val title = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getTitleTxtView()
         assertThat(title).isNotNull()
@@ -430,10 +430,10 @@ class StackPresenterTest : BaseTest() {
         defaultOptions.topBar.subtitle.fontSize = Fraction(9.0)
         uut.defaultOptions = defaultOptions
         val resolvedOptions = Options()
-        resolvedOptions.topBar.subtitle.font.fontFamily = Text(SOME_FONT_FAMILY)
+        resolvedOptions.topBar.subtitle.font.fontFamily = StringParam(SOME_FONT_FAMILY)
         resolvedOptions.topBar.subtitle.color = Colour(Color.RED)
         val toMerge = Options()
-        toMerge.topBar.subtitle.text = Text("New Title")
+        toMerge.topBar.subtitle.text = StringParam("New Title")
         uut.mergeChildOptions(toMerge, resolvedOptions, parent, child)
         val subtitle = (topBar.mainToolBar.getTitleComponent() as TitleSubTitleLayout).getSubTitleTxtView()
         assertThat(subtitle).isNotNull()
@@ -448,7 +448,7 @@ class StackPresenterTest : BaseTest() {
         defaultOptions.topBar.background.color = Colour(10)
         uut.defaultOptions = defaultOptions
         val childOptions = Options()
-        childOptions.topBar.title.text = Text("someText")
+        childOptions.topBar.title.text = StringParam("someText")
         uut.mergeChildOptions(childOptions, EMPTY_OPTIONS, parent, child)
         verify(topBar, never()).setBackgroundColor(any())
     }
@@ -456,8 +456,8 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun applyTopBarOptions_setTitleComponent() {
         val applyComponent = Options()
-        applyComponent.topBar.title.component.name = Text("Component1")
-        applyComponent.topBar.title.component.componentId = Text("Component1id")
+        applyComponent.topBar.title.component.name = StringParam("Component1")
+        applyComponent.topBar.title.component.componentId = StringParam("Component1id")
         uut.applyChildOptions(applyComponent, parent, child)
         verify(topBarController).setTitleComponent(any())
     }
@@ -470,7 +470,7 @@ class StackPresenterTest : BaseTest() {
         val applyCaptor = argumentCaptor<TitleBarReactViewController>()
         verify(topBarController).setTitleComponent(applyCaptor.capture())
         val titleOptions = Options()
-        titleOptions.topBar.title.text = Text("Some title")
+        titleOptions.topBar.title.text = StringParam("Some title")
         uut.mergeChildOptions(titleOptions, Options.EMPTY, parent, child)
         assertThat(applyCaptor.firstValue.isDestroyed).isTrue()
     }
@@ -510,8 +510,8 @@ class StackPresenterTest : BaseTest() {
         verify(topBar, never()).setTopTabsVisible(any())
         options.topTabs.selectedTabColor = Colour(1)
         options.topTabs.unselectedTabColor = Colour(1)
-        options.topTabs.fontSize = Number(1)
-        options.topTabs.visible = Bool(true)
+        options.topTabs.fontSize = IntParam(1)
+        options.topTabs.visible = BoolParam(true)
         uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
         verify(topBar).applyTopTabsColors(options.topTabs.selectedTabColor, options.topTabs.unselectedTabColor)
         verify(topBar).applyTopTabsFontSize(options.topTabs.fontSize)
@@ -521,8 +521,8 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun applyInitialChildLayoutOptions() {
         val options = Options()
-        options.topBar.visible = Bool(false)
-        options.topBar.animate = Bool(true)
+        options.topBar.visible = BoolParam(false)
+        options.topBar.animate = BoolParam(true)
         uut.applyInitialChildLayoutOptions(options)
         verify(topBarController).hide()
     }
@@ -556,8 +556,8 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun applyTopBarOptions_backgroundComponentIsCreatedOnceIfNameAndIdAreEqual() {
         val o = Options()
-        o.topBar.background.component.name = Text("comp")
-        o.topBar.background.component.componentId = Text("compId")
+        o.topBar.background.component.name = StringParam("comp")
+        o.topBar.background.component.componentId = StringParam("compId")
         uut.applyChildOptions(o, parent, Mocks.viewController())
         assertThat(uut.backgroundComponents.size).isOne()
         uut.applyChildOptions(o, parent, Mocks.viewController())
@@ -753,7 +753,7 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun applyTopInsets_topBarIsDrawnUnderStatusBarIfDrawBehindIsTrue() {
         val options = Options()
-        options.statusBar.drawBehind = Bool(true)
+        options.statusBar.drawBehind = BoolParam(true)
         uut.applyTopInsets(parent, child)
         assertThat(topBar.y).isEqualTo(0f)
     }
@@ -761,7 +761,7 @@ class StackPresenterTest : BaseTest() {
     @Test
     fun applyTopInsets_topBarIsDrawnUnderStatusBarIfStatusBarIsHidden() {
         val options = Options()
-        options.statusBar.visible = Bool(false)
+        options.statusBar.visible = BoolParam(false)
         uut.applyTopInsets(parent, Mocks.viewController())
         assertThat(topBar.y).isEqualTo(0f)
     }
@@ -784,7 +784,7 @@ class StackPresenterTest : BaseTest() {
     fun applyChildOptions_shouldChangeTopMargin() {
         val options = Options()
         (topBar.layoutParams as ViewGroup.MarginLayoutParams).topMargin = 20
-        options.topBar.topMargin = Number(10)
+        options.topBar.topMargin = IntParam(10)
         uut.applyChildOptions(options, parent, child)
         assertThat((topBar.layoutParams as ViewGroup.MarginLayoutParams).topMargin).isEqualTo(10)
     }
@@ -821,9 +821,9 @@ class StackPresenterTest : BaseTest() {
 
     private fun component(alignment: Alignment): ComponentOptions {
         val component = ComponentOptions()
-        component.name = Text("myComp")
+        component.name = StringParam("myComp")
         component.alignment = alignment
-        component.componentId = Text("compId")
+        component.componentId = StringParam("compId")
         return component
     }
 

@@ -11,8 +11,8 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.NullBool;
+import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.NullBoolParam;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -80,7 +80,9 @@ public class ViewControllerTest extends BaseTest {
             }
 
             @Override
-            public String getCurrentComponentName() { return null; }
+            public String getCurrentComponentName() {
+                return null;
+            }
         };
         assertThat(myController.getView()).isEqualTo(otherView);
     }
@@ -154,7 +156,9 @@ public class ViewControllerTest extends BaseTest {
             }
 
             @Override
-            public String getCurrentComponentName() { return null; }
+            public String getCurrentComponentName() {
+                return null;
+            }
         };
         vc.onChildViewAdded(view, child);
         verify(yellowBoxDelegate).onChildViewAdded(view, child);
@@ -288,13 +292,13 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void isRendered_falseIfViewIsNotCreated() {
-        uut.setWaitForRender(new Bool(true));
+        uut.setWaitForRender(new BoolParam(true));
         assertThat(uut.isRendered()).isFalse();
     }
 
     @Test
     public void isRendered_delegatesToView() {
-        uut.setWaitForRender(new Bool(true));
+        uut.setWaitForRender(new BoolParam(true));
         uut.view = mock(ViewGroup.class, withSettings().extraInterfaces(Component.class));
         uut.isRendered();
         verify((Component) uut.view).isRendered();
@@ -302,7 +306,7 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void isRendered_returnsTrueForEveryViewByDefault() {
-        uut.setWaitForRender(new NullBool());
+        uut.setWaitForRender(NullBoolParam.INSTANCE);
         uut.view = mock(ViewGroup.class);
         assertThat(uut.isRendered()).isTrue();
     }

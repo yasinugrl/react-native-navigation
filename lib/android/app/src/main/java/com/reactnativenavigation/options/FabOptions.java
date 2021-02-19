@@ -3,12 +3,12 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullBool;
+import com.reactnativenavigation.options.params.NullBoolParam;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.NullStringParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.TextParser;
@@ -47,18 +47,18 @@ public class FabOptions {
         return options;
     }
 
-    public Text id = new NullText();
-    public Colour backgroundColor = new NullColor();
-    public Colour clickColor = new NullColor();
-    public Colour rippleColor = new NullColor();
-    public Text icon = new NullText();
-    public Colour iconColor = new NullColor();
-    public Bool visible = new NullBool();
+    public StringParam id = NullStringParam.INSTANCE;
+    public Colour backgroundColor = NullColor.INSTANCE;
+    public Colour clickColor = NullColor.INSTANCE;
+    public Colour rippleColor = NullColor.INSTANCE;
+    public StringParam icon = NullStringParam.INSTANCE;
+    public Colour iconColor = NullColor.INSTANCE;
+    public BoolParam visible = NullBoolParam.INSTANCE;
     public ArrayList<FabOptions> actionsArray = new ArrayList<>();
-    public Text alignHorizontally = new NullText();
-    public Text alignVertically = new NullText();
-    public Bool hideOnScroll = new NullBool();
-    public Text size = new NullText();
+    public StringParam alignHorizontally = NullStringParam.INSTANCE;
+    public StringParam alignVertically = NullStringParam.INSTANCE;
+    public BoolParam hideOnScroll = NullBoolParam.INSTANCE;
+    public StringParam size = NullStringParam.INSTANCE;
 
     void mergeWith(final FabOptions other) {
         if (other.id.hasValue()) {

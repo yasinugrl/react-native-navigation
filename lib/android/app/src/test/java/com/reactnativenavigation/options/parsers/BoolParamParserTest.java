@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-public class BoolParserTest extends BaseTest {
+public class BoolParamParserTest extends BaseTest {
 
     @Test
     public void parse() throws JSONException {

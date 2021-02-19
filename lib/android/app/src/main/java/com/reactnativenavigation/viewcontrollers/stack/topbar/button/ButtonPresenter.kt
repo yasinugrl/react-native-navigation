@@ -90,13 +90,13 @@ open class ButtonPresenter(private val context: Context, private val button: But
 
     private fun applyIconBackgroundDrawable(srcDrawable: Drawable): Drawable? {
         return if (button.iconBackground.hasValue()) {
-            val width = button.iconBackground.width.get(srcDrawable.intrinsicWidth).let { max(it, srcDrawable.intrinsicWidth) }
-            val height = button.iconBackground.height.get(srcDrawable.intrinsicHeight).let { max(it, srcDrawable.intrinsicHeight) }
+            val width = max(button.iconBackground.width[srcDrawable.intrinsicWidth], srcDrawable.intrinsicWidth)
+            val height = max(button.iconBackground.height[srcDrawable.intrinsicHeight], srcDrawable.intrinsicHeight)
             val cornerRadius = button.iconBackground.cornerRadius
             val backgroundColor = if (button.enabled.isTrueOrUndefined) {
-                button.iconBackground.color.get(null)
+                if (button.iconBackground.color.hasValue()) button.iconBackground.color.get() else null
             } else {
-                button.iconBackground.disabledColor.get(null)
+                if (button.iconBackground.disabledColor.hasValue()) button.iconBackground.disabledColor.get() else null
             }
             IconBackgroundDrawable(srcDrawable, cornerRadius, width, height, getIconColor(), backgroundColor)
         } else

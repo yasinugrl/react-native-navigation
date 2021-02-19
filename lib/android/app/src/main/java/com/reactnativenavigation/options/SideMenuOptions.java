@@ -1,20 +1,20 @@
 package com.reactnativenavigation.options;
 
-import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.options.params.NullNumber;
-import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.NullIntParam;
+import com.reactnativenavigation.options.params.IntParam;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 
 import org.json.JSONObject;
 
 public class SideMenuOptions {
-    public Bool visible = new NullBool();
-    public Bool animate = new NullBool();
-    public Bool enabled = new NullBool();
-    public Number height = new NullNumber();
-    public Number width = new NullNumber();
+    public BoolParam visible = NullBoolParam.INSTANCE;
+    public BoolParam animate = NullBoolParam.INSTANCE;
+    public BoolParam enabled = NullBoolParam.INSTANCE;
+    public IntParam height = NullIntParam.INSTANCE;
+    public IntParam width = NullIntParam.INSTANCE;
 
     public static SideMenuOptions parse(JSONObject json) {
         SideMenuOptions options = new SideMenuOptions();

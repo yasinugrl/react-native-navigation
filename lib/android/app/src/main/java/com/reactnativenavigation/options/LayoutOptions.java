@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullNumber;
-import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.NullIntParam;
+import com.reactnativenavigation.options.params.IntParam;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 
@@ -25,9 +25,9 @@ public class LayoutOptions {
         return result;
     }
 
-    public Colour backgroundColor = new NullColor();
-    public Colour componentBackgroundColor = new NullColor();
-    public Number topMargin = new NullNumber();
+    public Colour backgroundColor = NullColor.INSTANCE;
+    public Colour componentBackgroundColor = NullColor.INSTANCE;
+    public IntParam topMargin = NullIntParam.INSTANCE;
     public OrientationOptions orientation = new OrientationOptions();
     public LayoutDirection direction = LayoutDirection.DEFAULT;
 

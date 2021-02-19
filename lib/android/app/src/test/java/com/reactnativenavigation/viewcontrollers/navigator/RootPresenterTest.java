@@ -8,7 +8,7 @@ import com.reactnativenavigation.hierarchy.root.RootAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.AnimationOptions;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.LayoutDirectionApplier;
@@ -97,19 +97,19 @@ public class RootPresenterTest extends BaseTest {
 
     @Test
     public void setRoot_waitForRenderIsSet() {
-        root.options.animations.setRoot.waitForRender = new Bool(true);
+        root.options.animations.setRoot.waitForRender = new BoolParam(true);
         ViewController spy = spy(root);
 
         uut.setRoot(spy, defaultOptions, new CommandListenerAdapter(), reactInstanceManager);
 
-        ArgumentCaptor<Bool> captor = ArgumentCaptor.forClass(Bool.class);
+        ArgumentCaptor<BoolParam> captor = ArgumentCaptor.forClass(BoolParam.class);
         verify(spy).setWaitForRender(captor.capture());
         assertThat(captor.getValue().get()).isTrue();
     }
 
     @Test
     public void setRoot_waitForRender() {
-        root.options.animations.setRoot.waitForRender = new Bool(true);
+        root.options.animations.setRoot.waitForRender = new BoolParam(true);
 
         ViewController spy = spy(root);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());

@@ -3,16 +3,16 @@ package com.reactnativenavigation.options;
 import android.content.Context;
 import android.view.MenuItem;
 
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
-import com.reactnativenavigation.options.params.NullBool;
+import com.reactnativenavigation.options.params.NullBoolParam;
 import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullFraction;
-import com.reactnativenavigation.options.params.NullNumber;
-import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.NullIntParam;
+import com.reactnativenavigation.options.params.NullStringParam;
+import com.reactnativenavigation.options.params.IntParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
@@ -33,18 +33,18 @@ public class ButtonOptions {
     public String instanceId = "btn" + CompatUtils.generateViewId();
 
     public String id = "btn" + CompatUtils.generateViewId();
-    public Text accessibilityLabel = new NullText();
-    public Text text = new NullText();
-    public Bool allCaps = new NullBool();
-    public Bool enabled = new NullBool();
-    public Bool disableIconTint = new NullBool();
-    public Number showAsAction = new NullNumber();
-    public Colour color = new NullColor();
-    public Colour disabledColor = new NullColor();
+    public StringParam accessibilityLabel = NullStringParam.INSTANCE;
+    public StringParam text = NullStringParam.INSTANCE;
+    public BoolParam allCaps = NullBoolParam.INSTANCE;
+    public BoolParam enabled = NullBoolParam.INSTANCE;
+    public BoolParam disableIconTint = NullBoolParam.INSTANCE;
+    public IntParam showAsAction = NullIntParam.INSTANCE;
+    public Colour color = NullColor.INSTANCE;
+    public Colour disabledColor = NullColor.INSTANCE;
     public Fraction fontSize = new NullFraction();
     public FontOptions font = new FontOptions();
-    public Text icon = new NullText();
-    public Text testId = new NullText();
+    public StringParam icon = NullStringParam.INSTANCE;
+    public StringParam testId = NullStringParam.INSTANCE;
     public ComponentOptions component = new ComponentOptions();
     public IconBackgroundOptions iconBackground = new IconBackgroundOptions();
 
@@ -131,22 +131,22 @@ public class ButtonOptions {
         return IdFactory.Companion.get(component.componentId.get(id));
     }
 
-    private static Number parseShowAsAction(JSONObject json) {
-        final Text showAsAction = TextParser.parse(json, "showAsAction");
+    private static IntParam parseShowAsAction(JSONObject json) {
+        final StringParam showAsAction = TextParser.parse(json, "showAsAction");
         if (!showAsAction.hasValue()) {
-            return new Number(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            return new IntParam(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
 
         switch (showAsAction.get()) {
             case "always":
-                return new Number(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                return new IntParam(MenuItem.SHOW_AS_ACTION_ALWAYS);
             case "never":
-                return new Number(MenuItem.SHOW_AS_ACTION_NEVER);
+                return new IntParam(MenuItem.SHOW_AS_ACTION_NEVER);
             case "withText":
-                return new Number(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+                return new IntParam(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
             case "ifRoom":
             default:
-                return new Number(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                return new IntParam(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
     }
 

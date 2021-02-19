@@ -2,9 +2,9 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.TextParser;
@@ -33,10 +33,10 @@ public class BackButton extends ButtonOptions {
 
     BackButton() {
         id = Constants.BACK_BUTTON_ID;
-        accessibilityLabel = new Text("Navigate Up");
+        accessibilityLabel = new StringParam("Navigate Up");
     }
 
-    public Bool visible = new NullBool();
+    public BoolParam visible = NullBoolParam.INSTANCE;
     private boolean hasValue;
 
     public boolean hasValue() {
@@ -68,12 +68,12 @@ public class BackButton extends ButtonOptions {
     }
 
     public void setVisible() {
-        visible = new Bool(true);
+        visible = new BoolParam(true);
         hasValue = true;
     }
 
     public void setHidden() {
-        visible = new Bool(false);
+        visible = new BoolParam(false);
         hasValue = true;
     }
 }

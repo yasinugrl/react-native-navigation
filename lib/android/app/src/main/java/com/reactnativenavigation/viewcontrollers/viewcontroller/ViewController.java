@@ -7,8 +7,8 @@ import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.NullBool;
+import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.NullBoolParam;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.StringUtils;
@@ -40,7 +40,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private final List<Runnable> onAppearedListeners = new ArrayList<>();
     private boolean appearEventPosted;
     private boolean isFirstLayout = true;
-    private Bool waitForRender = new NullBool();
+    private BoolParam waitForRender = NullBoolParam.INSTANCE;
 
     public interface ViewVisibilityListener {
         /**
@@ -85,7 +85,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         options = initialOptions.copy();
     }
 
-    public void setWaitForRender(Bool waitForRender) {
+    public void setWaitForRender(BoolParam waitForRender) {
         this.waitForRender = waitForRender;
     }
 

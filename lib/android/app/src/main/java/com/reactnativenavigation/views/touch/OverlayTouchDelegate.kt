@@ -2,14 +2,14 @@ package com.reactnativenavigation.views.touch
 
 import android.view.MotionEvent
 import androidx.annotation.VisibleForTesting
-import com.reactnativenavigation.options.params.Bool
-import com.reactnativenavigation.options.params.NullBool
+import com.reactnativenavigation.options.params.BoolParam
+import com.reactnativenavigation.options.params.NullBoolParam
 import com.reactnativenavigation.react.ReactView
 import com.reactnativenavigation.utils.coordinatesInsideView
 import com.reactnativenavigation.views.component.ComponentLayout
 
 open class OverlayTouchDelegate(private val component: ComponentLayout, private val reactView: ReactView) {
-    var interceptTouchOutside: Bool = NullBool()
+    var interceptTouchOutside: BoolParam = NullBoolParam
 
     fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         return when (interceptTouchOutside.hasValue() && event.actionMasked == MotionEvent.ACTION_DOWN) {

@@ -10,7 +10,7 @@ import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.utils.RenderChecker;
 import com.reactnativenavigation.viewcontrollers.stack.StackPresenter;
 import com.reactnativenavigation.react.events.EventEmitter;
@@ -46,7 +46,7 @@ public class TestUtils {
     }
 
     public static void hideBackButton(ViewController viewController) {
-        viewController.options.topBar.buttons.back.visible = new Bool(false);
+        viewController.options.topBar.buttons.back.visible = new BoolParam(false);
     }
 
     public static <T extends View> T spyOn(T child) {

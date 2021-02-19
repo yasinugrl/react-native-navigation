@@ -9,7 +9,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.animation.doOnEnd
 import com.reactnativenavigation.options.AnimationOptions
 import com.reactnativenavigation.options.animations.ViewAnimationOptions
-import com.reactnativenavigation.options.params.Bool
+import com.reactnativenavigation.options.params.BoolParam
 import com.reactnativenavigation.utils.resetViewProperties
 
 open class BaseViewAnimator<T : View>(
@@ -90,7 +90,7 @@ open class BaseViewAnimator<T : View>(
 
     fun isAnimatingShow() = showAnimator.isRunning
 
-    fun getPushAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator? {
+    fun getPushAnimation(animation: ViewAnimationOptions, visible: BoolParam, additionalDy: Float = 0f): Animator? {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
             hideAnimator = animation.exit.getAnimation(view, defaultAnimatorCreator.getHideAnimator(view, hideDirection, additionalDy))
@@ -106,7 +106,7 @@ open class BaseViewAnimator<T : View>(
         return null
     }
 
-    fun getPopAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator? {
+    fun getPopAnimation(animation: ViewAnimationOptions, visible: BoolParam, additionalDy: Float = 0f): Animator? {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
             hideAnimator = animation.exit.getAnimation(view, defaultAnimatorCreator.getHideAnimator(view, hideDirection, additionalDy))
@@ -122,7 +122,7 @@ open class BaseViewAnimator<T : View>(
         return null
     }
 
-    fun getSetStackRootAnimation(animation: ViewAnimationOptions, visible: Bool, additionalDy: Float = 0f): Animator? {
+    fun getSetStackRootAnimation(animation: ViewAnimationOptions, visible: BoolParam, additionalDy: Float = 0f): Animator? {
         if (isOrWillBeVisible && visible.isFalse) {
             showAnimator.cancel()
             hideAnimator = animation.exit.getAnimation(view, defaultAnimatorCreator.getHideAnimator(view, hideDirection, additionalDy))

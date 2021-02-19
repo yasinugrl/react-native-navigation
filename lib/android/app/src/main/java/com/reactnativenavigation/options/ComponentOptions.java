@@ -1,11 +1,11 @@
 package com.reactnativenavigation.options;
 
-import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.NullBool;
-import com.reactnativenavigation.options.params.NullNumber;
-import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.NullIntParam;
+import com.reactnativenavigation.options.params.NullStringParam;
+import com.reactnativenavigation.options.params.IntParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 import com.reactnativenavigation.options.parsers.TextParser;
@@ -27,12 +27,12 @@ public class ComponentOptions {
         return result;
     }
 
-    public Text name = new NullText();
-    public Text componentId = new NullText();
+    public StringParam name = NullStringParam.INSTANCE;
+    public StringParam componentId = NullStringParam.INSTANCE;
     public Alignment alignment = Alignment.Default;
-    public Bool waitForRender = new NullBool();
-    public Number width = new NullNumber();
-    public Number height = new NullNumber();
+    public BoolParam waitForRender = NullBoolParam.INSTANCE;
+    public IntParam width = NullIntParam.INSTANCE;
+    public IntParam height = NullIntParam.INSTANCE;
 
     void mergeWith(ComponentOptions other) {
         if (other.componentId.hasValue()) componentId = other.componentId;
@@ -66,11 +66,11 @@ public class ComponentOptions {
     }
 
     public void reset() {
-        name = new NullText();
-        componentId = new NullText();
+        name = NullStringParam.INSTANCE;
+        componentId = NullStringParam.INSTANCE;
         alignment = Alignment.Default;
-        waitForRender = new NullBool();
-        width = new NullNumber();
-        height = new NullNumber();
+        waitForRender = NullBoolParam.INSTANCE;
+        width = NullIntParam.INSTANCE;
+        height = NullIntParam.INSTANCE;
     }
 }

@@ -2,14 +2,14 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullBool;
+import com.reactnativenavigation.options.params.NullBoolParam;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullNumber;
-import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.NullIntParam;
+import com.reactnativenavigation.options.params.NullStringParam;
+import com.reactnativenavigation.options.params.IntParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
@@ -48,23 +48,23 @@ public class BottomTabOptions {
         return options;
     }
 
-    public Text text = new NullText();
-    public Colour textColor = new NullColor();
-    public Colour selectedTextColor = new NullColor();
-    public Text icon = new NullText();
-    public Number iconWidth = new NullNumber();
-    public Number iconHeight = new NullNumber();
-    public Text selectedIcon = new NullText();
-    public Colour iconColor = new NullColor();
-    public Colour selectedIconColor = new NullColor();
-    public Text testId = new NullText();
-    public Text badge = new NullText();
-    public Colour badgeColor = new NullColor();
-    public Bool animateBadge = new NullBool();
+    public StringParam text = NullStringParam.INSTANCE;
+    public Colour textColor = NullColor.INSTANCE;
+    public Colour selectedTextColor = NullColor.INSTANCE;
+    public StringParam icon = NullStringParam.INSTANCE;
+    public IntParam iconWidth = NullIntParam.INSTANCE;
+    public IntParam iconHeight = NullIntParam.INSTANCE;
+    public StringParam selectedIcon = NullStringParam.INSTANCE;
+    public Colour iconColor = NullColor.INSTANCE;
+    public Colour selectedIconColor = NullColor.INSTANCE;
+    public StringParam testId = NullStringParam.INSTANCE;
+    public StringParam badge = NullStringParam.INSTANCE;
+    public Colour badgeColor = NullColor.INSTANCE;
+    public BoolParam animateBadge = NullBoolParam.INSTANCE;
     public DotIndicatorOptions dotIndicator = new DotIndicatorOptions();
-    public Number fontSize = new NullNumber();
-    public Number selectedFontSize = new NullNumber();
-    public Bool selectTabOnPress = new NullBool();
+    public IntParam fontSize = NullIntParam.INSTANCE;
+    public IntParam selectedFontSize = NullIntParam.INSTANCE;
+    public BoolParam selectTabOnPress = NullBoolParam.INSTANCE;
     public FontOptions font = new FontOptions();
 
 

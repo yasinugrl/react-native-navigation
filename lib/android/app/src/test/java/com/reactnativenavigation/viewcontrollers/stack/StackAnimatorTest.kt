@@ -3,23 +3,19 @@ package com.reactnativenavigation.viewcontrollers.stack
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
-import android.os.Looper
-import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.Mocks
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.options.params.Bool
+import com.reactnativenavigation.options.params.BoolParam
 import com.reactnativenavigation.utils.createEnterExitAnimation
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.element.TransitionAnimatorCreator
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Test
-import org.robolectric.Shadows
 
 class StackAnimatorTest : BaseTest() {
     private lateinit var uut: StackAnimator
@@ -88,7 +84,7 @@ class StackAnimatorTest : BaseTest() {
 
     @Test
     fun push_waitForRender_appearingScreenIsHiddenUntilAnimationStarts() {
-        child2.options.animations.push.waitForRender = Bool(true)
+        child2.options.animations.push.waitForRender = BoolParam(true)
 
         uut.push(child2, child1, child2.options, emptyList(), mock())
 
@@ -177,7 +173,7 @@ class StackAnimatorTest : BaseTest() {
     @Test
     fun setRoot_waitForRender() {
         val onAnimationEnd = mock<Runnable>()
-        child2.options.animations.setStackRoot.waitForRender = Bool(true)
+        child2.options.animations.setStackRoot.waitForRender = BoolParam(true)
 
         uut.setRoot(child2, child1, child2.options, emptyList(), onAnimationEnd)
 
@@ -190,7 +186,7 @@ class StackAnimatorTest : BaseTest() {
     @Test
     fun setRoot_waitForRender_appearingScreenIsHiddenUntilAnimationStarts() {
         val onAnimationEnd = mock<Runnable>()
-        child2.options.animations.setStackRoot.waitForRender = Bool(true)
+        child2.options.animations.setStackRoot.waitForRender = BoolParam(true)
 
         uut.setRoot(child2, child1, child2.options, emptyList(), onAnimationEnd)
 

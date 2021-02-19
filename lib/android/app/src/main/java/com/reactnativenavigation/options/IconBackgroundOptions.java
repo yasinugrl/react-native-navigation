@@ -14,11 +14,11 @@ import com.reactnativenavigation.options.parsers.DensityPixelParser;
 import org.json.JSONObject;
 
 public class IconBackgroundOptions {
-    public Colour color = new NullColor();
-    public Colour disabledColor = new NullColor();
-    public DensityPixel width = new NullDensityPixel();
-    public DensityPixel height = new NullDensityPixel();
-    public DensityPixel cornerRadius = new NullDensityPixel();
+    public Colour color = NullColor.INSTANCE;
+    public Colour disabledColor = NullColor.INSTANCE;
+    public DensityPixel width = NullDensityPixel.INSTANCE;
+    public DensityPixel height = NullDensityPixel.INSTANCE;
+    public DensityPixel cornerRadius = NullDensityPixel.INSTANCE;
 
     public static IconBackgroundOptions parse(Context context, @Nullable JSONObject json) {
         IconBackgroundOptions button = new IconBackgroundOptions();

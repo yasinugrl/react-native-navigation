@@ -11,7 +11,7 @@ import com.reactnativenavigation.options.FadeInAnimation
 import com.reactnativenavigation.options.FadeOutAnimation
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.StackAnimationOptions
-import com.reactnativenavigation.options.params.Bool
+import com.reactnativenavigation.options.params.BoolParam
 import com.reactnativenavigation.utils.awaitRender
 import com.reactnativenavigation.utils.resetViewProperties
 import com.reactnativenavigation.viewcontrollers.common.BaseAnimator
@@ -210,7 +210,7 @@ open class StackAnimator @JvmOverloads constructor(
             options: Options,
             set: AnimatorSet
     ) = GlobalScope.launch(Dispatchers.Main.immediate) {
-        appearing.setWaitForRender(Bool(true))
+        appearing.setWaitForRender(BoolParam(true))
         appearing.view.alpha = 0f
         appearing.awaitRender()
         val fade = if (options.animations.push.content.enter.isFadeAnimation()) options.animations.push.content.enter else FadeInAnimation().content.enter

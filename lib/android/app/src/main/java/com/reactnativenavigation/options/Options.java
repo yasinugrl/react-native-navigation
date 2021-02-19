@@ -2,8 +2,8 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.NullNumber;
-import com.reactnativenavigation.options.params.NullText;
+import com.reactnativenavigation.options.params.NullIntParam;
+import com.reactnativenavigation.options.params.NullStringParam;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 
 import org.json.JSONObject;
@@ -143,8 +143,8 @@ public class Options {
     }
 
     public Options clearOneTimeOptions() {
-        bottomTabsOptions.currentTabId = new NullText();
-        bottomTabsOptions.currentTabIndex = new NullNumber();
+        bottomTabsOptions.currentTabId = NullStringParam.INSTANCE;
+        bottomTabsOptions.currentTabIndex = NullIntParam.INSTANCE;
         return this;
     }
 }

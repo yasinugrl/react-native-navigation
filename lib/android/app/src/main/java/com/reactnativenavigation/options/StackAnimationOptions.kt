@@ -1,15 +1,15 @@
 package com.reactnativenavigation.options
 
 import com.reactnativenavigation.options.animations.ViewAnimationOptions
-import com.reactnativenavigation.options.params.Bool
-import com.reactnativenavigation.options.params.NullBool
+import com.reactnativenavigation.options.params.BoolParam
+import com.reactnativenavigation.options.params.NullBoolParam
 import com.reactnativenavigation.options.parsers.BoolParser
 import org.json.JSONObject
 
 open class StackAnimationOptions(json: JSONObject? = null) : LayoutAnimation {
 
-    @JvmField var enabled: Bool = NullBool()
-    @JvmField var waitForRender: Bool = NullBool()
+    @JvmField var enabled: BoolParam = NullBoolParam
+    @JvmField var waitForRender: BoolParam = NullBoolParam
     @JvmField var content = ViewAnimationOptions()
     @JvmField var bottomTabs = ViewAnimationOptions()
     @JvmField var topBar = ViewAnimationOptions()

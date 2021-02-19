@@ -13,9 +13,9 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.SideMenuOptions;
-import com.reactnativenavigation.options.params.Bool;
-import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.IntParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -78,8 +78,8 @@ public class SideMenuControllerTest extends BaseTest {
     @NotNull
     private Options createSideMenuOptions() {
         Options options = new Options();
-        options.sideMenuRootOptions.left.animate = new Bool(false);
-        options.sideMenuRootOptions.right.animate = new Bool(false);
+        options.sideMenuRootOptions.left.animate = new BoolParam(false);
+        options.sideMenuRootOptions.right.animate = new BoolParam(false);
         return options;
     }
 
@@ -147,7 +147,7 @@ public class SideMenuControllerTest extends BaseTest {
         uut.setLeftController(new SimpleComponentViewController(activity, childRegistry, "left", new Options()));
 
         Options options = new Options();
-        options.sideMenuRootOptions.left.visible = new Bool(true);
+        options.sideMenuRootOptions.left.visible = new BoolParam(true);
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isFalse();
         uut.mergeOptions(options);
         assertThat(uut.getView().isDrawerOpen(Gravity.LEFT)).isTrue();
@@ -158,7 +158,7 @@ public class SideMenuControllerTest extends BaseTest {
         uut.setRightController(new SimpleComponentViewController(activity, childRegistry, "right", new Options()));
 
         Options options = new Options();
-        options.sideMenuRootOptions.right.visible = new Bool(true);
+        options.sideMenuRootOptions.right.visible = new BoolParam(true);
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isFalse();
         uut.mergeOptions(options);
         assertThat(uut.getView().isDrawerOpen(Gravity.RIGHT)).isTrue();
@@ -183,7 +183,7 @@ public class SideMenuControllerTest extends BaseTest {
     @Test
     public void resolveCurrentOptions_centerOptionsAreMergedEvenIfDrawerIsOpen() {
         uut.setLeftController(left);
-        center.options.topBar.title.text = new Text("Center");
+        center.options.topBar.title.text = new StringParam("Center");
         assertThat(uut.resolveCurrentOptions().topBar.title.text.hasValue()).isTrue();
 
         openLeftMenu();
@@ -195,12 +195,12 @@ public class SideMenuControllerTest extends BaseTest {
         setLeftRight(left, right);
 
         Options leftDisabled = new Options();
-        leftDisabled.sideMenuRootOptions.left.enabled = new Bool(false);
+        leftDisabled.sideMenuRootOptions.left.enabled = new BoolParam(false);
         left.mergeOptions(leftDisabled);
         assertThat(uut.resolveCurrentOptions().sideMenuRootOptions.left.enabled.get()).isFalse();
 
         Options rightVisible = new Options();
-        rightVisible.sideMenuRootOptions.right.visible = new Bool(true);
+        rightVisible.sideMenuRootOptions.right.visible = new BoolParam(true);
         right.mergeOptions(rightVisible);
         assertThat(uut.resolveCurrentOptions().sideMenuRootOptions.left.enabled.get()).isFalse();
     }
@@ -223,8 +223,8 @@ public class SideMenuControllerTest extends BaseTest {
     @Test
     public void setLeftController_setHeightAndWidthWithOptions() {
         SideMenuOptions options = new SideMenuOptions();
-        options.height = new Number(100);
-        options.width = new Number(200);
+        options.height = new IntParam(100);
+        options.width = new IntParam(200);
         uut.options.sideMenuRootOptions.left = options;
 
         SimpleComponentViewController componentViewController = new SimpleComponentViewController(activity, childRegistry, "left", new Options());
@@ -256,8 +256,8 @@ public class SideMenuControllerTest extends BaseTest {
     @Test
     public void setRightController_setHeightAndWidthWithOptions() {
         SideMenuOptions options = new SideMenuOptions();
-        options.height = new Number(100);
-        options.width = new Number(200);
+        options.height = new IntParam(100);
+        options.width = new IntParam(200);
         uut.options.sideMenuRootOptions.left = options;
 
         SimpleComponentViewController componentViewController = new SimpleComponentViewController(activity, childRegistry, "left", new Options());
@@ -375,7 +375,7 @@ public class SideMenuControllerTest extends BaseTest {
 
     private void openDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {
         Options options = new Options();
-        (side == left ? options.sideMenuRootOptions.left : options.sideMenuRootOptions.right).visible = new Bool(true);
+        (side == left ? options.sideMenuRootOptions.left : options.sideMenuRootOptions.right).visible = new BoolParam(true);
         uut.mergeOptions(options);
         assertThat(uut.getView().isDrawerOpen(getGravity(side))).isTrue();
         assertThat(opt.run(side).visible.isFalseOrUndefined()).isTrue();
@@ -383,7 +383,7 @@ public class SideMenuControllerTest extends BaseTest {
 
     private void closeDrawerAndAssertVisibility(ViewController side, Functions.FuncR1<ViewController, SideMenuOptions> opt) {
         Options options = new Options();
-        (side == left ? options.sideMenuRootOptions.left : options.sideMenuRootOptions.right).visible = new Bool(false);
+        (side == left ? options.sideMenuRootOptions.left : options.sideMenuRootOptions.right).visible = new BoolParam(false);
         uut.mergeOptions(options);
         assertThat(uut.getView().isDrawerOpen(getGravity(side))).isFalse();
         assertThat(opt.run(side).visible.isTrue()).isFalse();
@@ -395,32 +395,32 @@ public class SideMenuControllerTest extends BaseTest {
 
     private void openLeftMenu() {
         Options options = new Options();
-        options.sideMenuRootOptions.left.visible = new Bool(true);
-        options.sideMenuRootOptions.left.animate = new Bool(false);
+        options.sideMenuRootOptions.left.visible = new BoolParam(true);
+        options.sideMenuRootOptions.left.animate = new BoolParam(false);
         uut.mergeOptions(options);
         uut.onDrawerSlide(left.getView(), 1);
     }
 
     private void openRightMenu() {
         Options options = new Options();
-        options.sideMenuRootOptions.right.visible = new Bool(true);
-        options.sideMenuRootOptions.right.animate = new Bool(false);
+        options.sideMenuRootOptions.right.visible = new BoolParam(true);
+        options.sideMenuRootOptions.right.animate = new BoolParam(false);
         uut.mergeOptions(options);
         uut.onDrawerSlide(right.getView(), 1);
     }
 
     private void closeLeftMenu() {
         Options options = new Options();
-        options.sideMenuRootOptions.left.visible = new Bool(false);
-        options.sideMenuRootOptions.left.animate = new Bool(false);
+        options.sideMenuRootOptions.left.visible = new BoolParam(false);
+        options.sideMenuRootOptions.left.animate = new BoolParam(false);
         uut.mergeOptions(options);
         uut.onDrawerSlide(left.getView(), 0);
     }
 
     private void closeRightMenu() {
         Options options = new Options();
-        options.sideMenuRootOptions.right.visible = new Bool(false);
-        options.sideMenuRootOptions.right.animate = new Bool(false);
+        options.sideMenuRootOptions.right.visible = new BoolParam(false);
+        options.sideMenuRootOptions.right.animate = new BoolParam(false);
         uut.mergeOptions(options);
         uut.onDrawerSlide(right.getView(), 0);
     }

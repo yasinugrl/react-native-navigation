@@ -9,7 +9,7 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.FabOptions;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.views.stack.fab.Fab;
@@ -50,7 +50,7 @@ public class FloatingActionButtonTest extends BaseTest {
     private Options getOptionsWithFab() {
         Options options = new Options();
         FabOptions fabOptions = new FabOptions();
-        fabOptions.id = new Text("FAB");
+        fabOptions.id = new StringParam("FAB");
         options.fabOptions = fabOptions;
         return options;
     }
@@ -59,10 +59,10 @@ public class FloatingActionButtonTest extends BaseTest {
     private Options getOptionsWithFabActions() {
         Options options = new Options();
         FabOptions fabOptions = new FabOptions();
-        fabOptions.id = new Text("FAB");
+        fabOptions.id = new StringParam("FAB");
         for (int i = 0; i < CHILD_FAB_COUNT; i++) {
             FabOptions childOptions = new FabOptions();
-            childOptions.id = new Text("fab" + i);
+            childOptions.id = new StringParam("fab" + i);
             fabOptions.actionsArray.add(childOptions);
         }
         options.fabOptions = fabOptions;

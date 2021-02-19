@@ -2,16 +2,16 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
-import com.reactnativenavigation.options.params.NullBool;
+import com.reactnativenavigation.options.params.NullBoolParam;
 import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullFraction;
-import com.reactnativenavigation.options.params.NullNumber;
-import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.NullIntParam;
+import com.reactnativenavigation.options.params.NullStringParam;
+import com.reactnativenavigation.options.params.IntParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.options.params.TitleDisplayMode;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
@@ -46,20 +46,20 @@ public class BottomTabsOptions {
         return options;
     }
 
-    public Colour backgroundColor = new NullColor();
-    public Bool hideOnScroll = new NullBool();
-	public Bool visible = new NullBool();
-    public Bool drawBehind = new NullBool();
-	public Bool animate = new NullBool();
-    public Bool animateTabSelection = new NullBool();
-    public Bool preferLargeIcons = new NullBool();
-	public Number currentTabIndex = new NullNumber();
+    public Colour backgroundColor = NullColor.INSTANCE;
+    public BoolParam hideOnScroll = NullBoolParam.INSTANCE;
+	public BoolParam visible = NullBoolParam.INSTANCE;
+    public BoolParam drawBehind = NullBoolParam.INSTANCE;
+	public BoolParam animate = NullBoolParam.INSTANCE;
+    public BoolParam animateTabSelection = NullBoolParam.INSTANCE;
+    public BoolParam preferLargeIcons = NullBoolParam.INSTANCE;
+	public IntParam currentTabIndex = NullIntParam.INSTANCE;
 	public Fraction elevation = new NullFraction();
-	public Text currentTabId = new NullText();
-    public Text testId = new NullText();
+	public StringParam currentTabId = NullStringParam.INSTANCE;
+    public StringParam testId = NullStringParam.INSTANCE;
     public TitleDisplayMode titleDisplayMode = TitleDisplayMode.UNDEFINED;
     public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
-    public Colour borderColor = new NullColor();
+    public Colour borderColor = NullColor.INSTANCE;
     public Fraction borderWidth = new NullFraction();
     public ShadowOptions shadowOptions = NullShadowOptions.INSTANCE;
     
@@ -105,7 +105,7 @@ public class BottomTabsOptions {
     }
 
     public void clearOneTimeOptions() {
-        currentTabId = new NullText();
-        currentTabIndex = new NullNumber();
+        currentTabId = NullStringParam.INSTANCE;
+        currentTabIndex = NullIntParam.INSTANCE;
     }
 }

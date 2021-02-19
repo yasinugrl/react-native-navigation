@@ -2,12 +2,12 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullBool;
+import com.reactnativenavigation.options.params.NullBoolParam;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullNumber;
-import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.NullIntParam;
+import com.reactnativenavigation.options.params.IntParam;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
@@ -29,10 +29,10 @@ public class DotIndicatorOptions {
         return options;
     }
 
-    public Colour color = new NullColor();
-    public Number size = new NullNumber();
-    public Bool visible = new NullBool();
-    public Bool animate = new NullBool();
+    public Colour color = NullColor.INSTANCE;
+    public IntParam size = NullIntParam.INSTANCE;
+    public BoolParam visible = NullBoolParam.INSTANCE;
+    public BoolParam animate = NullBoolParam.INSTANCE;
 
     public boolean hasValue() {
         return visible.hasValue();

@@ -6,7 +6,7 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.IntParam;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.stack.topbar.TopBar;
 
@@ -34,7 +34,7 @@ public class TopTabs extends TabLayout {
         styleHelper.applyTopTabsColors(selectedTabColor, unselectedTabColor);
     }
 
-    public void applyTopTabsFontSize(Number fontSize) {
+    public void applyTopTabsFontSize(IntParam fontSize) {
         styleHelper.applyTopTabsFontSize(fontSize);
     }
 

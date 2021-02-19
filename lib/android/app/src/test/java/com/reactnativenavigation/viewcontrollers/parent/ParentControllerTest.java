@@ -8,7 +8,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -50,7 +50,7 @@ public class ParentControllerTest extends BaseTest {
         childRegistry = new ChildControllersRegistry();
         children = new ArrayList<>();
         Options initialOptions = new Options();
-        initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
+        initialOptions.topBar.title.text = new StringParam(INITIAL_TITLE);
         Presenter presenter = new Presenter(activity, new Options());
         uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
 
@@ -141,7 +141,7 @@ public class ParentControllerTest extends BaseTest {
     @Test
     public void mergeOptions_optionsAreMergedWhenChildAppears() {
         Options options = new Options();
-        options.topBar.title.text = new Text("new title");
+        options.topBar.title.text = new StringParam("new title");
         ViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
         children.add(child1);
         uut.ensureViewIsCreated();
@@ -157,7 +157,7 @@ public class ParentControllerTest extends BaseTest {
     @Test
     public void mergeOptions_initialParentOptionsAreNotMutatedWhenChildAppears() {
         Options options = new Options();
-        options.topBar.title.text = new Text("new title");
+        options.topBar.title.text = new StringParam("new title");
         ViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
         children.add(child1);
 

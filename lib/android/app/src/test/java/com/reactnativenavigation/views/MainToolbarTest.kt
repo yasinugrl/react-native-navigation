@@ -237,7 +237,7 @@ class MainToolbarTest : BaseTest() {
     @Test
     fun setBackgroundColor_changesTitleBarBgColor() {
         uut = Mockito.spy(uut)
-        uut.setBackgroundColor(NullColor())
+        uut.setBackgroundColor(NullColor)
         verify(uut, times(0)).setBackgroundColor(Color.GRAY)
         uut.setBackgroundColor(Colour(Color.GRAY))
         verify(uut, times(1)).setBackgroundColor(Color.GRAY)

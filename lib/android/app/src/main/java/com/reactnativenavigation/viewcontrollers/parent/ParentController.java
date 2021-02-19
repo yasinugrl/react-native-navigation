@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
@@ -32,7 +32,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 	}
 
     @Override
-    public void setWaitForRender(Bool waitForRender) {
+    public void setWaitForRender(BoolParam waitForRender) {
         super.setWaitForRender(waitForRender);
         applyOnController(getCurrentChild(), currentChild -> currentChild.setWaitForRender(waitForRender));
     }

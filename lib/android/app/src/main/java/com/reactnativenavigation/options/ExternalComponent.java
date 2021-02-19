@@ -1,7 +1,7 @@
 package com.reactnativenavigation.options;
 
-import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.NullStringParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.options.parsers.TextParser;
 
 import org.json.JSONException;
@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class ExternalComponent {
 
-    public Text name = new NullText();
+    public StringParam name = NullStringParam.INSTANCE;
     public JSONObject passProps = new JSONObject();
 
     public static ExternalComponent parse(JSONObject json) {

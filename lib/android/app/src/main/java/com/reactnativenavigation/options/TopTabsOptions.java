@@ -5,12 +5,12 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullBool;
+import com.reactnativenavigation.options.params.NullBoolParam;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullNumber;
-import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.params.NullIntParam;
+import com.reactnativenavigation.options.params.IntParam;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
@@ -19,11 +19,11 @@ import org.json.JSONObject;
 
 public class TopTabsOptions {
 
-    @NonNull public Colour selectedTabColor = new NullColor();
-    @NonNull public Colour unselectedTabColor = new NullColor();
-    @NonNull public Number fontSize = new NullNumber();
-    @NonNull public Bool visible = new NullBool();
-    @NonNull public Number height = new NullNumber();
+    @NonNull public Colour selectedTabColor = NullColor.INSTANCE;
+    @NonNull public Colour unselectedTabColor = NullColor.INSTANCE;
+    @NonNull public IntParam fontSize = NullIntParam.INSTANCE;
+    @NonNull public BoolParam visible = NullBoolParam.INSTANCE;
+    @NonNull public IntParam height = NullIntParam.INSTANCE;
 
     public static TopTabsOptions parse(Context context, @Nullable JSONObject json) {
         TopTabsOptions result = new TopTabsOptions();

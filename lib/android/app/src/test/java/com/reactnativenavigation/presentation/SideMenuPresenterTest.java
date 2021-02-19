@@ -3,7 +3,7 @@ package com.reactnativenavigation.presentation;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuPresenter;
 import com.reactnativenavigation.options.SideMenuRootOptions;
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.views.sidemenu.SideMenu;
 
 import org.junit.Test;
@@ -24,8 +24,8 @@ public class SideMenuPresenterTest extends BaseTest {
     @Test
     public void mergeVisibility_visibilityOptionsAreConsumed() {
         SideMenuRootOptions options = new SideMenuRootOptions();
-        options.left.visible = new Bool(true);
-        options.right.visible = new Bool(true);
+        options.left.visible = new BoolParam(true);
+        options.right.visible = new BoolParam(true);
 
         uut.mergeOptions(options);
 

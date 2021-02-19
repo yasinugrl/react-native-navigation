@@ -9,12 +9,12 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.fakes.IconResolverFake;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
-import com.reactnativenavigation.options.params.Bool;
+import com.reactnativenavigation.options.params.BoolParam;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullText;
-import com.reactnativenavigation.options.params.Number;
-import com.reactnativenavigation.options.params.Text;
+import com.reactnativenavigation.options.params.NullStringParam;
+import com.reactnativenavigation.options.params.IntParam;
+import com.reactnativenavigation.options.params.StringParam;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.views.stack.topbar.titlebar.RightButtonsBar;
@@ -91,7 +91,7 @@ public class TopBarButtonControllerTest extends BaseTest {
     @Test
     public void disableIconTint() {
         setIconButton(false);
-        button.disableIconTint = new Bool(true);
+        button.disableIconTint = new BoolParam(true);
         uut.addToMenu(getTitleBar(), 0);
         verify(optionsPresenter, times(0)).tint(any(), anyInt());
     }
@@ -102,17 +102,17 @@ public class TopBarButtonControllerTest extends BaseTest {
 
     private void setIconButton(boolean enabled) {
         button.id = "btn1";
-        button.icon = new Text("someIcon");
+        button.icon = new StringParam("someIcon");
         button.color = new Colour(Color.RED);
-        button.component.name = new NullText();
-        button.component.componentId = new NullText();
-        button.enabled = new Bool(enabled);
-        button.showAsAction = new Number(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        button.component.name = NullStringParam.INSTANCE;
+        button.component.componentId = NullStringParam.INSTANCE;
+        button.enabled = new BoolParam(enabled);
+        button.showAsAction = new IntParam(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     private void setReactComponentButton() {
         button.id = "btnId";
-        button.component.name = new Text("com.example.customBtn");
-        button.component.componentId = new Text("component666");
+        button.component.name = new StringParam("com.example.customBtn");
+        button.component.componentId = new StringParam("component666");
     }
 }

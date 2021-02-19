@@ -9,8 +9,8 @@ import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.options.BackButton
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.options.params.Bool
-import com.reactnativenavigation.options.params.Text
+import com.reactnativenavigation.options.params.BoolParam
+import com.reactnativenavigation.options.params.StringParam
 import com.reactnativenavigation.react.Constants
 import com.reactnativenavigation.react.ReactView
 import com.reactnativenavigation.utils.CollectionUtils
@@ -22,7 +22,6 @@ import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonContr
 import com.reactnativenavigation.views.stack.StackLayout
 import com.reactnativenavigation.views.stack.topbar.TopBar
 import org.assertj.core.api.Java6Assertions.assertThat
-import org.json.JSONObject
 import org.junit.Test
 import java.util.*
 
@@ -161,7 +160,7 @@ class TopBarControllerTest : BaseTest() {
     @Test
     fun getPushAnimation_returnsNullIfAnimateFalse() {
         val appearing = Options()
-        appearing.topBar.animate = Bool(false)
+        appearing.topBar.animate = BoolParam(false)
         assertThat(uut.getPushAnimation(appearing)).isNull()
     }
 
@@ -182,7 +181,7 @@ class TopBarControllerTest : BaseTest() {
     fun getPopAnimation_returnsNullIfAnimateFalse() {
         val appearing = Options()
         val disappearing = Options()
-        disappearing.topBar.animate = Bool(false)
+        disappearing.topBar.animate = BoolParam(false)
         assertThat(uut.getPopAnimation(appearing, disappearing)).isNull()
     }
 
@@ -203,7 +202,7 @@ class TopBarControllerTest : BaseTest() {
     @Test
     fun getSetStackRootAnimation_returnsNullIfAnimateFalse() {
         val appearing = Options()
-        appearing.topBar.animate = Bool(false)
+        appearing.topBar.animate = BoolParam(false)
         assertThat(uut.getSetStackRootAnimation(appearing)).isNull()
     }
 
@@ -228,14 +227,14 @@ class TopBarControllerTest : BaseTest() {
         textButton2 = createTextButton("2")
         componentButton = ButtonOptions()
         componentButton.id = "customBtn"
-        componentButton.component.name = Text("com.rnn.customBtn")
-        componentButton.component.componentId = Text("component4")
+        componentButton.component.name = StringParam("com.rnn.customBtn")
+        componentButton.component.componentId = StringParam("component4")
     }
 
     private fun createTextButton(id: String): ButtonOptions {
         val button = ButtonOptions()
         button.id = id
-        button.text = Text("txt$id")
+        button.text = StringParam("txt$id")
         return button
     }
 
