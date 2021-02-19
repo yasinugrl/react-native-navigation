@@ -194,7 +194,7 @@ public class StackPresenter {
             }
             topBarController.alignTitleComponent(topBarOptions.title.component.alignment);
         } else {
-            topBar.applyTitleOptions(topBarOptions.title,typefaceLoader);
+            topBar.applyTitleOptions(topBarOptions.title, typefaceLoader);
             topBar.applySubtitleOptions(topBarOptions.subtitle, typefaceLoader);
             topBarController.alignTitleComponent(topBarOptions.title.alignment);
         }
@@ -369,19 +369,25 @@ public class StackPresenter {
 
     private void mergeLeftButtonsColor(View child, Colour color, Colour disabledColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
-            forEach(componentLeftButtons.get(child).values(), (btnController) -> {
-                if (color.hasValue()) btnController.applyColor(topBarController.getView().getLeftButtonsBar(), color);
-                if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getLeftButtonsBar(), disabledColor);
-            });
+            Map<String, ButtonController> stringButtonControllerMap = componentLeftButtons.get(child);
+            if (stringButtonControllerMap != null) {
+                forEach(stringButtonControllerMap.values(), (btnController) -> {
+                    if (color.hasValue()) btnController.applyColor(topBarController.getView().getLeftButtonsBar(), color);
+                    if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getLeftButtonsBar(), disabledColor);
+                });
+            }
         }
     }
 
     private void mergeRightButtonsColor(View child, Colour color, Colour disabledColor) {
         if (color.hasValue() || disabledColor.hasValue()) {
-            forEach(componentRightButtons.get(child).values(), (btnController) -> {
-                if (color.hasValue()) btnController.applyColor(topBarController.getView().getRightButtonsBar(), color);
-                if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getRightButtonsBar(), disabledColor);
-            });
+            Map<String, ButtonController> stringButtonControllerMap = componentRightButtons.get(child);
+            if (stringButtonControllerMap != null) {
+                forEach(stringButtonControllerMap.values(), (btnController) -> {
+                    if (color.hasValue()) btnController.applyColor(topBarController.getView().getRightButtonsBar(), color);
+                    if (disabledColor.hasValue()) btnController.applyDisabledColor(topBarController.getView().getRightButtonsBar(), disabledColor);
+                });
+            }
         }
     }
 
@@ -466,7 +472,7 @@ public class StackPresenter {
         if (resolveOptions.title.fontSize.hasValue()) topBar.setTitleFontSize(resolveOptions.title.fontSize.get());
         if (resolveOptions.title.font.hasValue()) topBar.setTitleTypeface(typefaceLoader, resolveOptions.title.font);
 
-        if (topBarOptions.subtitle.text.hasValue()){
+        if (topBarOptions.subtitle.text.hasValue()) {
             topBar.setSubtitle(topBarOptions.subtitle.text.get());
             topBar.setSubtitleAlignment(topBarOptions.subtitle.alignment);
         }
@@ -535,6 +541,10 @@ public class StackPresenter {
 
     private LayoutParams getComponentLayoutParams(ComponentOptions component) {
         return new Toolbar.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, component.alignment == Alignment.Center ? Gravity.CENTER : Gravity.START);
+    }
+
+    public boolean shouldPopOnHardwareButtonPress(ViewController viewController) {
+        return viewController.resolveCurrentOptions().hardwareBack.popStackOnPress.get(true);
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

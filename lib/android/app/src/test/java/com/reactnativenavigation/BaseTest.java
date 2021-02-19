@@ -58,7 +58,7 @@ public abstract class BaseTest {
     }
 
     public void assertIsChild(ViewGroup parent, ViewController... children) {
-        forEach(Arrays.asList(children),c -> assertIsChild(parent, c.getView()));
+        forEach(Arrays.asList(children), c -> assertIsChild(parent, c.getView()));
     }
 
     public void assertIsChild(ViewGroup parent, View child) {
@@ -101,13 +101,14 @@ public abstract class BaseTest {
 
     protected void disableShowModalAnimation(ViewController... modals) {
         for (ViewController modal : modals) {
-            modal.options.animations.showModal.enabled = new BoolParam(false);
+
+            modal.options.animations.showModal.toggle(new BoolParam(false));
         }
     }
 
     protected void disableDismissModalAnimation(ViewController... modals) {
         for (ViewController modal : modals) {
-            modal.options.animations.dismissModal.enabled = new BoolParam(false);
+            modal.options.animations.dismissModal.toggle(new BoolParam(false));
         }
     }
 
