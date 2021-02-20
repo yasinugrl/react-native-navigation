@@ -28,7 +28,7 @@ import com.reactnativenavigation.options.LayoutDirection;
 import com.reactnativenavigation.options.SubtitleOptions;
 import com.reactnativenavigation.options.TitleOptions;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.IntParam;
+import com.reactnativenavigation.options.params.IntProp;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
@@ -205,7 +205,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         topTabs.applyTopTabsColors(selectedTabColor, unselectedTabColor);
     }
 
-    public void applyTopTabsFontSize(IntParam fontSize) {
+    public void applyTopTabsFontSize(IntProp fontSize) {
         topTabs.applyTopTabsFontSize(fontSize);
     }
 

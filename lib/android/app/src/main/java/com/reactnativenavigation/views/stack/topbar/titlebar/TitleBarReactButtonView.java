@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.options.ComponentOptions;
-import com.reactnativenavigation.options.params.IntParam;
+import com.reactnativenavigation.options.params.IntProp;
 import com.reactnativenavigation.react.ReactView;
 
 import static android.view.View.MeasureSpec.EXACTLY;
@@ -27,7 +27,7 @@ public class TitleBarReactButtonView extends ReactView {
         super.onMeasure(createSpec(widthMeasureSpec, component.width), createSpec(widthMeasureSpec, component.height));
     }
 
-    private int createSpec(int measureSpec, IntParam dimension) {
+    private int createSpec(int measureSpec, IntProp dimension) {
         if (dimension.hasValue()) {
             return makeMeasureSpec(MeasureSpec.getSize(dpToPx(getContext(), dimension.get())), EXACTLY);
         } else {

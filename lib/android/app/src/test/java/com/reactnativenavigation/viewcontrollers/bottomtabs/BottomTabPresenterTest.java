@@ -11,7 +11,7 @@ import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.DontApplyColour;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 import com.reactnativenavigation.views.bottomtabs.BottomTabs;
@@ -115,7 +115,7 @@ public class BottomTabPresenterTest extends BaseTest {
 
     private Options createTab1Options() {
         Options options = new Options();
-        options.bottomTabOptions.badge = new StringParam("tab1badge");
+        options.bottomTabOptions.badge = new TextProp("tab1badge");
         options.bottomTabOptions.iconColor = new Colour(Color.RED);
         options.bottomTabOptions.selectedIconColor = new Colour(Color.RED);
         return options;
@@ -123,7 +123,7 @@ public class BottomTabPresenterTest extends BaseTest {
 
     private Options createTab2Options() {
         Options options = new Options();
-        options.bottomTabOptions.badge = new StringParam("tab2badge");
+        options.bottomTabOptions.badge = new TextProp("tab2badge");
         options.bottomTabOptions.iconColor = new Colour(Color.RED);
         options.bottomTabOptions.selectedIconColor = new Colour(Color.RED);
         return options;

@@ -5,7 +5,7 @@ import android.app.Activity;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.options.ComponentOptions;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.title.TitleBarReactViewController;
 
 import org.junit.Test;
@@ -36,8 +36,8 @@ public class TitleBarReactViewControllerTest extends BaseTest {
 
     private ComponentOptions createComponent() {
         ComponentOptions component = new ComponentOptions();
-        component.componentId = new StringParam("compId");
-        component.name = new StringParam("compName");
+        component.componentId = new TextProp("compId");
+        component.name = new TextProp("compName");
         return component;
     }
 }

@@ -1,18 +1,14 @@
 package com.reactnativenavigation.options
 
-import android.content.Context
-import com.reactnativenavigation.options.animations.ViewAnimationOptions
 import com.reactnativenavigation.options.params.*
 import com.reactnativenavigation.options.parsers.BoolParser
-import com.reactnativenavigation.options.parsers.ColorParser
-import com.reactnativenavigation.options.parsers.FractionParser
 import org.json.JSONObject
 
 
 open class HardwareBackButtonOptions(json: JSONObject? = null) {
 
-    @JvmField var dismissModalOnPress: Bool = NullBool()
-    @JvmField var popStackOnPress: Bool = NullBool()
+    @JvmField var dismissModalOnPress: BoolProp = NullBool()
+    @JvmField var popStackOnPress: BoolProp = NullBool()
 
     init {
         parse(json)

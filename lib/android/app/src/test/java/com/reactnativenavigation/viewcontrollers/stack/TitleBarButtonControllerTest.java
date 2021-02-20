@@ -7,7 +7,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TitleBarButtonCreatorMock;
 import com.reactnativenavigation.options.ButtonOptions;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.IconResolver;
@@ -54,8 +54,8 @@ public class TitleBarButtonControllerTest extends BaseTest {
     private ButtonOptions createComponentButton() {
         ButtonOptions componentButton = new ButtonOptions();
         componentButton.id = "customBtn";
-        componentButton.component.name = new StringParam("com.rnn.customBtn");
-        componentButton.component.componentId = new StringParam("component4");
+        componentButton.component.name = new TextProp("com.rnn.customBtn");
+        componentButton.component.componentId = new TextProp("component4");
         return componentButton;
     }
 }

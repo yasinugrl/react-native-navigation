@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.IntParam;
+import com.reactnativenavigation.options.params.IntProp;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsPresenter;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
@@ -45,7 +45,7 @@ public abstract class AttachModeTest extends BaseTest {
         parent = new CoordinatorLayout(activity);
         tabs = createTabs();
         options = new Options();
-        options.bottomTabsOptions.currentTabIndex = new IntParam(INITIAL_TAB);
+        options.bottomTabsOptions.currentTabIndex = new IntProp(INITIAL_TAB);
         presenter = Mockito.mock(BottomTabsPresenter.class);
     }
 

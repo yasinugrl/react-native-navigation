@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.IntParam;
+import com.reactnativenavigation.options.params.IntProp;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.ViewUtils;
 
@@ -17,7 +17,7 @@ class TopTabsStyleHelper {
         this.topTabs = topTabs;
     }
 
-    void applyTopTabsFontSize(IntParam fontSize) {
+    void applyTopTabsFontSize(IntProp fontSize) {
         if (!fontSize.hasValue()) return;
         for (int i = 0; i < topTabs.getTabCount(); i++) {
             applyOnTabTitle(i, (title) -> title.setTextSize(fontSize.get()));

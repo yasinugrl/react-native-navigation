@@ -1,23 +1,23 @@
 package com.reactnativenavigation.options
 
 import android.graphics.Typeface
-import com.reactnativenavigation.options.params.NullStringParam
-import com.reactnativenavigation.options.params.StringParam
+import com.reactnativenavigation.options.params.NullTextProp
+import com.reactnativenavigation.options.params.TextProp
 import com.reactnativenavigation.options.parsers.TypefaceLoader
 
 class FontOptions {
     private var isDirty = false
-    var fontFamily: StringParam = NullStringParam
+    var fontFamily: TextProp = NullTextProp
         set(value) {
             field = value
             isDirty = true
         }
-    var fontStyle: StringParam = NullStringParam
+    var fontStyle: TextProp = NullTextProp
         set(value) {
             field = value
             isDirty = true
         }
-    var fontWeight: StringParam = NullStringParam
+    var fontWeight: TextProp = NullTextProp
         set(value) {
             field = value
             isDirty = true
