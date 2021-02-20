@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.reactnativenavigation.options.Options;
 import com.reactnativenavigation.options.SideMenuRootOptions;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.parent.ParentController;
@@ -199,9 +199,9 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     private Options getOptionsWithVisibility(boolean isLeft, boolean visible) {
         Options options = new Options();
         if (isLeft) {
-            options.sideMenuRootOptions.left.visible = new BoolParam(visible);
+            options.sideMenuRootOptions.left.visible = new BoolProp(visible);
         } else {
-            options.sideMenuRootOptions.right.visible = new BoolParam(visible);
+            options.sideMenuRootOptions.right.visible = new BoolProp(visible);
         }
         return options;
     }
@@ -217,8 +217,8 @@ public class SideMenuController extends ParentController<SideMenuRoot> implement
     }
 
     private void mergeLockMode(Options out, SideMenuRootOptions sideMenu) {
-        perform(sideMenu.left.enabled.get(null), enabled -> out.sideMenuRootOptions.left.enabled = new BoolParam(enabled));
-        perform(sideMenu.right.enabled.get(null), enabled -> out.sideMenuRootOptions.right.enabled = new BoolParam(enabled));
+        perform(sideMenu.left.enabled.get(null), enabled -> out.sideMenuRootOptions.left.enabled = new BoolProp(enabled));
+        perform(sideMenu.right.enabled.get(null), enabled -> out.sideMenuRootOptions.right.enabled = new BoolProp(enabled));
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

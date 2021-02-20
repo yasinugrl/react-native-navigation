@@ -4,9 +4,9 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.NoValBool;
 import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
@@ -55,9 +55,9 @@ public class StatusBarOptions {
 
     public Colour backgroundColor = NullColor.INSTANCE;
     public TextColorScheme textColorScheme = TextColorScheme.None;
-    public BoolParam visible = NullBoolParam.INSTANCE;
-    public BoolParam drawBehind = NullBoolParam.INSTANCE;
-    public BoolParam translucent = NullBoolParam.INSTANCE;
+    public BoolProp visible = NoValBool.INSTANCE;
+    public BoolProp drawBehind = NoValBool.INSTANCE;
+    public BoolProp translucent = NoValBool.INSTANCE;
 
     public void mergeWith(StatusBarOptions other) {
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;

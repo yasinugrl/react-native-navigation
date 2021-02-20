@@ -8,7 +8,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.animation.LinearInterpolator
 import com.reactnativenavigation.options.params.*
-import com.reactnativenavigation.options.params.IntParam
+import com.reactnativenavigation.options.params.IntProp
 import com.reactnativenavigation.options.parsers.FloatParser
 import com.reactnativenavigation.options.parsers.InterpolationParser
 import com.reactnativenavigation.options.parsers.NumberParser
@@ -19,22 +19,22 @@ class ValueAnimationOptions {
     private var animProp: Property<View, Float>? = null
     private var animPropType: Int? = null
     private var animationValueAccessor: ((View) -> Float)? = null
-    var from: FloatParam = NullFloatParam
+    var from: FloatProp = NoValFloat
         private set
-    private var fromDelta = FloatParam(0f)
-    var to: FloatParam = NullFloatParam
+    private var fromDelta = FloatProp(0f)
+    var to: FloatProp = NoValFloat
         private set
-    private var toDelta = FloatParam(0f)
-    var duration: IntParam = NullIntParam
-    private var startDelay: IntParam = NullIntParam
+    private var toDelta = FloatProp(0f)
+    var duration: IntProp = NoValInt
+    private var startDelay: IntProp = NoValInt
     private var interpolator: TimeInterpolator = LinearInterpolator()
 
     fun setFromDelta(fromDelta: Float) {
-        this.fromDelta = FloatParam(fromDelta)
+        this.fromDelta = FloatProp(fromDelta)
     }
 
     fun setToDelta(toDelta: Float) {
-        this.toDelta = FloatParam(toDelta)
+        this.toDelta = FloatProp(toDelta)
     }
 
     fun getAnimation(view: View): Animator {

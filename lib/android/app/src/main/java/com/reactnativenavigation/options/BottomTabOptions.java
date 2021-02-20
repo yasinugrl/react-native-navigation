@@ -2,14 +2,14 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.NoValBool;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullIntParam;
-import com.reactnativenavigation.options.params.NullStringParam;
-import com.reactnativenavigation.options.params.IntParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.NoValInt;
+import com.reactnativenavigation.options.params.NullTextProp;
+import com.reactnativenavigation.options.params.IntProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
@@ -48,23 +48,23 @@ public class BottomTabOptions {
         return options;
     }
 
-    public StringParam text = NullStringParam.INSTANCE;
+    public TextProp text = NullTextProp.INSTANCE;
     public Colour textColor = NullColor.INSTANCE;
     public Colour selectedTextColor = NullColor.INSTANCE;
-    public StringParam icon = NullStringParam.INSTANCE;
-    public IntParam iconWidth = NullIntParam.INSTANCE;
-    public IntParam iconHeight = NullIntParam.INSTANCE;
-    public StringParam selectedIcon = NullStringParam.INSTANCE;
+    public TextProp icon = NullTextProp.INSTANCE;
+    public IntProp iconWidth = NoValInt.INSTANCE;
+    public IntProp iconHeight = NoValInt.INSTANCE;
+    public TextProp selectedIcon = NullTextProp.INSTANCE;
     public Colour iconColor = NullColor.INSTANCE;
     public Colour selectedIconColor = NullColor.INSTANCE;
-    public StringParam testId = NullStringParam.INSTANCE;
-    public StringParam badge = NullStringParam.INSTANCE;
+    public TextProp testId = NullTextProp.INSTANCE;
+    public TextProp badge = NullTextProp.INSTANCE;
     public Colour badgeColor = NullColor.INSTANCE;
-    public BoolParam animateBadge = NullBoolParam.INSTANCE;
+    public BoolProp animateBadge = NoValBool.INSTANCE;
     public DotIndicatorOptions dotIndicator = new DotIndicatorOptions();
-    public IntParam fontSize = NullIntParam.INSTANCE;
-    public IntParam selectedFontSize = NullIntParam.INSTANCE;
-    public BoolParam selectTabOnPress = NullBoolParam.INSTANCE;
+    public IntProp fontSize = NoValInt.INSTANCE;
+    public IntProp selectedFontSize = NoValInt.INSTANCE;
+    public BoolProp selectTabOnPress = NoValBool.INSTANCE;
     public FontOptions font = new FontOptions();
 
 

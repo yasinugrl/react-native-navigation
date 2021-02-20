@@ -4,7 +4,7 @@ import android.content.Context
 import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.params.Fraction
 import com.reactnativenavigation.options.params.NullColor
-import com.reactnativenavigation.options.params.NullFraction
+import com.reactnativenavigation.options.params.NoValFraction
 import com.reactnativenavigation.options.parsers.ColorParser
 import com.reactnativenavigation.options.parsers.FractionParser
 import org.json.JSONObject
@@ -18,7 +18,7 @@ object NullShadowOptions : ShadowOptions() {
     override fun hasValue(): Boolean = false
 }
 
-open class ShadowOptions(var color: Colour = NullColor, var radius: Fraction = NullFraction(), var opacity: Fraction = NullFraction()) {
+open class ShadowOptions(var color: Colour = NullColor, var radius: Fraction = NoValFraction(), var opacity: Fraction = NoValFraction()) {
 
     fun copy(): ShadowOptions = ShadowOptions(this.color, this.radius, this.opacity)
 

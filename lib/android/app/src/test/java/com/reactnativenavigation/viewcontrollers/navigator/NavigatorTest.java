@@ -14,8 +14,8 @@ import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.BoolParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.BoolProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
@@ -192,7 +192,7 @@ public class NavigatorTest extends BaseTest {
         ViewController initialRoot = spy(child2);
         uut.setRoot(initialRoot, new CommandListenerAdapter(), reactInstanceManager);
 
-        child3.options.animations.setRoot.waitForRender = new BoolParam(true);
+        child3.options.animations.setRoot.waitForRender = new BoolProp(true);
         ViewController secondRoot = spy(child3);
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
         uut.setRoot(secondRoot, listener, reactInstanceManager);
@@ -378,7 +378,7 @@ public class NavigatorTest extends BaseTest {
         uut.setRoot(componentVc, new CommandListenerAdapter(), reactInstanceManager);
 
         Options options = new Options();
-        options.topBar.title.text = new StringParam("new title");
+        options.topBar.title.text = new TextProp("new title");
 
         uut.mergeOptions("theId", options);
         assertThat(componentVc.options.topBar.title.text.get()).isEqualTo("new title");
@@ -503,7 +503,7 @@ public class NavigatorTest extends BaseTest {
         spy.push(child2, new CommandListenerAdapter());
 
         StackController parent = newStack(spy);
-        parent.options.animations.setRoot.enabled = new BoolParam(false);
+        parent.options.animations.setRoot.enabled = new BoolProp(false);
 
         uut.setRoot(parent, new CommandListenerAdapter(), reactInstanceManager);
 
@@ -645,7 +645,7 @@ public class NavigatorTest extends BaseTest {
         disablePushAnimation(child1);
 
         StackController spy = spy(parentController);
-        spy.options.animations.setRoot.enabled = new BoolParam(false);
+        spy.options.animations.setRoot.enabled = new BoolProp(false);
         uut.setRoot(spy, new CommandListenerAdapter(), reactInstanceManager);
         spy.push(child1, new CommandListenerAdapter());
         activityController.destroy();

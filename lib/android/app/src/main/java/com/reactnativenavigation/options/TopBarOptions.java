@@ -5,16 +5,16 @@ import android.content.Context;
 import android.util.Log;
 
 import com.reactnativenavigation.BuildConfig;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
-import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.NoValBool;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullFraction;
-import com.reactnativenavigation.options.params.NullIntParam;
-import com.reactnativenavigation.options.params.NullStringParam;
-import com.reactnativenavigation.options.params.IntParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.NoValFraction;
+import com.reactnativenavigation.options.params.NoValInt;
+import com.reactnativenavigation.options.params.NullTextProp;
+import com.reactnativenavigation.options.params.IntProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
@@ -57,16 +57,16 @@ public class TopBarOptions {
     public TitleOptions title = new TitleOptions();
     public SubtitleOptions subtitle = new SubtitleOptions();
     public TopBarButtons buttons = new TopBarButtons();
-    public StringParam testId = NullStringParam.INSTANCE;
+    public TextProp testId = NullTextProp.INSTANCE;
     public TopBarBackgroundOptions background = new TopBarBackgroundOptions();
-    public BoolParam visible = NullBoolParam.INSTANCE;
-    public BoolParam animate = NullBoolParam.INSTANCE;
-    public BoolParam hideOnScroll = NullBoolParam.INSTANCE;
-    public BoolParam drawBehind = NullBoolParam.INSTANCE;
-    public IntParam height = NullIntParam.INSTANCE;
-    public Fraction elevation = new NullFraction();
-    public IntParam topMargin = NullIntParam.INSTANCE;
-    public Fraction borderHeight = new NullFraction();
+    public BoolProp visible = NoValBool.INSTANCE;
+    public BoolProp animate = NoValBool.INSTANCE;
+    public BoolProp hideOnScroll = NoValBool.INSTANCE;
+    public BoolProp drawBehind = NoValBool.INSTANCE;
+    public IntProp height = NoValInt.INSTANCE;
+    public Fraction elevation = NoValFraction.INSTANCE;
+    public IntProp topMargin = NoValInt.INSTANCE;
+    public Fraction borderHeight = NoValFraction.INSTANCE;
     public Colour borderColor = NullColor.INSTANCE;
 
     // Deprecated
@@ -133,8 +133,8 @@ public class TopBarOptions {
     public void validate() {
         if (title.component.hasValue() && (title.text.hasValue() || subtitle.text.hasValue())) {
             if (BuildConfig.DEBUG) Log.w("RNN", "A screen can't use both text and component - clearing text.");
-            title.text = NullStringParam.INSTANCE;
-            subtitle.text = NullStringParam.INSTANCE;
+            title.text = NullTextProp.INSTANCE;
+            subtitle.text = NullTextProp.INSTANCE;
         }
     }
 

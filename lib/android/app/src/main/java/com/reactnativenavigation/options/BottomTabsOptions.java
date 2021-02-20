@@ -2,16 +2,16 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
-import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.NoValBool;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullFraction;
-import com.reactnativenavigation.options.params.NullIntParam;
-import com.reactnativenavigation.options.params.NullStringParam;
-import com.reactnativenavigation.options.params.IntParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.NoValFraction;
+import com.reactnativenavigation.options.params.NoValInt;
+import com.reactnativenavigation.options.params.NullTextProp;
+import com.reactnativenavigation.options.params.IntProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.options.params.TitleDisplayMode;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
@@ -47,20 +47,20 @@ public class BottomTabsOptions {
     }
 
     public Colour backgroundColor = NullColor.INSTANCE;
-    public BoolParam hideOnScroll = NullBoolParam.INSTANCE;
-	public BoolParam visible = NullBoolParam.INSTANCE;
-    public BoolParam drawBehind = NullBoolParam.INSTANCE;
-	public BoolParam animate = NullBoolParam.INSTANCE;
-    public BoolParam animateTabSelection = NullBoolParam.INSTANCE;
-    public BoolParam preferLargeIcons = NullBoolParam.INSTANCE;
-	public IntParam currentTabIndex = NullIntParam.INSTANCE;
-	public Fraction elevation = new NullFraction();
-	public StringParam currentTabId = NullStringParam.INSTANCE;
-    public StringParam testId = NullStringParam.INSTANCE;
+    public BoolProp hideOnScroll = NoValBool.INSTANCE;
+	public BoolProp visible = NoValBool.INSTANCE;
+    public BoolProp drawBehind = NoValBool.INSTANCE;
+	public BoolProp animate = NoValBool.INSTANCE;
+    public BoolProp animateTabSelection = NoValBool.INSTANCE;
+    public BoolProp preferLargeIcons = NoValBool.INSTANCE;
+	public IntProp currentTabIndex = NoValInt.INSTANCE;
+	public Fraction elevation = NoValFraction.INSTANCE;
+	public TextProp currentTabId = NullTextProp.INSTANCE;
+    public TextProp testId = NullTextProp.INSTANCE;
     public TitleDisplayMode titleDisplayMode = TitleDisplayMode.UNDEFINED;
     public TabsAttachMode tabsAttachMode = TabsAttachMode.UNDEFINED;
     public Colour borderColor = NullColor.INSTANCE;
-    public Fraction borderWidth = new NullFraction();
+    public Fraction borderWidth = NoValFraction.INSTANCE;
     public ShadowOptions shadowOptions = NullShadowOptions.INSTANCE;
     
     void mergeWith(final BottomTabsOptions other) {
@@ -105,7 +105,7 @@ public class BottomTabsOptions {
     }
 
     public void clearOneTimeOptions() {
-        currentTabId = NullStringParam.INSTANCE;
-        currentTabIndex = NullIntParam.INSTANCE;
+        currentTabId = NullTextProp.INSTANCE;
+        currentTabIndex = NoValInt.INSTANCE;
     }
 }

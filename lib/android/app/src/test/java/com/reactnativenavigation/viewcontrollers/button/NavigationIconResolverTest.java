@@ -11,7 +11,7 @@ import com.reactnativenavigation.mocks.BackDrawable;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.utils.Functions.Func1;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -64,7 +64,7 @@ public class NavigationIconResolverTest extends BaseTest {
     private ButtonOptions iconButton() {
         ButtonOptions button = new ButtonOptions();
         button.id = "iconBtnId";
-        button.icon = new StringParam(ICON_URI);
+        button.icon = new TextProp(ICON_URI);
         button.color = new Colour(Color.RED);
         return button;
     }

@@ -2,9 +2,9 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.NoValBool;
 import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
@@ -23,7 +23,7 @@ public class NavigationBarOptions {
     }
 
     public Colour backgroundColor = NullColor.INSTANCE;
-    public BoolParam isVisible = NullBoolParam.INSTANCE;
+    public BoolProp isVisible = NoValBool.INSTANCE;
 
     public void mergeWith(NavigationBarOptions other) {
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;

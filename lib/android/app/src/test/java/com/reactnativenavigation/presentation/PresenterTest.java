@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -28,7 +28,7 @@ public class PresenterTest extends BaseTest {
     public void mergeStatusBarVisible_requestLayout() {
         ViewGroup spy = Mockito.spy(new FrameLayout(activity));
         Options options = new Options();
-        options.statusBar.visible = new BoolParam(false);
+        options.statusBar.visible = new BoolProp(false);
 
         uut.mergeOptions(spy, options);
         verify(spy).requestLayout();

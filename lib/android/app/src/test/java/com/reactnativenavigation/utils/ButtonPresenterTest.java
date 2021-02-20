@@ -17,10 +17,10 @@ import com.reactnativenavigation.fakes.IconResolverFake;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.options.IconBackgroundOptions;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.IntParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.IntProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonPresenter;
 import com.reactnativenavigation.views.stack.topbar.titlebar.ButtonsToolbar;
@@ -86,7 +86,7 @@ public class ButtonPresenterTest extends BaseTest {
 
     @Test
     public void apply_disabledColor() {
-        button.enabled = new BoolParam(false);
+        button.enabled = new BoolProp(false);
         addButtonAndApplyOptions();
         assertThat(findButtonView().getCurrentTextColor()).isEqualTo(ButtonPresenter.DISABLED_COLOR);
     }
@@ -105,8 +105,8 @@ public class ButtonPresenterTest extends BaseTest {
     public void applyOptions_shouldChangeIconColorTint() {
         IconBackgroundDrawable mockD = mock(IconBackgroundDrawable.class);
         initUUt(ImageLoaderMock.mock(mockD));
-        button.enabled = new BoolParam(true);
-        button.icon = new StringParam("icon");
+        button.enabled = new BoolProp(true);
+        button.icon = new TextProp("icon");
         button.color = new Colour(Color.RED);
         MenuItem menuItem = spy(addMenuButton());
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
@@ -120,8 +120,8 @@ public class ButtonPresenterTest extends BaseTest {
     public void applyOptions_shouldChangeIconDisabledColorTint() {
         IconBackgroundDrawable mockD = mock(IconBackgroundDrawable.class);
         initUUt(ImageLoaderMock.mock(mockD));
-        button.enabled = new BoolParam(false);
-        button.icon = new StringParam("icon");
+        button.enabled = new BoolProp(false);
+        button.icon = new TextProp("icon");
         button.color = new Colour(Color.RED);
         button.disabledColor = new Colour(Color.YELLOW);
         MenuItem menuItem = spy(addMenuButton());
@@ -136,8 +136,8 @@ public class ButtonPresenterTest extends BaseTest {
     public void applyOptions_shouldChangeIconColorBackground() {
         IconBackgroundDrawable mockD = mock(IconBackgroundDrawable.class);
         initUUt(ImageLoaderMock.mock(mockD));
-        button.enabled = new BoolParam(true);
-        button.icon = new StringParam("icon");
+        button.enabled = new BoolProp(true);
+        button.icon = new TextProp("icon");
         button.color = new Colour(Color.RED);
         IconBackgroundOptions iconBackground = new IconBackgroundOptions();
         iconBackground.color = new Colour(Color.GREEN);
@@ -157,8 +157,8 @@ public class ButtonPresenterTest extends BaseTest {
     public void applyOptions_shouldChangeIconDisabledColorBackground() {
         IconBackgroundDrawable mockD = mock(IconBackgroundDrawable.class);
         initUUt(ImageLoaderMock.mock(mockD));
-        button.enabled = new BoolParam(false);
-        button.icon = new StringParam("icon");
+        button.enabled = new BoolProp(false);
+        button.icon = new TextProp("icon");
         button.color = new Colour(Color.RED);
         button.disabledColor = new Colour(Color.YELLOW);
         IconBackgroundOptions iconBackground = new IconBackgroundOptions();
@@ -178,7 +178,7 @@ public class ButtonPresenterTest extends BaseTest {
 
     @Test
     public void applyColor_shouldChangeDisabledColor() {
-        button.enabled = new BoolParam(false);
+        button.enabled = new BoolProp(false);
         MenuItem menuItem = addMenuButton();
         uut.applyOptions(titleBar, menuItem, buttonController::getView);
         Colour disabledColor = new Colour(Color.BLUE);
@@ -200,7 +200,7 @@ public class ButtonPresenterTest extends BaseTest {
 
     @Test
     public void apply_allCaps() {
-        button.allCaps = new BoolParam(false);
+        button.allCaps = new BoolProp(false);
         addButtonAndApplyOptions();
         assertThat(findButtonView().isAllCaps()).isEqualTo(false);
     }
@@ -217,8 +217,8 @@ public class ButtonPresenterTest extends BaseTest {
     private ButtonOptions createButton() {
         ButtonOptions b = new ButtonOptions();
         b.id = "btn1";
-        b.text = new StringParam(BTN_TEXT);
-        b.showAsAction = new IntParam(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        b.text = new TextProp(BTN_TEXT);
+        b.showAsAction = new IntProp(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return b;
     }
 }

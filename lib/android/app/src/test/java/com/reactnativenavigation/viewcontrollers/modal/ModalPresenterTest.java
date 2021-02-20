@@ -6,13 +6,11 @@ import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.options.AnimationOptions;
-import com.reactnativenavigation.options.ModalAnimationOptions;
 import com.reactnativenavigation.options.ModalAnimationOptionsKt;
 import com.reactnativenavigation.options.ModalAnimationOptionsTestKt;
 import com.reactnativenavigation.options.ModalPresentationStyle;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.react.CommandListener;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
@@ -161,7 +159,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void showModal_waitForRender() {
-        modal1.options.animations.showModal.setWaitForRender(new BoolParam(true));
+        modal1.options.animations.showModal.setWaitForRender(new BoolProp(true));
         uut.showModal(modal1, root, new CommandListenerAdapter());
         verify(modal1).addOnAppearedListener(any());
         verifyZeroInteractions(animator);

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.options.ButtonOptions;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ScrollEventListener;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.react.events.ComponentType;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.ButtonController;
@@ -62,7 +62,7 @@ public class ComponentLayout extends CoordinatorLayout implements ReactComponent
         touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside);
     }
 
-    public void setInterceptTouchOutside(BoolParam interceptTouchOutside) {
+    public void setInterceptTouchOutside(BoolProp interceptTouchOutside) {
         touchDelegate.setInterceptTouchOutside(interceptTouchOutside);
     }
 

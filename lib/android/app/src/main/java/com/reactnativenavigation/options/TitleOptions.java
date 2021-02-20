@@ -5,11 +5,11 @@ import android.content.Context;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullFraction;
-import com.reactnativenavigation.options.params.NullIntParam;
-import com.reactnativenavigation.options.params.NullStringParam;
-import com.reactnativenavigation.options.params.IntParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.NoValFraction;
+import com.reactnativenavigation.options.params.NoValInt;
+import com.reactnativenavigation.options.params.NullTextProp;
+import com.reactnativenavigation.options.params.IntProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
@@ -37,14 +37,14 @@ public class TitleOptions {
         return options;
     }
 
-    public StringParam text = NullStringParam.INSTANCE;
+    public TextProp text = NullTextProp.INSTANCE;
     public Colour color = NullColor.INSTANCE;
-    public Fraction fontSize = new NullFraction();
+    public Fraction fontSize = NoValFraction.INSTANCE;
     public Alignment alignment = Alignment.Default;
     public FontOptions font = new FontOptions();
     public ComponentOptions component = new ComponentOptions();
-    public IntParam height = NullIntParam.INSTANCE;
-    public IntParam topMargin = NullIntParam.INSTANCE;
+    public IntProp height = NoValInt.INSTANCE;
+    public IntProp topMargin = NoValInt.INSTANCE;
 
     void mergeWith(final TitleOptions other) {
         if (other.text.hasValue()) {

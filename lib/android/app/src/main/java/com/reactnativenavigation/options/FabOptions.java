@@ -3,12 +3,12 @@ package com.reactnativenavigation.options;
 
 import android.content.Context;
 
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.NoValBool;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullStringParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.NullTextProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.TextParser;
@@ -47,18 +47,18 @@ public class FabOptions {
         return options;
     }
 
-    public StringParam id = NullStringParam.INSTANCE;
+    public TextProp id = NullTextProp.INSTANCE;
     public Colour backgroundColor = NullColor.INSTANCE;
     public Colour clickColor = NullColor.INSTANCE;
     public Colour rippleColor = NullColor.INSTANCE;
-    public StringParam icon = NullStringParam.INSTANCE;
+    public TextProp icon = NullTextProp.INSTANCE;
     public Colour iconColor = NullColor.INSTANCE;
-    public BoolParam visible = NullBoolParam.INSTANCE;
+    public BoolProp visible = NoValBool.INSTANCE;
     public ArrayList<FabOptions> actionsArray = new ArrayList<>();
-    public StringParam alignHorizontally = NullStringParam.INSTANCE;
-    public StringParam alignVertically = NullStringParam.INSTANCE;
-    public BoolParam hideOnScroll = NullBoolParam.INSTANCE;
-    public StringParam size = NullStringParam.INSTANCE;
+    public TextProp alignHorizontally = NullTextProp.INSTANCE;
+    public TextProp alignVertically = NullTextProp.INSTANCE;
+    public BoolProp hideOnScroll = NoValBool.INSTANCE;
+    public TextProp size = NullTextProp.INSTANCE;
 
     void mergeWith(final FabOptions other) {
         if (other.id.hasValue()) {

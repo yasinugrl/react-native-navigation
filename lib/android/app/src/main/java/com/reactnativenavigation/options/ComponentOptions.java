@@ -1,11 +1,11 @@
 package com.reactnativenavigation.options;
 
-import com.reactnativenavigation.options.params.BoolParam;
-import com.reactnativenavigation.options.params.NullBoolParam;
-import com.reactnativenavigation.options.params.NullIntParam;
-import com.reactnativenavigation.options.params.NullStringParam;
-import com.reactnativenavigation.options.params.IntParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.BoolProp;
+import com.reactnativenavigation.options.params.NoValBool;
+import com.reactnativenavigation.options.params.NoValInt;
+import com.reactnativenavigation.options.params.NullTextProp;
+import com.reactnativenavigation.options.params.IntProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 import com.reactnativenavigation.options.parsers.TextParser;
@@ -27,12 +27,12 @@ public class ComponentOptions {
         return result;
     }
 
-    public StringParam name = NullStringParam.INSTANCE;
-    public StringParam componentId = NullStringParam.INSTANCE;
+    public TextProp name = NullTextProp.INSTANCE;
+    public TextProp componentId = NullTextProp.INSTANCE;
     public Alignment alignment = Alignment.Default;
-    public BoolParam waitForRender = NullBoolParam.INSTANCE;
-    public IntParam width = NullIntParam.INSTANCE;
-    public IntParam height = NullIntParam.INSTANCE;
+    public BoolProp waitForRender = NoValBool.INSTANCE;
+    public IntProp width = NoValInt.INSTANCE;
+    public IntProp height = NoValInt.INSTANCE;
 
     void mergeWith(ComponentOptions other) {
         if (other.componentId.hasValue()) componentId = other.componentId;
@@ -66,11 +66,11 @@ public class ComponentOptions {
     }
 
     public void reset() {
-        name = NullStringParam.INSTANCE;
-        componentId = NullStringParam.INSTANCE;
+        name = NullTextProp.INSTANCE;
+        componentId = NullTextProp.INSTANCE;
         alignment = Alignment.Default;
-        waitForRender = NullBoolParam.INSTANCE;
-        width = NullIntParam.INSTANCE;
-        height = NullIntParam.INSTANCE;
+        waitForRender = NoValBool.INSTANCE;
+        width = NoValInt.INSTANCE;
+        height = NoValInt.INSTANCE;
     }
 }

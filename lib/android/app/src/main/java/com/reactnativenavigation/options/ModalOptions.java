@@ -2,8 +2,8 @@ package com.reactnativenavigation.options;
 
 import androidx.annotation.NonNull;
 
-import com.reactnativenavigation.options.params.BoolParam;
-import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
+import com.reactnativenavigation.options.params.NoValBool;
 import com.reactnativenavigation.options.parsers.BoolParser;
 
 import org.json.JSONObject;
@@ -22,7 +22,7 @@ public class ModalOptions {
 
     public ModalPresentationStyle presentationStyle = ModalPresentationStyle.Unspecified;
     public @NonNull
-    BoolParam blurOnUnmount = NullBoolParam.INSTANCE;
+    BoolProp blurOnUnmount = NoValBool.INSTANCE;
 
     public void mergeWith(final ModalOptions other) {
         if (other.presentationStyleHasValue()) presentationStyle = other.presentationStyle;

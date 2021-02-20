@@ -13,8 +13,8 @@ import com.reactnativenavigation.mocks.*
 import com.reactnativenavigation.mocks.SimpleViewController.SimpleView
 import com.reactnativenavigation.options.Options
 import com.reactnativenavigation.options.StackAnimationOptions
-import com.reactnativenavigation.options.params.BoolParam
-import com.reactnativenavigation.options.params.StringParam
+import com.reactnativenavigation.options.params.BoolProp
+import com.reactnativenavigation.options.params.TextProp
 import com.reactnativenavigation.react.CommandListenerAdapter
 import com.reactnativenavigation.react.events.EventEmitter
 import com.reactnativenavigation.utils.*
@@ -148,7 +148,7 @@ class StackControllerTest : BaseTest() {
         disablePushAnimation(child1)
         uut.push(child1, CommandListenerAdapter())
         assertThat(uut.isRendered).isTrue()
-        child1.setWaitForRender(BoolParam(true))
+        child1.setWaitForRender(BoolProp(true))
         assertThat(uut.isRendered).isFalse()
         child1.view.addView(View(activity))
         assertThat(uut.isRendered).isTrue()
@@ -200,7 +200,7 @@ class StackControllerTest : BaseTest() {
         disablePushAnimation(child1)
         uut.push(child1, CommandListenerAdapter())
         assertThat(child1.view.parent).isEqualTo(uut.view)
-        child2.options.animations.push.waitForRender = BoolParam(true)
+        child2.options.animations.push.waitForRender = BoolProp(true)
         uut.push(child2, CommandListenerAdapter())
 
         // Both children are attached
@@ -231,7 +231,7 @@ class StackControllerTest : BaseTest() {
         disablePushAnimation(child1)
         uut.push(child1, CommandListenerAdapter())
         val pushListener = spy(CommandListenerAdapter())
-        child2.options.animations.push.waitForRender = BoolParam(waitForRender)
+        child2.options.animations.push.waitForRender = BoolProp(waitForRender)
         uut.push(child2, pushListener)
         // both children are attached
         assertThat(child1.view.parent).isEqualTo(uut.view)
@@ -564,8 +564,8 @@ class StackControllerTest : BaseTest() {
     fun push_doesNotAnimateTopBarIfScreenIsPushedWithoutAnimation() {
         uut.ensureViewIsCreated()
         child1.ensureViewIsCreated()
-        child1.options.topBar.visible = BoolParam(false)
-        child1.options.topBar.animate = BoolParam(false)
+        child1.options.topBar.visible = BoolProp(false)
+        child1.options.topBar.animate = BoolProp(false)
         disablePushAnimation(child1, child2)
 
         uut.push(child1, CommandListenerAdapter())
@@ -582,9 +582,9 @@ class StackControllerTest : BaseTest() {
     @Test
     fun push_animatesAndClearsPreviousAnimationValues() {
         uut.ensureViewIsCreated()
-        child1.options.topBar.visible = BoolParam(false)
-        child1.options.topBar.animate = BoolParam(false)
-        child1.options.animations.push.enabled = BoolParam(false)
+        child1.options.topBar.visible = BoolProp(false)
+        child1.options.topBar.animate = BoolProp(false)
+        child1.options.animations.push.enabled = BoolProp(false)
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
         verify(topBarController.view).resetViewProperties()
@@ -671,8 +671,8 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun popToRoot_PopsEverythingAboveFirstController() {
-        child1.options.animations.push.enabled = BoolParam(false)
-        child2.options.animations.push.enabled = BoolParam(false)
+        child1.options.animations.push.enabled = BoolProp(false)
+        child2.options.animations.push.enabled = BoolProp(false)
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
         uut.push(child3, object : CommandListenerAdapter() {
@@ -705,9 +705,9 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun popToRoot_topChildrenAreDestroyed() {
-        child1.options.animations.push.enabled = BoolParam(false)
-        child2.options.animations.push.enabled = BoolParam(false)
-        child3.options.animations.push.enabled = BoolParam(false)
+        child1.options.animations.push.enabled = BoolProp(false)
+        child2.options.animations.push.enabled = BoolProp(false)
+        child3.options.animations.push.enabled = BoolProp(false)
         uut.push(child1, CommandListenerAdapter())
         uut.push(child2, CommandListenerAdapter())
         uut.push(child3, CommandListenerAdapter())
@@ -802,7 +802,7 @@ class StackControllerTest : BaseTest() {
     fun pop_animatesTopBar() {
         uut.ensureViewIsCreated()
         disablePushAnimation(child1, child2)
-        child1.options.topBar.visible = BoolParam(false)
+        child1.options.topBar.visible = BoolProp(false)
 
         uut.push(child1, CommandListenerAdapter())
         child1.onViewWillAppear()
@@ -819,8 +819,8 @@ class StackControllerTest : BaseTest() {
     @Test
     fun pop_doesNotAnimateTopBarIfScreenIsPushedWithoutAnimation() {
         disablePushAnimation(child1)
-        child1.options.topBar.visible = BoolParam(false)
-        child1.options.topBar.animate = BoolParam(false)
+        child1.options.topBar.visible = BoolProp(false)
+        child1.options.topBar.animate = BoolProp(false)
 
         assertThat(uut.topBar.visibility).isEqualTo(View.VISIBLE)
         uut.push(child1, CommandListenerAdapter())
@@ -867,7 +867,7 @@ class StackControllerTest : BaseTest() {
         parent.ensureViewIsCreated()
         parent.push(uut, CommandListenerAdapter())
         val childOptions = Options()
-        childOptions.topBar.title.text = StringParam("Something")
+        childOptions.topBar.title.text = TextProp("Something")
         child1.options = childOptions
         uut.push(child1, CommandListenerAdapter())
         child1.ensureViewIsCreated()
@@ -921,8 +921,8 @@ class StackControllerTest : BaseTest() {
         uut.parentController = parentController
         uut.ensureViewIsCreated()
         val optionsToMerge = Options()
-        optionsToMerge.topBar.testId = StringParam("topBarID")
-        optionsToMerge.bottomTabsOptions.testId = StringParam("bottomTabsID")
+        optionsToMerge.topBar.testId = TextProp("topBarID")
+        optionsToMerge.bottomTabsOptions.testId = TextProp("bottomTabsID")
         val vc = mock<ViewController<*>>()
         uut.mergeChildOptions(optionsToMerge, vc)
         val captor = argumentCaptor<Options>()
@@ -938,8 +938,8 @@ class StackControllerTest : BaseTest() {
         uut.parentController = parentController
         val options = Options()
         options.animations.push = StackAnimationOptions(JSONObject())
-        options.topBar.testId = StringParam("id")
-        options.fabOptions.id = StringParam("fabId")
+        options.topBar.testId = TextProp("id")
+        options.fabOptions.id = TextProp("fabId")
         val vc = mock<ViewController<*>>()
         assertThat(options.fabOptions.hasValue()).isTrue()
         uut.mergeChildOptions(options, vc)
@@ -956,7 +956,7 @@ class StackControllerTest : BaseTest() {
         uut.push(child1, CommandListenerAdapter())
         assertThat(uut.topBar.title).isNullOrEmpty()
         val uutOptions = Options()
-        uutOptions.topBar.title.text = StringParam("UUT")
+        uutOptions.topBar.title.text = TextProp("UUT")
         uut.mergeOptions(uutOptions)
         assertThat(uut.topBar.title).isEqualTo("UUT")
         uut.push(child2, CommandListenerAdapter())
@@ -1024,7 +1024,7 @@ class StackControllerTest : BaseTest() {
 
     @Test
     fun onDependentViewChanged_TopBarIsRenderedBehindStatusBar() {
-        uut.initialOptions.statusBar.visible = BoolParam(false)
+        uut.initialOptions.statusBar.visible = BoolProp(false)
         disablePushAnimation(child1)
         uut.push(child1, CommandListenerAdapter())
         ShadowLooper.idleMainLooper()
@@ -1037,7 +1037,7 @@ class StackControllerTest : BaseTest() {
         uut.push(child1, CommandListenerAdapter())
         assertThat(uut.getTopInset(child1)).isEqualTo(topBarController.height)
         val options = Options()
-        options.topBar.drawBehind = BoolParam(true)
+        options.topBar.drawBehind = BoolProp(true)
         child1.mergeOptions(options)
         assertThat(uut.getTopInset(child1)).isEqualTo(0)
     }
@@ -1046,7 +1046,7 @@ class StackControllerTest : BaseTest() {
     fun topInset_defaultOptionsAreTakenIntoAccount() {
         assertThat(uut.getTopInset(child1)).isEqualTo(topBarController.height)
         val defaultOptions = Options()
-        defaultOptions.topBar.drawBehind = BoolParam(true)
+        defaultOptions.topBar.drawBehind = BoolProp(true)
         uut.setDefaultOptions(defaultOptions)
         assertThat(uut.getTopInset(child1)).isZero()
     }

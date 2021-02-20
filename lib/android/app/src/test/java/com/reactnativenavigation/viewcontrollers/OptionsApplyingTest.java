@@ -12,9 +12,9 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.viewcontrollers.component.ComponentPresenter;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.react.CommandListenerAdapter;
@@ -90,7 +90,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void initialOptionsAppliedOnAppear() {
-        uut.options.topBar.title.text = new StringParam("the title");
+        uut.options.topBar.title.text = new TextProp("the title");
         StackController stackController = TestUtils.newStackController(activity).build();
         stackController.ensureViewIsCreated();
         stackController.push(uut, new CommandListenerAdapter());
@@ -104,7 +104,7 @@ public class OptionsApplyingTest extends BaseTest {
     public void mergeNavigationOptionsUpdatesCurrentOptions() {
         assertThat(uut.options.topBar.title.text.get("")).isEmpty();
         Options options = new Options();
-        options.topBar.title.text = new StringParam("new title");
+        options.topBar.title.text = new TextProp("new title");
         uut.mergeOptions(options);
         assertThat(uut.options.topBar.title.text.get()).isEqualTo("new title");
     }
@@ -115,7 +115,7 @@ public class OptionsApplyingTest extends BaseTest {
         stack.push(uut, new CommandListenerAdapter());
 
         Options opts = new Options();
-        opts.topBar.title.text = new StringParam("the new title");
+        opts.topBar.title.text = new TextProp("the new title");
         uut.mergeOptions(opts);
 
         assertThat(stack.getTopBar().getTitle()).isEqualTo("the new title");
@@ -134,12 +134,12 @@ public class OptionsApplyingTest extends BaseTest {
         stack.push(uut, new CommandListenerAdapter());
 
         assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
-        initialNavigationOptions.topBar.title.text = new StringParam("the title");
+        initialNavigationOptions.topBar.title.text = new TextProp("the title");
         assertThat(stack.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
 
         Options opts = new Options();
-        opts.topBar.visible = new BoolParam(false);
-        opts.topBar.animate = new BoolParam(false);
+        opts.topBar.visible = new BoolProp(false);
+        opts.topBar.animate = new BoolProp(false);
         uut.mergeOptions(opts);
 
         assertThat(stack.getTopBar().getVisibility()).isEqualTo(View.GONE);

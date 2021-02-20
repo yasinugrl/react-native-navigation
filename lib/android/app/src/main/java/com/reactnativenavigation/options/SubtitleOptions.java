@@ -5,9 +5,9 @@ import android.content.Context;
 import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.Fraction;
 import com.reactnativenavigation.options.params.NullColor;
-import com.reactnativenavigation.options.params.NullFraction;
-import com.reactnativenavigation.options.params.NullStringParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.NoValFraction;
+import com.reactnativenavigation.options.params.NullTextProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
@@ -32,9 +32,9 @@ public class SubtitleOptions {
         return options;
     }
 
-    public StringParam text = NullStringParam.INSTANCE;
+    public TextProp text = NullTextProp.INSTANCE;
     public Colour color = NullColor.INSTANCE;
-    public Fraction fontSize = new NullFraction();
+    public Fraction fontSize = NoValFraction.INSTANCE;
     public FontOptions font = new FontOptions();
     public Alignment alignment = Alignment.Default;
 

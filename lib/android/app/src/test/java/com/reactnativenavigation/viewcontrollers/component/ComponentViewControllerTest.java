@@ -10,7 +10,7 @@ import com.reactnativenavigation.viewcontrollers.viewcontroller.Presenter;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.utils.StatusBarUtils;
 import com.reactnativenavigation.views.component.ComponentLayout;
 
@@ -167,18 +167,18 @@ public class ComponentViewControllerTest extends BaseTest {
 
     @Test
     public void getTopInset_drawBehind() {
-        uut.options.statusBar.drawBehind = new BoolParam(true);
-        uut.options.topBar.drawBehind = new BoolParam(true);
+        uut.options.statusBar.drawBehind = new BoolProp(true);
+        uut.options.topBar.drawBehind = new BoolProp(true);
         Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(0);
     }
 
     @Test
     public void getTopInset_drawBehind_defaultOptions() {
         Options defaultOptions = new Options();
-        defaultOptions.statusBar.drawBehind = new BoolParam(true);
+        defaultOptions.statusBar.drawBehind = new BoolProp(true);
         uut.setDefaultOptions(defaultOptions);
 
-        uut.options.topBar.drawBehind = new BoolParam(true);
+        uut.options.topBar.drawBehind = new BoolProp(true);
         Java6Assertions.assertThat(uut.getTopInset()).isEqualTo(0);
     }
 

@@ -11,8 +11,8 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.BoolParam;
-import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
+import com.reactnativenavigation.options.params.NoValBool;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.utils.Functions;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -292,13 +292,13 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void isRendered_falseIfViewIsNotCreated() {
-        uut.setWaitForRender(new BoolParam(true));
+        uut.setWaitForRender(new BoolProp(true));
         assertThat(uut.isRendered()).isFalse();
     }
 
     @Test
     public void isRendered_delegatesToView() {
-        uut.setWaitForRender(new BoolParam(true));
+        uut.setWaitForRender(new BoolProp(true));
         uut.view = mock(ViewGroup.class, withSettings().extraInterfaces(Component.class));
         uut.isRendered();
         verify((Component) uut.view).isRendered();
@@ -306,7 +306,7 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void isRendered_returnsTrueForEveryViewByDefault() {
-        uut.setWaitForRender(NullBoolParam.INSTANCE);
+        uut.setWaitForRender(NoValBool.INSTANCE);
         uut.view = mock(ViewGroup.class);
         assertThat(uut.isRendered()).isTrue();
     }

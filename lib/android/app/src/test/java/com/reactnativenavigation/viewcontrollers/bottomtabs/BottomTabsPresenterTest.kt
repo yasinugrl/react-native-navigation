@@ -5,10 +5,10 @@ import com.nhaarman.mockitokotlin2.*
 import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.options.params.BoolParam
+import com.reactnativenavigation.options.params.BoolProp
 import com.reactnativenavigation.options.params.Colour
-import com.reactnativenavigation.options.params.IntParam
-import com.reactnativenavigation.options.params.StringParam
+import com.reactnativenavigation.options.params.IntProp
+import com.reactnativenavigation.options.params.TextProp
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
 import com.reactnativenavigation.views.bottomtabs.BottomTabs
@@ -42,7 +42,7 @@ class BottomTabsPresenterTest : BaseTest() {
     @Test
     fun mergeChildOptions_onlyDeclaredOptionsAreApplied() { // default options are not applied on merge
         val defaultOptions = Options()
-        defaultOptions.bottomTabsOptions.visible = BoolParam(false)
+        defaultOptions.bottomTabsOptions.visible = BoolProp(false)
         uut.setDefaultOptions(defaultOptions)
         val options = Options()
         options.bottomTabsOptions.backgroundColor = Colour(10)
@@ -57,7 +57,7 @@ class BottomTabsPresenterTest : BaseTest() {
         assertThat(bottomTabs.isHidden).isFalse()
 
         val options = Options()
-        options.bottomTabsOptions.visible = BoolParam(false)
+        options.bottomTabsOptions.visible = BoolProp(false)
         uut.mergeChildOptions(options, tabs[0])
         verify(animator, never()).hide()
 
@@ -69,7 +69,7 @@ class BottomTabsPresenterTest : BaseTest() {
     @Test
     fun applyChildOptions_currentTabIndexIsConsumedAfterApply() {
         val defaultOptions = Options()
-        defaultOptions.bottomTabsOptions.currentTabIndex = IntParam(1)
+        defaultOptions.bottomTabsOptions.currentTabIndex = IntProp(1)
         uut.setDefaultOptions(defaultOptions)
         uut.applyChildOptions(Options.EMPTY, tabs[0])
         verify(tabSelector).selectTab(1)
@@ -80,7 +80,7 @@ class BottomTabsPresenterTest : BaseTest() {
     @Test
     fun applyChildOptions_currentTabIdIsConsumedAfterApply() {
         val defaultOptions = Options()
-        defaultOptions.bottomTabsOptions.currentTabId = StringParam(tabs[1].id)
+        defaultOptions.bottomTabsOptions.currentTabId = TextProp(tabs[1].id)
         uut.setDefaultOptions(defaultOptions)
         uut.applyChildOptions(Options.EMPTY, tabs[0])
         verify(tabSelector).selectTab(1)
@@ -91,7 +91,7 @@ class BottomTabsPresenterTest : BaseTest() {
     @Test
     fun getPushAnimation_returnsNullIfAnimateFalse() {
         val appearing = Options()
-        appearing.bottomTabsOptions.animate = BoolParam(false)
+        appearing.bottomTabsOptions.animate = BoolProp(false)
         assertThat(uut.getPushAnimation(appearing)).isNull()
     }
 
@@ -112,7 +112,7 @@ class BottomTabsPresenterTest : BaseTest() {
     fun getPopAnimation_returnsNullIfAnimateFalse() {
         val appearing = Options()
         val disappearing = Options()
-        disappearing.bottomTabsOptions.animate = BoolParam(false)
+        disappearing.bottomTabsOptions.animate = BoolProp(false)
         assertThat(uut.getPopAnimation(appearing, disappearing)).isNull()
     }
 
@@ -133,7 +133,7 @@ class BottomTabsPresenterTest : BaseTest() {
     @Test
     fun getSetStackRootAnimation_returnsNullIfAnimateFalse() {
         val appearing = Options()
-        appearing.bottomTabsOptions.animate = BoolParam(false)
+        appearing.bottomTabsOptions.animate = BoolProp(false)
         assertThat(uut.getSetStackRootAnimation(appearing)).isNull()
     }
 

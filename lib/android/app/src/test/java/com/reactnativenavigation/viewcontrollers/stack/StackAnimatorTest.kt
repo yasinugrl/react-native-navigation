@@ -9,7 +9,7 @@ import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.mocks.Mocks
 import com.reactnativenavigation.mocks.SimpleViewController
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.options.params.BoolParam
+import com.reactnativenavigation.options.params.BoolProp
 import com.reactnativenavigation.utils.createEnterExitAnimation
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController
@@ -84,7 +84,7 @@ class StackAnimatorTest : BaseTest() {
 
     @Test
     fun push_waitForRender_appearingScreenIsHiddenUntilAnimationStarts() {
-        child2.options.animations.push.waitForRender = BoolParam(true)
+        child2.options.animations.push.waitForRender = BoolProp(true)
 
         uut.push(child2, child1, child2.options, emptyList(), mock())
 
@@ -173,7 +173,7 @@ class StackAnimatorTest : BaseTest() {
     @Test
     fun setRoot_waitForRender() {
         val onAnimationEnd = mock<Runnable>()
-        child2.options.animations.setStackRoot.waitForRender = BoolParam(true)
+        child2.options.animations.setStackRoot.waitForRender = BoolProp(true)
 
         uut.setRoot(child2, child1, child2.options, emptyList(), onAnimationEnd)
 
@@ -186,7 +186,7 @@ class StackAnimatorTest : BaseTest() {
     @Test
     fun setRoot_waitForRender_appearingScreenIsHiddenUntilAnimationStarts() {
         val onAnimationEnd = mock<Runnable>()
-        child2.options.animations.setStackRoot.waitForRender = BoolParam(true)
+        child2.options.animations.setStackRoot.waitForRender = BoolProp(true)
 
         uut.setRoot(child2, child1, child2.options, emptyList(), onAnimationEnd)
 

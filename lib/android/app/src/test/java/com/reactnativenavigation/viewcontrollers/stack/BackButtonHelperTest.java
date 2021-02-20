@@ -7,7 +7,7 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.viewcontrollers.stack.topbar.button.BackButtonHelper;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.child.ChildController;
 import com.reactnativenavigation.viewcontrollers.child.ChildControllersRegistry;
@@ -62,7 +62,7 @@ public class BackButtonHelperTest extends BaseTest {
     public void addToChild_doesNotAddIfBackButtonHidden() {
         disablePushAnimation(child1, child2);
         stack.push(child1, new CommandListenerAdapter());
-        child2.options.topBar.buttons.back.visible = new BoolParam(false);
+        child2.options.topBar.buttons.back.visible = new BoolProp(false);
         stack.push(child2, new CommandListenerAdapter());
 
         verify(child2, times(0)).mergeOptions(any());
@@ -70,7 +70,7 @@ public class BackButtonHelperTest extends BaseTest {
 
     @Test
     public void clear() {
-        child1.options.topBar.buttons.back.visible = new BoolParam(true);
+        child1.options.topBar.buttons.back.visible = new BoolProp(true);
         uut.clear(child1);
         assertThat(child1.options.topBar.buttons.back.visible.get()).isFalse();
     }

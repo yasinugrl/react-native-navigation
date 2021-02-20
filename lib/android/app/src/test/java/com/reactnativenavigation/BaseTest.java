@@ -7,7 +7,7 @@ import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.viewcontroller.ViewController;
 
@@ -84,13 +84,13 @@ public abstract class BaseTest {
 
     protected void disablePushAnimation(ViewController... controllers) {
         for (ViewController controller : controllers) {
-            controller.options.animations.push.enabled = new BoolParam(false);
+            controller.options.animations.push.enabled = new BoolProp(false);
         }
     }
 
     protected void disablePopAnimation(ViewController... controllers) {
         for (ViewController controller : controllers) {
-            controller.options.animations.pop.enabled = new BoolParam(false);
+            controller.options.animations.pop.enabled = new BoolProp(false);
         }
     }
 
@@ -102,13 +102,13 @@ public abstract class BaseTest {
     protected void disableShowModalAnimation(ViewController... modals) {
         for (ViewController modal : modals) {
 
-            modal.options.animations.showModal.toggle(new BoolParam(false));
+            modal.options.animations.showModal.toggle(new BoolProp(false));
         }
     }
 
     protected void disableDismissModalAnimation(ViewController... modals) {
         for (ViewController modal : modals) {
-            modal.options.animations.dismissModal.toggle(new BoolParam(false));
+            modal.options.animations.dismissModal.toggle(new BoolProp(false));
         }
     }
 

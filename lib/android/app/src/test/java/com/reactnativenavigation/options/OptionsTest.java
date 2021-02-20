@@ -4,11 +4,11 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullStringParam;
-import com.reactnativenavigation.options.params.IntParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.NullTextProp;
+import com.reactnativenavigation.options.params.IntProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.options.parsers.TypefaceLoader;
 
 import org.json.JSONException;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class OptionsTest extends BaseTest {
 
     private static final String TITLE = "the title";
-    private static final IntParam TITLE_HEIGHT = new IntParam(100);
+    private static final IntProp TITLE_HEIGHT = new IntProp(100);
     private static final String FAB_ID = "FAB";
     private static final String FAB_ALIGN_HORIZONTALLY = "right";
     private static final String FAB_ALIGN_VERTICALLY = "bottom";
@@ -45,14 +45,14 @@ public class OptionsTest extends BaseTest {
     private static final Typeface SUBTITLE_TYPEFACE = Typeface.create("HelveticaNeue-Condensed", Typeface.NORMAL);
     private static final String SUBTITLE_ALIGNMENT = "center";
     private static final Typeface TOP_BAR_TYPEFACE = Typeface.create("HelveticaNeue-CondensedBold", Typeface.BOLD);
-    private static final BoolParam TOP_BAR_VISIBLE = new BoolParam(true);
-    private static final BoolParam TOP_BAR_DRAW_BEHIND = new BoolParam(true);
-    private static final BoolParam TOP_BAR_HIDE_ON_SCROLL = new BoolParam(true);
-    private static final BoolParam BOTTOM_TABS_ANIMATE = new BoolParam(true);
-    private static final BoolParam BOTTOM_TABS_VISIBLE = new BoolParam(true);
+    private static final BoolProp TOP_BAR_VISIBLE = new BoolProp(true);
+    private static final BoolProp TOP_BAR_DRAW_BEHIND = new BoolProp(true);
+    private static final BoolProp TOP_BAR_HIDE_ON_SCROLL = new BoolProp(true);
+    private static final BoolProp BOTTOM_TABS_ANIMATE = new BoolProp(true);
+    private static final BoolProp BOTTOM_TABS_VISIBLE = new BoolProp(true);
     private static final String BOTTOM_TABS_BADGE = "3";
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ComponentId";
-    private static final IntParam BOTTOM_TABS_CURRENT_TAB_INDEX = new IntParam(1);
+    private static final IntProp BOTTOM_TABS_CURRENT_TAB_INDEX = new IntProp(1);
     private TypefaceLoader mockLoader;
 
     @Override
@@ -202,12 +202,12 @@ public class OptionsTest extends BaseTest {
         JSONObject json1 = new JSONObject();
         json1.put("topBar", createTopBar(true));
         Options options1 = Options.parse(null, mockLoader, json1);
-        options1.topBar.title.text = new StringParam("some title");
+        options1.topBar.title.text = new TextProp("some title");
 
         JSONObject json2 = new JSONObject();
         json2.put("topBar", createTopBar(false));
         Options options2 = Options.parse(null, mockLoader, json2);
-        options2.topBar.title.text = NullStringParam.INSTANCE;
+        options2.topBar.title.text = NullTextProp.INSTANCE;
 
         Options merged = options1.mergeWith(options2);
         assertThat(options1.topBar.visible.get()).isTrue();
@@ -267,7 +267,7 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_topBarOptions() {
         Options uut = new Options();
-        uut.topBar.title.text = new StringParam("some title");
+        uut.topBar.title.text = new TextProp("some title");
         uut.clearTopBarOptions();
         assertThat(uut.topBar.title.text.hasValue()).isFalse();
     }
@@ -283,7 +283,7 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_topTabsOptions() {
         Options uut = new Options();
-        uut.topTabs.fontSize = new IntParam(666);
+        uut.topTabs.fontSize = new IntProp(666);
         uut.clearTopTabsOptions();
         assertThat(uut.topTabs.fontSize.hasValue()).isFalse();
     }
@@ -291,7 +291,7 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_topTabOptions() {
         Options uut = new Options();
-        uut.topTabOptions.title = new StringParam("some title");
+        uut.topTabOptions.title = new TextProp("some title");
         uut.clearTopTabOptions();
         assertThat(uut.topTabOptions.title.hasValue()).isFalse();
     }

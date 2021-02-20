@@ -3,9 +3,9 @@ package com.reactnativenavigation.options;
 import android.content.Context;
 import android.graphics.Color;
 
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullBoolParam;
+import com.reactnativenavigation.options.params.NoValBool;
 import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.parsers.BoolParser;
 import com.reactnativenavigation.options.parsers.ColorParser;
@@ -30,7 +30,7 @@ public class TopBarBackgroundOptions {
 
     public Colour color = NullColor.INSTANCE;
     public ComponentOptions component = new ComponentOptions();
-    public BoolParam waitForRender = NullBoolParam.INSTANCE;
+    public BoolProp waitForRender = NoValBool.INSTANCE;
 
     void mergeWith(final TopBarBackgroundOptions other) {
         if (other.color.hasValue()) color = other.color;

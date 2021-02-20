@@ -7,13 +7,12 @@ import android.util.TypedValue.COMPLEX_UNIT_DIP
 import android.util.TypedValue.COMPLEX_UNIT_FRACTION
 import android.view.View
 import android.view.View.*
-import com.reactnativenavigation.options.params.BoolParam
-import com.reactnativenavigation.options.params.NullBoolParam
-import com.reactnativenavigation.options.params.NullStringParam
-import com.reactnativenavigation.options.params.StringParam
+import com.reactnativenavigation.options.params.BoolProp
+import com.reactnativenavigation.options.params.NoValBool
+import com.reactnativenavigation.options.params.NullTextProp
+import com.reactnativenavigation.options.params.TextProp
 import com.reactnativenavigation.options.parsers.BoolParser
 import com.reactnativenavigation.options.parsers.TextParser
-import com.reactnativenavigation.utils.CollectionUtils
 import com.reactnativenavigation.utils.CollectionUtils.first
 import org.json.JSONObject
 import java.util.*
@@ -22,13 +21,13 @@ import kotlin.math.max
 open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) : LayoutAnimation {
 
     @JvmField
-    var id: StringParam = NullStringParam
+    var id: TextProp = NullTextProp
 
     @JvmField
-    var enabled: BoolParam = NullBoolParam
+    var enabled: BoolProp = NoValBool
 
     @JvmField
-    var waitForRender: BoolParam = NullBoolParam
+    var waitForRender: BoolProp = NoValBool
     override var sharedElements = SharedElements()
     override var elementTransitions = ElementTransitions()
     private var valueOptions = HashSet<ValueAnimationOptions>()
@@ -84,7 +83,7 @@ open class AnimationOptions @JvmOverloads constructor(json: JSONObject? = null) 
         return AnimatorSet().apply { playTogether(valueOptions.map { it.getAnimation(view) }) }
     }
 
-    fun shouldWaitForRender() = BoolParam(waitForRender.isTrue or hasElementTransitions())
+    fun shouldWaitForRender() = BoolProp(waitForRender.isTrue or hasElementTransitions())
 
     fun hasElementTransitions() = sharedElements.hasValue() or elementTransitions.hasValue()
 

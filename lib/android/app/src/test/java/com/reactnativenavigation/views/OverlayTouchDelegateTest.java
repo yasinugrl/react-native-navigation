@@ -3,7 +3,7 @@ package com.reactnativenavigation.views;
 import android.view.MotionEvent;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.views.component.ComponentLayout;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
@@ -33,27 +33,27 @@ public class OverlayTouchDelegateTest extends BaseTest {
 
     @Test
     public void downEventIsHandled() {
-        uut.setInterceptTouchOutside(new BoolParam(true));
+        uut.setInterceptTouchOutside(new BoolProp(true));
         uut.onInterceptTouchEvent(downEvent);
         verify(uut, times(1)).handleDown(downEvent);
     }
 
     @Test
     public void onlyDownEventIsHandled() {
-        uut.setInterceptTouchOutside(new BoolParam(true));
+        uut.setInterceptTouchOutside(new BoolProp(true));
         uut.onInterceptTouchEvent(upEvent);
         verify(uut, times(0)).handleDown(upEvent);
     }
 
     @Test
     public void nonDownEventsDontIntercept() {
-        uut.setInterceptTouchOutside(new BoolParam(true));
+        uut.setInterceptTouchOutside(new BoolProp(true));
         assertThat(uut.onInterceptTouchEvent(upEvent)).isFalse();
     }
 
     @Test
     public void nonDownEventsInvokeSuperImplementation() {
-        uut.setInterceptTouchOutside(new BoolParam(true));
+        uut.setInterceptTouchOutside(new BoolProp(true));
         uut.onInterceptTouchEvent(upEvent);
         verify(component).superOnInterceptTouchEvent(upEvent);
     }

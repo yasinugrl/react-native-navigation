@@ -9,8 +9,8 @@ import com.reactnativenavigation.BaseTest
 import com.reactnativenavigation.options.BackButton
 import com.reactnativenavigation.options.ButtonOptions
 import com.reactnativenavigation.options.Options
-import com.reactnativenavigation.options.params.BoolParam
-import com.reactnativenavigation.options.params.StringParam
+import com.reactnativenavigation.options.params.BoolProp
+import com.reactnativenavigation.options.params.TextProp
 import com.reactnativenavigation.react.Constants
 import com.reactnativenavigation.react.ReactView
 import com.reactnativenavigation.utils.CollectionUtils
@@ -160,7 +160,7 @@ class TopBarControllerTest : BaseTest() {
     @Test
     fun getPushAnimation_returnsNullIfAnimateFalse() {
         val appearing = Options()
-        appearing.topBar.animate = BoolParam(false)
+        appearing.topBar.animate = BoolProp(false)
         assertThat(uut.getPushAnimation(appearing)).isNull()
     }
 
@@ -181,7 +181,7 @@ class TopBarControllerTest : BaseTest() {
     fun getPopAnimation_returnsNullIfAnimateFalse() {
         val appearing = Options()
         val disappearing = Options()
-        disappearing.topBar.animate = BoolParam(false)
+        disappearing.topBar.animate = BoolProp(false)
         assertThat(uut.getPopAnimation(appearing, disappearing)).isNull()
     }
 
@@ -202,7 +202,7 @@ class TopBarControllerTest : BaseTest() {
     @Test
     fun getSetStackRootAnimation_returnsNullIfAnimateFalse() {
         val appearing = Options()
-        appearing.topBar.animate = BoolParam(false)
+        appearing.topBar.animate = BoolProp(false)
         assertThat(uut.getSetStackRootAnimation(appearing)).isNull()
     }
 
@@ -227,14 +227,14 @@ class TopBarControllerTest : BaseTest() {
         textButton2 = createTextButton("2")
         componentButton = ButtonOptions()
         componentButton.id = "customBtn"
-        componentButton.component.name = StringParam("com.rnn.customBtn")
-        componentButton.component.componentId = StringParam("component4")
+        componentButton.component.name = TextProp("com.rnn.customBtn")
+        componentButton.component.componentId = TextProp("component4")
     }
 
     private fun createTextButton(id: String): ButtonOptions {
         val button = ButtonOptions()
         button.id = id
-        button.text = StringParam("txt$id")
+        button.text = TextProp("txt$id")
         return button
     }
 

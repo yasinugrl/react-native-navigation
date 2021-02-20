@@ -14,11 +14,11 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.options.BottomTabsOptions;
 import com.reactnativenavigation.options.Options;
-import com.reactnativenavigation.options.params.BoolParam;
+import com.reactnativenavigation.options.params.BoolProp;
 import com.reactnativenavigation.options.params.Colour;
-import com.reactnativenavigation.options.params.NullStringParam;
-import com.reactnativenavigation.options.params.IntParam;
-import com.reactnativenavigation.options.params.StringParam;
+import com.reactnativenavigation.options.params.NullTextProp;
+import com.reactnativenavigation.options.params.IntProp;
+import com.reactnativenavigation.options.params.TextProp;
 import com.reactnativenavigation.react.CommandListenerAdapter;
 import com.reactnativenavigation.react.events.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -99,14 +99,14 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void createView_tabsWithoutIconsAreAccepted() {
-        tabOptions.bottomTabOptions.icon = NullStringParam.INSTANCE;
+        tabOptions.bottomTabOptions.icon = NullTextProp.INSTANCE;
         prepareViewsForTests();
         assertThat(uut.getBottomTabs().getItemsCount()).isEqualTo(tabs.size());
     }
 
     @Test
     public void createView_showTitlesWhenAllTabsDontHaveIcons() {
-        tabOptions.bottomTabOptions.icon = NullStringParam.INSTANCE;
+        tabOptions.bottomTabOptions.icon = NullTextProp.INSTANCE;
         assertThat(tabOptions.bottomTabsOptions.titleDisplayMode.hasValue()).isFalse();
         prepareViewsForTests();
         presenter.applyOptions(Options.EMPTY);
@@ -226,7 +226,7 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(uut.getSelectedIndex()).isZero();
 
         Options options = new Options();
-        options.bottomTabsOptions.currentTabIndex = new IntParam(1);
+        options.bottomTabsOptions.currentTabIndex = new IntProp(1);
         uut.mergeOptions(options);
         assertThat(uut.getSelectedIndex()).isOne();
         verify(eventEmitter, times(0)).emitBottomTabSelected(any(Integer.class), any(Integer.class));
@@ -237,12 +237,12 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(uut.getBottomInset(child1)).isEqualTo(uut.getBottomTabs().getHeight());
 
         Options o1 = new Options();
-        o1.bottomTabsOptions.drawBehind = new BoolParam(true);
+        o1.bottomTabsOptions.drawBehind = new BoolProp(true);
         child1.mergeOptions(o1);
         assertThat(uut.getBottomInset(child1)).isEqualTo(0);
 
         Options o2 = new Options();
-        o2.topBar.title.text = new StringParam("Some text");
+        o2.topBar.title.text = new TextProp("Some text");
         child1.mergeOptions(o1);
         assertThat(uut.getBottomInset(child1)).isEqualTo(0);
     }
@@ -255,7 +255,7 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(((MarginLayoutParams) stackChild.getView().getLayoutParams()).bottomMargin).isEqualTo(bottomTabs.getHeight());
 
         Options o1 = new Options();
-        o1.bottomTabsOptions.drawBehind = new BoolParam(true);
+        o1.bottomTabsOptions.drawBehind = new BoolProp(true);
         stackChild.mergeOptions(o1);
 
         assertThat(((MarginLayoutParams) stackChild.getView().getLayoutParams()).bottomMargin).isEqualTo(0);
@@ -278,7 +278,7 @@ public class BottomTabsControllerTest extends BaseTest {
         tabs = new ArrayList<>(Collections.singletonList(child4));
         tabsAttacher = new BottomTabsAttacher(tabs, presenter, Options.EMPTY);
 
-        initialOptions.bottomTabsOptions.currentTabIndex = new IntParam(0);
+        initialOptions.bottomTabsOptions.currentTabIndex = new IntProp(0);
         Options resolvedOptions = new Options();
         uut = new BottomTabsController(activity,
                 tabs,
@@ -320,7 +320,7 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(uut.getSelectedIndex()).isZero();
 
         Options options = new Options();
-        options.bottomTabsOptions.currentTabIndex = new IntParam(1);
+        options.bottomTabsOptions.currentTabIndex = new IntProp(1);
         child1.mergeOptions(options);
 
         assertThat(uut.getSelectedIndex()).isOne();
@@ -357,7 +357,7 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test
     public void oneTimeOptionsAreAppliedOnce() {
         Options options = new Options();
-        options.bottomTabsOptions.currentTabIndex = new IntParam(1);
+        options.bottomTabsOptions.currentTabIndex = new IntProp(1);
 
         assertThat(uut.getSelectedIndex()).isZero();
         uut.mergeOptions(options);
@@ -381,7 +381,7 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test
     public void creatingTabs_onViewDidAppearInvokedAfterInitialTabIndexSet() {
         Options options = Options.EMPTY.copy();
-        options.bottomTabsOptions.currentTabIndex = new IntParam(1);
+        options.bottomTabsOptions.currentTabIndex = new IntProp(1);
         prepareViewsForTests(options.bottomTabsOptions);
         idleMainLooper();
         verify(tabs.get(0), times(0)).onViewDidAppear();
@@ -396,7 +396,7 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(child1.getTopInset()).isEqualTo(getStatusBarHeight());
         assertThat(child2.getTopInset()).isEqualTo(getStatusBarHeight());
 
-        child1.options.statusBar.drawBehind = new BoolParam(true);
+        child1.options.statusBar.drawBehind = new BoolProp(true);
         assertThat(child1.getTopInset()).isEqualTo(0);
         assertThat(child2.getTopInset()).isEqualTo(getStatusBarHeight());
 
@@ -406,7 +406,7 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test
     public void getBottomInset_defaultOptionsAreTakenIntoAccount() {
         Options defaultOptions = new Options();
-        defaultOptions.bottomTabsOptions.visible = new BoolParam(false);
+        defaultOptions.bottomTabsOptions.visible = new BoolProp(false);
 
         assertThat(uut.getBottomInset(child1)).isEqualTo(bottomTabs.getHeight());
         uut.setDefaultOptions(defaultOptions);

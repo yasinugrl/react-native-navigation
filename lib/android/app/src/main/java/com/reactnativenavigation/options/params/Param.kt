@@ -1,5 +1,4 @@
 package com.reactnativenavigation.options.params
-
 abstract class Param<T> internal constructor(protected var value: T?) {
     private var consumed = false
 
