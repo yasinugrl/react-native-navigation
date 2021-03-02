@@ -75,6 +75,7 @@ export class Deprecations {
     if (key === 'interpolation' && typeof parentOptions[key] === 'string') {
       this.deprecateInterpolationOptions(parentOptions);
     }
+
     if (key === 'badgeColor') {
       console.warn(
         `${key} is deprecated and will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6889`,
@@ -87,6 +88,18 @@ export class Deprecations {
         `${key} is deprecated as a string and will be removed in the next major version. For more information see https://github.com/wix/react-native-navigation/issues/6889`,
         parentOptions
       );
+    }
+
+    if (key === 'showModal' || key === 'dismissModal') {
+      if (
+        typeof parentOptions[key] === 'object' &&
+        !('enter' in parentOptions[key]) &&
+        !('exit' in parentOptions[key])
+      )
+        console.warn(
+          `${key} without enter/exit is deprecated, and will be changed  in the next major version. For more information see https://wix.github.io/react-native-navigation/docs/style-animations#modal-animations`,
+          parentOptions
+        );
     }
   }
 
