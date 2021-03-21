@@ -6,9 +6,11 @@
 #import "CenterTransition.h"
 #import "ColorTransition.h"
 #import "CornerRadiusTransition.h"
+#import "PathTransition.h"
 #import "RectTransition.h"
 #import "RotationTransition.h"
 #import "TextStorageTransition.h"
+#import "TransformRectTransition.h"
 #import "UIImageView+Transition.h"
 
 @implementation SharedElementTransition {
@@ -82,6 +84,29 @@
                                     startDelay:startDelay
                                       duration:duration
                                   interpolator:interpolator]];
+    }
+
+    if (!CGRectEqualToRect(self.view.location.fromPath, self.view.location.toPath)) {
+        [animations
+            addObject:[[PathTransition alloc] initWithView:self.view
+                                                  fromPath:self.view.location.fromPath
+                                                    toPath:self.view.location.toPath
+                                          fromCornerRadius:self.view.location.fromCornerRadius
+                                            toCornerRadius:self.view.location.toCornerRadius
+                                                startDelay:startDelay
+                                                  duration:duration
+                                              interpolator:interpolator]];
+    }
+
+    if (!CATransform3DEqualToTransform(self.view.location.fromTransform,
+                                       self.view.location.toTransform)) {
+        [animations
+            addObject:[[TransformRectTransition alloc] initWithView:self.view
+                                                               from:self.view.location.fromTransform
+                                                                 to:self.view.location.toTransform
+                                                         startDelay:startDelay
+                                                           duration:duration
+                                                       interpolator:interpolator]];
     }
 
     if (self.view.location.fromCornerRadius != self.view.location.toCornerRadius) {

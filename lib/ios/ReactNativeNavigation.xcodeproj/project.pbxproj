@@ -394,6 +394,10 @@
 		50F5DFC21F407A8C001A00BC /* RNNBottomTabsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F5DFC01F407A8C001A00BC /* RNNBottomTabsController.m */; };
 		50F5DFC51F407AA0001A00BC /* RNNStackController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F5DFC31F407AA0001A00BC /* RNNStackController.h */; };
 		50F5DFC61F407AA0001A00BC /* RNNStackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F5DFC41F407AA0001A00BC /* RNNStackController.m */; };
+		50F72E1F260745DF0096758A /* TransformRectTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F72E1D260745DF0096758A /* TransformRectTransition.h */; };
+		50F72E20260745DF0096758A /* TransformRectTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F72E1E260745DF0096758A /* TransformRectTransition.m */; };
+		50F72E552607468C0096758A /* PathTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F72E532607468C0096758A /* PathTransition.h */; };
+		50F72E562607468C0096758A /* PathTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F72E542607468C0096758A /* PathTransition.m */; };
 		50FCD83723FC102200000DD0 /* DeprecationOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50FCD83523FC102200000DD0 /* DeprecationOptions.h */; };
 		50FCD83823FC102200000DD0 /* DeprecationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FCD83623FC102200000DD0 /* DeprecationOptions.m */; };
 		651E1F8A21FD624600DFEA19 /* UISplitViewController+RNNOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 651E1F8921FD624600DFEA19 /* UISplitViewController+RNNOptions.m */; };
@@ -926,6 +930,10 @@
 		50F5DFC01F407A8C001A00BC /* RNNBottomTabsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsController.m; sourceTree = "<group>"; };
 		50F5DFC31F407AA0001A00BC /* RNNStackController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNStackController.h; sourceTree = "<group>"; };
 		50F5DFC41F407AA0001A00BC /* RNNStackController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNStackController.m; sourceTree = "<group>"; };
+		50F72E1D260745DF0096758A /* TransformRectTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransformRectTransition.h; sourceTree = "<group>"; };
+		50F72E1E260745DF0096758A /* TransformRectTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransformRectTransition.m; sourceTree = "<group>"; };
+		50F72E532607468C0096758A /* PathTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathTransition.h; sourceTree = "<group>"; };
+		50F72E542607468C0096758A /* PathTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathTransition.m; sourceTree = "<group>"; };
 		50FCD83523FC102200000DD0 /* DeprecationOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeprecationOptions.h; sourceTree = "<group>"; };
 		50FCD83623FC102200000DD0 /* DeprecationOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeprecationOptions.m; sourceTree = "<group>"; };
 		651E1F8821FD611600DFEA19 /* UISplitViewController+RNNOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UISplitViewController+RNNOptions.h"; sourceTree = "<group>"; };
@@ -1394,6 +1402,8 @@
 				B8B2BB6424FFCC9500FC6575 /* CornerRadiusTransition.m */,
 				50B92C24253DDC6D0056FC26 /* ViewAnimationOptions.h */,
 				50B92C25253DDC6D0056FC26 /* ViewAnimationOptions.m */,
+				50F72E532607468C0096758A /* PathTransition.h */,
+				50F72E542607468C0096758A /* PathTransition.m */,
 				506BF65A2600AE4200A22755 /* CenterTransition.h */,
 				506BF65B2600AE4200A22755 /* CenterTransition.m */,
 				506BF6602600AE7600A22755 /* BoundsTransition.h */,
@@ -1468,6 +1478,8 @@
 				503A8A0023BB7B810094D1C4 /* ElementAnimator.m */,
 				50BCB26F23F1650800D6C8E5 /* SharedElementTransition.h */,
 				50BCB27023F1650800D6C8E5 /* SharedElementTransition.m */,
+				50F72E1D260745DF0096758A /* TransformRectTransition.h */,
+				50F72E1E260745DF0096758A /* TransformRectTransition.m */,
 				504189552506144D004A6BC7 /* RNNSetRootAnimator.h */,
 				504189562506144D004A6BC7 /* RNNSetRootAnimator.m */,
 				50D4656B23CE2553005A84B2 /* Transition.h */,
@@ -1930,6 +1942,7 @@
 				50AB0B1C2255F8640039DAED /* UIViewController+LayoutProtocol.h in Headers */,
 				50D031342005149000386B3D /* RNNOverlayManager.h in Headers */,
 				50E5F7952240EBD6002AFEAD /* RNNAnimationsTransitionDelegate.h in Headers */,
+				50F72E552607468C0096758A /* PathTransition.h in Headers */,
 				7B1126A71E2D2B6C00F9B03B /* RNNEventEmitter.h in Headers */,
 				506BF6982600B72D00A22755 /* UIImageView+Transition.h in Headers */,
 				E8A430111F9CB87B00B61A20 /* ElementAlphaTransition.h in Headers */,
@@ -1950,6 +1963,7 @@
 				503A90BD25DD550600BB6A74 /* RNNIconDrawer.h in Headers */,
 				E8AEDB3C1F55A1C2000F5A6A /* RNNElementView.h in Headers */,
 				E8E518321F83B3E0000467AC /* RNNUtils.h in Headers */,
+				50F72E1F260745DF0096758A /* TransformRectTransition.h in Headers */,
 				50E5F791223FA04C002AFEAD /* TransitionDetailsOptions.h in Headers */,
 				50D4656D23CE2553005A84B2 /* Transition.h in Headers */,
 				5049594E216F6277006D2B81 /* NumberParser.h in Headers */,
@@ -2174,6 +2188,7 @@
 				50C4A497206BDDBB00DB292E /* RNNSubtitleOptions.m in Sources */,
 				509416A823A11C630036092C /* EnumParser.m in Sources */,
 				50AB0B1D2255F8640039DAED /* UIViewController+LayoutProtocol.m in Sources */,
+				50F72E20260745DF0096758A /* TransformRectTransition.m in Sources */,
 				263905B41E4C6F440023D7D3 /* MMDrawerVisualState.m in Sources */,
 				5012240B21735959000F5F98 /* RNNSideMenuPresenter.m in Sources */,
 				502CB46F20CD1DDA0019B2FE /* RNNBackButtonOptions.m in Sources */,
@@ -2326,6 +2341,7 @@
 				507F43C61FF4F17C00D9425B /* RNNTopTabsViewController.m in Sources */,
 				50706E6E20CE7CA5003345C3 /* UIImage+utils.m in Sources */,
 				50CED452239F9DFC00C42EE2 /* TopBarPresenter.m in Sources */,
+				50F72E562607468C0096758A /* PathTransition.m in Sources */,
 				50FCD83823FC102200000DD0 /* DeprecationOptions.m in Sources */,
 				50BCB29223F2C7CD00D6C8E5 /* AnchorTransition.m in Sources */,
 				50344D2923A03DB4004B6A7C /* BottomTabsAttachMode.m in Sources */,
