@@ -17,6 +17,9 @@ def kotlinStdlib = safeExtGet('RNNKotlinStdlib', 'kotlin-stdlib-jdk8')
 def kotlinCoroutinesCore = safeExtGet('RNNKotlinCoroutinesCore', '1.4.3')
 
 android {
+//    ndkVersion "22.1.7171670" AGP 4.1+
+//    ndkVersion "23.0.7196353" AGP 4.1+
+
     compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
 
     defaultConfig {
@@ -68,6 +71,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
+    }
+    ndkVersion '21.0.6113669'
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
     }
 
     flavorDimensions "RNN.reactNativeVersion"
