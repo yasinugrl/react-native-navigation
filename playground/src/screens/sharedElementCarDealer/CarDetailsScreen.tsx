@@ -14,6 +14,7 @@ import useDismissGesture from './useDismissGesture';
 import { buildFullScreenSharedElementAnimations, SET_DURATION } from './Constants';
 import PressableScale from '../../components/PressableScale';
 import colors from '../../commons/Colors';
+import Video from 'react-native-video';
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity);
 const ReanimatedFastImage = Reanimated.createAnimatedComponent(FastImage);
@@ -107,12 +108,14 @@ const CarDetailsScreen: NavigationFunctionComponent<Props> = ({ car, componentId
         </PressableScale>
       </Reanimated.ScrollView>
       <ReanimatedTouchableOpacity style={imageStyle} onPress={openImage}>
-        <ReanimatedFastImage
-          source={car.image}
-          // @ts-ignore nativeID isn't included in react-native-fast-image props.
+        <Video
           nativeID={`image${car.id}Dest`}
-          resizeMode="cover"
           style={StyleSheet.absoluteFill}
+          source={{
+            uri:
+              'https://www.pexels.com/video/1572342/download/?search_query=&tracking_id=4tyxhpzipti',
+          }}
+          resizeMode="cover"
         />
       </ReanimatedTouchableOpacity>
       <ReanimatedTouchableOpacity style={closeButtonStyle} onPress={onClosePressed}>

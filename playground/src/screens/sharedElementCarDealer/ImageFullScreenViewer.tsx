@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, Text, Pressable, View, Dimensions } from 'react-native';
 import FastImage, { Source } from 'react-native-fast-image';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
+import Animated, { useValue } from 'react-native-reanimated';
+import Video from 'react-native-video';
 
 interface Props {
   source: Source;
@@ -18,14 +20,18 @@ const ImageFullScreenViewer: NavigationFunctionComponent<Props> = ({
   }, [componentId]);
 
   return (
-    <View style={styles.container}>
-      <FastImage
-        // @ts-ignore nativeID isn't included in FastImage props.
-        nativeID={sharedElementId}
-        style={StyleSheet.absoluteFill}
-        source={source}
-        resizeMode="contain"
-      />
+    <Animated.View style={[styles.container, { transform: [{ translateX: x }] }]}>
+      <View style={{ flexDirection: 'row' }}>
+        <Video
+          nativeID={sharedElementId}
+          style={styles.image}
+          source={{
+            uri:
+              'https://www.pexels.com/video/1572342/download/?search_query=&tracking_id=4tyxhpzipti',
+          }}
+          resizeMode="contain"
+        />
+      </View>
 
       <Pressable onPress={onClose} style={styles.closeButton}>
         <Text style={styles.closeText}>x</Text>
@@ -42,6 +48,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  image: {
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
   },
   closeButton: {
     position: 'absolute',

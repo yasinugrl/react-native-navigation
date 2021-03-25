@@ -53,10 +53,12 @@
     "react-native": "*"
   },
   "dependencies": {
+    "@types/react-native-video": "^5.0.4",
     "hoist-non-react-statics": "3.x.x",
     "lodash": "4.17.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
+    "react-native-video": "^5.1.1",
     "tslib": "1.9.3"
   },
   "devDependencies": {
