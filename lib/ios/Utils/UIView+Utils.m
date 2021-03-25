@@ -28,10 +28,9 @@
     if ([self isKindOfClass:[UIScrollView class]]) {
         UIScrollView *scrollView = (UIScrollView *)self;
         [scrollView setContentOffset:scrollView.contentOffset animated:NO];
-    } else {
-        for (UIView *subview in self.subviews) {
-            [subview stopMomentumScrollViews];
-        }
+    }
+    for (UIView *subview in self.subviews) {
+        [subview stopMomentumScrollViews];
     }
 }
 

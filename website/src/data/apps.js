@@ -8,7 +8,7 @@ const apps = [
     appStore: 'https://apps.apple.com/us/app/wix-website-app-builder/id1099748482',
   },
   {
-    title: 'Feastr',
+    title: 'feastr',
     description: 'Weight loss meal plan.',
     image: require('./showcase/feastr.png'),
     playStore: 'https://play.google.com/store/apps/details?id=de.feastr.plan',
@@ -20,6 +20,14 @@ const apps = [
     image: require('./showcase/amber.png'),
     playStore: 'https://play.google.com/store/apps/details?id=io.getamber.app&hl=en_US&gl=US',
     appStore: 'https://apps.apple.com/au/app/amber-bitcoin-made-easy/id1410639317',
+  },
+  {
+    title: 'Klarna',
+    description:
+      'Try before you buy and make hassle-free returns, without taking money out of your pocket in the meantime.',
+    image: require('./showcase/klarna.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.myklarnamobile',
+    appStore: 'https://apps.apple.com/app/klarna-smoooth-shopping/id1115120118',
   },
   {
     title: 'Delta',
@@ -72,10 +80,19 @@ const apps = [
   {
     title: 'Deevent',
     description:
-      'Deevent is a Swiss application highlighting the best attractions, places, museums and monuments in the biggest cities!',
+      'Highlight the best attractions, places, museums and monuments in the biggest cities!',
     image: require('./showcase/deevent.png'),
     playStore: 'https://play.google.com/store/apps/details?id=app.deevent',
     appStore: 'https://apps.apple.com/us/app/deevent/id1519499216',
+  },
+  {
+    title: 'Cinepicks',
+    description:
+      'Browse a huge list of movies and see which ones are available on popular streaming services.',
+    image: require('./showcase/cinepicks.png'),
+    playStore:
+      'https://play.google.com/store/apps/details?id=co.uk.jaygould.cinepicks&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1',
+    appStore: 'https://apps.apple.com/gb/app/cinepicks-find-swipe-films/id1534621509',
   },
   {
     title: 'StretchMinder',
@@ -86,7 +103,7 @@ const apps = [
   {
     title: 'Obitrain',
     description:
-      'Obitrain is a platform where you can create your own exercises and training sessions, track your progress and share it with your community.',
+      'Create your own exercises and training sessions, track your progress and share it with your community.',
     image: require('./showcase/obitrain.png'),
     playStore: 'https://play.google.com/store/apps/details?id=com.obitrain.obiapp',
   },

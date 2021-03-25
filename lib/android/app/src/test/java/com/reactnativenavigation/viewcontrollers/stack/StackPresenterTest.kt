@@ -216,6 +216,16 @@ class StackPresenterTest : BaseTest() {
     }
 
     @Test
+    fun `mergeButtons - modify BackButton should not have effect on stack with with one child`() {
+        val options = Options()
+        options.topBar.buttons.back = BackButton.parse(activity, JSONObject().apply {
+            put("color", Color.RED)
+        })
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, parent, child)
+        verify(topBar, times(0)).setBackButton(any())
+    }
+
+    @Test
     fun mergeButtons_previousRightButtonsAreDestroyed() {
         val options = Options()
         options.topBar.buttons.right = ArrayList(listOf(componentBtn1))
@@ -284,6 +294,26 @@ class StackPresenterTest : BaseTest() {
         b.topBar.buttons.left = ArrayList(listOf(componentBtn2))
         uut.mergeChildOptions(b, Options.EMPTY, parent, child)
         assertThat(initialButtons[0].isDestroyed).isFalse()
+    }
+
+    @Test
+    fun mergeChildOptions_backButtonShouldNotAffectLeftButtons() {
+        val options = Options()
+        options.topBar.buttons.right = ArrayList(listOf(textBtn1))
+        options.topBar.buttons.back = BackButton.parse(activity, JSONObject())
+        options.topBar.buttons.back.setVisible()
+        options.topBar.buttons.left = ArrayList(listOf(textBtn2))
+        uut.applyChildOptions(options, parent, child)
+        ShadowLooper.idleMainLooper()
+        verify(topBar, times(1)).clearLeftButtons()
+        verify(topBar, times(1)).clearBackButton()
+
+        val backButtonHidden = Options()
+        backButtonHidden.topBar.buttons.back.setHidden()
+        uut.mergeChildOptions(backButtonHidden, options, parent, child)
+        ShadowLooper.idleMainLooper()
+        verify(topBar, times(1)).clearLeftButtons()
+        verify(topBar, times(2)).clearBackButton()
     }
 
     @Test
