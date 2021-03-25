@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, Text, Pressable } from 'react-native';
 import FastImage, { Source } from 'react-native-fast-image';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
+import Animated, { useValue } from 'react-native-reanimated';
 
 interface Props {
   source: Source;
@@ -17,8 +18,10 @@ const ImageFullScreenViewer: NavigationFunctionComponent<Props> = ({
     Navigation.dismissModal(componentId);
   }, [componentId]);
 
+  const x = useValue(-150);
+
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, { transform: [{ translateX: x }] }]}>
       <FastImage
         // @ts-ignore nativeID isn't included in FastImage props.
         nativeID={sharedElementId}
@@ -30,7 +33,7 @@ const ImageFullScreenViewer: NavigationFunctionComponent<Props> = ({
       <Pressable onPress={onClose} style={styles.closeButton}>
         <Text style={styles.closeText}>x</Text>
       </Pressable>
-    </View>
+    </Animated.View>
   );
 };
 
