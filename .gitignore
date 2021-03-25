@@ -228,6 +228,7 @@ AndroidE2E/app/.classpath
 AndroidE2E/app/.settings/
 AndroidE2E/app/bin/
 lib/android/.settings/
+lib/android/app/.cxx/
 lib/android/app/.settings/
 playground/android/.settings/
 playground/android/app/.settings/
