@@ -67,6 +67,7 @@ export default class NavigationScreen extends React.Component<Props> {
           onPress={this.pushBackButtonScreen}
         />
         <Button label="React Context API" onPress={this.pushContextScreen} />
+        <Button label="Push TextInput with autoFocus" onPress={this.pushAutoFocus} />
         <Button label="Shared Element (Cocktails)" onPress={this.sharedElement} />
         <Button label="Shared Element (Car Dealer)" onPress={this.sharedElementAlt} />
         <Button label="Shared Element (ImageGallery)" onPress={this.sharedElementImageGallery} />
@@ -98,6 +99,7 @@ export default class NavigationScreen extends React.Component<Props> {
   orientation = () => Navigation.showModal(Screens.Orientation);
   pushContextScreen = () => Navigation.push(this, Screens.ContextScreen);
   sharedElement = () => Navigation.showModal(Screens.CocktailsListScreen);
+  pushAutoFocus = () => Navigation.push(this, Screens.AutoFocusScreen);
   sharedElementAlt = () => Navigation.push(this, Screens.CarsListScreen);
   sharedElementImageGallery = () => Navigation.push(this, Screens.ImageGalleryListScreen);
   preview = ({ reactTag }: { reactTag: number | null }) => {

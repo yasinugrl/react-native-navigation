@@ -9,6 +9,7 @@ const Screens = {
   Buttons: 'Buttons',
   CocktailDetailsScreen: 'CocktailDetailsScreen',
   CocktailsListScreen: 'CocktailsListScreen',
+  AutoFocusScreen: 'AutoFocusScreen',
   CocktailsListMasterScreen: 'CocktailsListMasterScreen',
   ImageGalleryListScreen: 'ImageGalleryListScreen',
   ImageGalleryItemScreen: 'ImageGalleryItemScreen',

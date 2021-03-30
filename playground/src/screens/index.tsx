@@ -13,6 +13,7 @@ function registerScreens() {
     Screens.CocktailsListScreen,
     () => require('./sharedElementTransition/CocktailsListScreen').default
   );
+  Navigation.registerComponent(Screens.AutoFocusScreen, () => require('./AutoFocusScreen').default);
   Navigation.registerComponent(
     Screens.CarsListScreen,
     () => require('./sharedElementCarDealer/CarsListScreen').default
