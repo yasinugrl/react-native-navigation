@@ -10,7 +10,6 @@ interface Props {
 
 export default class ComponentScreen extends Component<Props> {
     render() {
-        console.log(this.props.isVisible, this.props.layoutNode.nodeId);
         const Component = Navigation.store.getComponentClassForName(this.props.layoutNode.data.name)();
         return (
             <View testID={this.props.isVisible ? 'VISIBLE_SCREEN' : undefined}>

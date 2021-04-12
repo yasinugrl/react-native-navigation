@@ -30,79 +30,79 @@ function start() {
 function setRoot() {
   Navigation.setRoot({
     root: {
-      stack: {
+      // stack: {
+      //   children: [
+      //     {
+      //       component: {
+      //         name: 'Layouts',
+      //       },
+      //     },
+      //   ],
+      //   options: {
+      //     bottomTab: {
+      //       text: 'Layouts',
+      //       icon: require('../img/layouts.png'),
+      //       selectedIcon: require('../img/layouts_selected.png'),
+      //       testID: testIDs.LAYOUTS_TAB,
+      //     },
+      //   },
+      bottomTabs: {
         children: [
           {
-            component: {
-              name: 'Layouts',
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: 'Layouts',
+                  },
+                },
+              ],
+              options: {
+                bottomTab: {
+                  text: 'Layouts',
+                  icon: require('../img/layouts.png'),
+                  selectedIcon: require('../img/layouts_selected.png'),
+                  testID: testIDs.LAYOUTS_TAB,
+                },
+              },
             },
           },
+          // {
+          //   stack: {
+          //     children: [
+          //       {
+          //         component: {
+          //           name: 'Options',
+          //         },
+          //       },
+          //     ],
+          //     options: {
+          //       topBar: {
+          //         title: {
+          //           text: 'Default Title',
+          //         },
+          //       },
+          //       bottomTab: {
+          //         text: 'Options',
+          //         icon: require('../img/options.png'),
+          //         selectedIcon: require('../img/options_selected.png'),
+          //         testID: testIDs.OPTIONS_TAB,
+          //       },
+          //     },
+          //   },
+          // },
+          // {
+          //   stack: {
+          //     children: [
+          //       {
+          //         component: {
+          //           name: 'Navigation',
+          //         },
+          //       },
+          //     ],
+          //   },
+          // },
         ],
-        options: {
-          bottomTab: {
-            text: 'Layouts',
-            icon: require('../img/layouts.png'),
-            selectedIcon: require('../img/layouts_selected.png'),
-            testID: testIDs.LAYOUTS_TAB,
-          },
-        },
-        // bottomTabs: {
-        //   children: [
-        //     {
-        //       stack: {
-        //         children: [
-        //           {
-        //             component: {
-        //               name: 'Layouts',
-        //             },
-        //           },
-        //         ],
-        //         options: {
-        //           bottomTab: {
-        //             text: 'Layouts',
-        //             icon: require('../img/layouts.png'),
-        //             selectedIcon: require('../img/layouts_selected.png'),
-        //             testID: testIDs.LAYOUTS_TAB,
-        //           },
-        //         },
-        //       },
-        //     },
-        //     {
-        //       stack: {
-        //         children: [
-        //           {
-        //             component: {
-        //               name: 'Options',
-        //             },
-        //           },
-        //         ],
-        //         options: {
-        //           topBar: {
-        //             title: {
-        //               text: 'Default Title',
-        //             },
-        //           },
-        //           bottomTab: {
-        //             text: 'Options',
-        //             icon: require('../img/options.png'),
-        //             selectedIcon: require('../img/options_selected.png'),
-        //             testID: testIDs.OPTIONS_TAB,
-        //           },
-        //         },
-        //       },
-        //     },
-        //     {
-        //       stack: {
-        //         children: [
-        //           {
-        //             component: {
-        //               name: 'Navigation',
-        //             },
-        //           },
-        //         ],
-        //       },
-        //     },
-        //   ],
       },
     },
   });

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { View } from "react-native";
 import BottomTabs from "./BottomTabs";
 import ComponentScreen from "./ComponentScreen";
 import LayoutNode from "./LayoutNode";
-import Stack from "./Stack";
+import { Stack } from "./Stack";
 
 interface Props {
     layoutNode: LayoutNode;
@@ -20,6 +19,5 @@ export default class LayoutComponent extends Component<Props> {
             case 'Component':
                 return <ComponentScreen layoutNode={this.props.layoutNode} isVisible={this.props.isVisible} />
         }
-        return <View />
     }
 }

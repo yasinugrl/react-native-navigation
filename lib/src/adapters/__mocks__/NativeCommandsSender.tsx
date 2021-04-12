@@ -1,11 +1,4 @@
-import React from 'react';
-// import { NativeModules } from 'react-native';
-import { Store } from 'react-native-navigation/components/Store';
-import { Application } from './Application';
 import LayoutNode from './LayoutNode';
-import { Navigation } from '../../index';
-// import { Store } from 'react-native-navigation/components/Store';
-import { render } from '@testing-library/react-native';
 import store from './LayoutStore';
 import _ from 'lodash';
 
@@ -31,18 +24,8 @@ export class NativeCommandsSender {
     constructor() { }
 
     setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
-        // const renderer = require('react-test-renderer');
-        const component = layout.root.children[0];
-        // const Component = this.store.getComponentClassForName(component.data.name)();
         const layoutNode = new LayoutNode(layout.root);
-
-        console.log(layoutNode);
         store.setters.setLayout(layoutNode);
-        // console.log(this.store.getComponentClassForName(component.data.name))
-        // const tree = renderer.create(<Component componentId={component.id} />);
-        // global.component = render(<Application />);
-        // console.log(tree2);
-        // return this.nativeCommandsModule.setRoot(commandId, layout);
     }
 
     setDefaultOptions(options: object) {
@@ -54,20 +37,12 @@ export class NativeCommandsSender {
     }
 
     push(commandId: string, onComponentId: string, layout: LayoutNode) {
-        // const clonedChildren = _.clone();
-        // clonedChildren.push(new LayoutNode(layout));
-        // store.setters.setLayoutChildren(clonedChildren);
-        const clonedChildren = _.cloneDeep(store.getters.getLayout().children);
-        clonedChildren.push(new LayoutNode(layout));
-
-        store.setters.setLayoutChildren(layout.nodeId, clonedChildren);
+        const layoutNode = new LayoutNode(layout);
+        store.setters.push(onComponentId, layoutNode);
     }
 
     pop(commandId: string, componentId: string, options?: object) {
-        const clonedChildren = _.cloneDeep(store.getters.getLayout().children);
-        clonedChildren.pop();
-
-        store.setters.setLayoutChildren(store.getters.getLayout().nodeId, clonedChildren);
+        store.setters.pop(componentId);
     }
 
     popTo(commandId: string, componentId: string, options?: object) {
@@ -83,7 +58,8 @@ export class NativeCommandsSender {
     }
 
     showModal(commandId: string, layout: object) {
-        // return this.nativeCommandsModule.showModal(commandId, layout);
+        const layoutNode = new LayoutNode(layout);
+        store.setters.showModal(layoutNode);
     }
 
     dismissModal(commandId: string, componentId: string, options?: object) {

@@ -9,11 +9,11 @@ interface Props {
     isVisible: boolean;
 }
 
-export const Stack = connect()(class extends Component<Props> {
+export const Modals = connect()(class extends Component<Props> {
     render() {
-        const children = store.getters.getLayoutChildren(this.props.layoutNode.nodeId);
+        const children = store.getters.getModals();
         return children.map((child, i) => {
-            return <LayoutComponent layoutNode={child} isVisible={(this.props.isVisible && i === children.length - 1)} />
+            return <LayoutComponent layoutNode={child} isVisible={(i === children.length - 1)} />
         })
     }
 });
