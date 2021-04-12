@@ -17,3 +17,4 @@ export * from './interfaces/NavigationFunctionComponent';
 export * from './interfaces/CommandName';
 export * from './interfaces/Processors';
 export * from './interfaces/ProcessorSubscription';
+export { Application } from './adapters/__mocks__/Application';

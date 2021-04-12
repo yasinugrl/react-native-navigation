@@ -19,6 +19,7 @@ const {
   BOTTOM_TABS,
   SIDE_MENU_BTN,
   SPLIT_VIEW_BUTTON,
+  PUSH_BTN
 } = testIDs;
 
 export default class LayoutsScreen extends NavigationComponent {
@@ -38,19 +39,27 @@ export default class LayoutsScreen extends NavigationComponent {
 
   render() {
     return (
-      <Root componentId={this.props.componentId}>
-        <Button label="Stack" testID={STACK_BTN} onPress={this.stack} />
-        <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
+      <Root componentId={this.props.componentId} testID={'Screen A'}>
+        {/* <Button label="Stack" testID={STACK_BTN} onPress={this.stack} /> */}
+        <Button label="Push" testID={PUSH_BTN} onPress={this.push} />
+        {/* <Button label="BottomTabs" testID={BOTTOM_TABS_BTN} onPress={this.bottomTabs} />
         <Button label="SideMenu" testID={SIDE_MENU_BTN} onPress={this.sideMenu} />
         <Button
           label="SplitView"
           testID={SPLIT_VIEW_BUTTON}
           platform="ios"
           onPress={this.splitView}
-        />
+        /> */}
       </Root>
     );
   }
+
+  push = () =>
+    Navigation.push(this, {
+      component: {
+        name: Screens.Pushed,
+      },
+    });
 
   stack = () => Navigation.showModal(stack(Screens.Stack, 'StackId'));
 

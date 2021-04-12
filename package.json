@@ -19,8 +19,7 @@
   "bin": {
     "rnn-link": "./autolink/postlink/run.js"
   },
-  "main": "lib/dist/index.js",
-  "typings": "lib/dist/index.d.ts",
+  "main": "lib/src/index.ts",
   "scripts": {
     "build": "node ./scripts/build",
     "watch": "node ./scripts/watch",
@@ -68,6 +67,8 @@
     "@react-native-community/datetimepicker": "^2.5.0",
     "@react-native-community/eslint-config": "2.0.0",
     "@react-native-community/netinfo": "^5.9.4",
+    "@testing-library/jest-native": "^4.0.1",
+    "@testing-library/react-native": "^7.2.0",
     "@types/detox": "16.4.1",
     "@types/hoist-non-react-statics": "^3.0.1",
     "@types/jasmine": "3.5.10",
@@ -115,12 +116,19 @@
     },
     "roots": [
       "<rootDir>/node_modules/",
-      "<rootDir>/lib/dist/",
+      "<rootDir>/lib/src/",
       "<rootDir>/integration/",
       "<rootDir>/scripts/"
     ],
+    "moduleNameMapper": {
+      "react-native-navigation": "<rootDir>/lib/src",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/playground/img/layouts@2x.png"
+    },
     "collectCoverageFrom": [
-      "lib/dist/**/*.js",
+      "playground/**/*.ts",
+      "playground/**/*.tsx",
+      "lib/src/**/*.ts",
+      "lib/src/**/*.tsx",
       "integration/**/*.js",
       "!lib/dist/index.js",
       "!lib/dist/Navigation.js",
