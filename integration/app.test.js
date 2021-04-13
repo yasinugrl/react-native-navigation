@@ -27,13 +27,13 @@ describe.only('testing that the environment is working properly', () => {
   });
 
   it('push and pop', async () => {
-    await expect(getVisibleScreen().getByTestId('Screen A')).toBeDefined();
+    await expect(getVisibleScreen().getByTestId('WELCOME_SCREEN_HEADER')).toBeDefined();
     await fireEvent.press(getVisibleScreen().getByTestId('PUSH_BUTTON'));
-    await expect(getVisibleScreen().queryByTestId('Screen A')).toBe(null);
-    await expect(getVisibleScreen().getByTestId('Screen B')).toBeDefined();
+    await expect(getVisibleScreen().queryByTestId('WELCOME_SCREEN_HEADER')).toBe(null);
+    await expect(getVisibleScreen().getByTestId('PUSHED_SCREEN_HEADER')).toBeDefined();
     await fireEvent.press(getVisibleScreen().getByTestId('POP_BUTTON'));
-    await expect(getVisibleScreen().queryByTestId('Screen B')).toBe(null);
-    await expect(getVisibleScreen().getByTestId('Screen A')).toBeDefined();
+    await expect(getVisibleScreen().queryByTestId('PUSHED_SCREEN_HEADER')).toBe(null);
+    await expect(getVisibleScreen().getByTestId('WELCOME_SCREEN_HEADER')).toBeDefined();
   });
 
   it('push identical components', async () => {
@@ -44,6 +44,19 @@ describe.only('testing that the environment is working properly', () => {
   it('showModal', async () => {
     await fireEvent.press(getVisibleScreen().getByTestId('STACK_BUTTON'));
     await getVisibleScreen().findByTestId('PUSH_LIFECYCLE_BTN');
+  });
+
+  it('dismissModal', async () => {
+    await fireEvent.press(getVisibleScreen().getByTestId('STACK_BUTTON'));
+    await getVisibleScreen().findByTestId('PUSH_LIFECYCLE_BTN');
+  });
+
+  it('switch tab', async () => {
+    await expect(getVisibleScreen().getByTestId('WELCOME_SCREEN_HEADER')).toBeDefined();
+    await fireEvent.press(App.getByTestId('OPTIONS_TAB'));
+    await expect(getVisibleScreen().queryByTestId('WELCOME_SCREEN_HEADER')).toBe(null);
+    await fireEvent.press(App.getByTestId('NAVIGATION_TAB'));
+    await expect(getVisibleScreen().getByTestId('NAVIGATION_SCREEN')).toBeDefined();
   });
 
   // it.only('setRoot -> invoke componentDidAppear', async () => {

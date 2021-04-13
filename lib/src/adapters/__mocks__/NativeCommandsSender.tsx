@@ -1,6 +1,8 @@
-import LayoutNode from './LayoutNode';
+// @ts-nocheck
 import store from './LayoutStore';
 import _ from 'lodash';
+import LayoutNodeFactory from './Layouts/LayoutNodeFactory';
+import ParentNode from './Layouts/ParentNode';
 
 interface NativeCommandsModule {
     setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;
@@ -24,7 +26,7 @@ export class NativeCommandsSender {
     constructor() { }
 
     setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
-        const layoutNode = new LayoutNode(layout.root);
+        const layoutNode = LayoutNodeFactory.create(layout.root);
         store.setters.setLayout(layoutNode);
     }
 
@@ -36,8 +38,8 @@ export class NativeCommandsSender {
         // return this.nativeCommandsModule.mergeOptions(componentId, options);
     }
 
-    push(commandId: string, onComponentId: string, layout: LayoutNode) {
-        const layoutNode = new LayoutNode(layout);
+    push(commandId: string, onComponentId: string, layout: ParentNode) {
+        const layoutNode = LayoutNodeFactory.create(layout);
         store.setters.push(onComponentId, layoutNode);
     }
 
@@ -58,7 +60,7 @@ export class NativeCommandsSender {
     }
 
     showModal(commandId: string, layout: object) {
-        const layoutNode = new LayoutNode(layout);
+        const layoutNode = LayoutNodeFactory.create(layout);
         store.setters.showModal(layoutNode);
     }
 

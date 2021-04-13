@@ -1,5 +1,4 @@
 import { NativeModules } from 'react-native';
-import { Store } from 'react-native-navigation/components/Store';
 
 interface NativeCommandsModule {
   setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;

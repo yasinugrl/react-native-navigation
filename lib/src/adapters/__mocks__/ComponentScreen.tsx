@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { Navigation } from "react-native-navigation";
-import LayoutNode from "./LayoutNode";
+import { ComponentProps } from "./ComponentProps";
+import store from './LayoutStore';
+const { connect } = require('remx');
 
-interface Props {
-    layoutNode: LayoutNode;
-    isVisible: boolean;
-}
-
-export default class ComponentScreen extends Component<Props> {
+export const ComponentScreen = connect()(class extends Component<ComponentProps> {
     render() {
-        const Component = Navigation.store.getComponentClassForName(this.props.layoutNode.data.name)();
+        //@ts-ignore
+        const Component = Navigation.store.getComponentClassForName(this.props.layoutNode.data.name)!();
         return (
-            <View testID={this.props.isVisible ? 'VISIBLE_SCREEN' : undefined}>
-                <Component componentId={this.props.layoutNode.nodeId} />
+            <View testID={store.getters.isVisibleLayout(this.props.layoutNode) ? 'VISIBLE_SCREEN' : undefined}>
+                <View testID={this.props.layoutNode.resolveOptions().topBar?.testID}>
+                    <Component componentId={this.props.layoutNode.nodeId} />
+                </View>
             </View>
         );
     }
-}
+});

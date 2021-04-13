@@ -71,12 +71,12 @@ export default class PushedScreen extends NavigationComponent<Props> {
   render() {
     const stackPosition = this.getStackPosition();
     return (
-      <Root componentId={this.props.componentId} footer={`Stack Position: ${stackPosition}`} testID={'Screen B'}>
+      <Root componentId={this.props.componentId} footer={`Stack Position: ${stackPosition}`}>
         <View style={styles.container}>
           <Button label="Push" testID={PUSH_BTN} onPress={this.push} marginH-5 />
           <Button label="Pop" testID={POP_BTN} onPress={this.pop} marginH-5 />
         </View>
-        {/* <Button
+        <Button
           label="Push Without Animation"
           testID={PUSH_NO_ANIM_BTN}
           onPress={this.pushWithoutAnimations}
@@ -117,7 +117,7 @@ export default class PushedScreen extends NavigationComponent<Props> {
           label="Hide previous screen top bar"
           testID={HIDE_PREVIOUS_SCREEN_TOP_BAR}
           onPress={this.hidePreviousScreenTopBar}
-        /> */}
+        />
       </Root>
     );
   }

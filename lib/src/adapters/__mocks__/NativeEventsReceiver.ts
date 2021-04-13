@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { EmitterSubscription } from 'react-native';
 import {
   ComponentWillAppearEvent,

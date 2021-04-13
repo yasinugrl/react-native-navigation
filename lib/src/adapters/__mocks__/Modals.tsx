@@ -1,19 +1,15 @@
 import React, { Component } from "react";
+import { ComponentProps } from "./ComponentProps";
 import LayoutComponent from "./LayoutComponent";
-import LayoutNode from "./LayoutNode";
+import ParentNode from "./Layouts/ParentNode";
 import store from './LayoutStore';
 const { connect } = require('remx');
 
-interface Props {
-    layoutNode: LayoutNode;
-    isVisible: boolean;
-}
-
-export const Modals = connect()(class extends Component<Props> {
+export const Modals = connect()(class extends Component<ComponentProps> {
     render() {
         const children = store.getters.getModals();
-        return children.map((child, i) => {
-            return <LayoutComponent layoutNode={child} isVisible={(i === children.length - 1)} />
+        return children.map((child: ParentNode) => {
+            return <LayoutComponent layoutNode={child} />
         })
     }
 });

@@ -1,23 +1,21 @@
 import React, { Component } from "react";
-import BottomTabs from "./BottomTabs";
-import ComponentScreen from "./ComponentScreen";
-import LayoutNode from "./LayoutNode";
+import { View } from "react-native";
+import { BottomTabs } from "./BottomTabs";
+import { ComponentProps } from "./ComponentProps";
+import { ComponentScreen } from "./ComponentScreen";
 import { Stack } from "./Stack";
 
-interface Props {
-    layoutNode: LayoutNode;
-    isVisible: boolean;
-}
-
-export default class LayoutComponent extends Component<Props> {
+export default class LayoutComponent extends Component<ComponentProps> {
     render() {
         switch (this.props.layoutNode.type) {
             case 'BottomTabs':
-                return <BottomTabs layoutNode={this.props.layoutNode} isVisible={this.props.isVisible} />
+                return <BottomTabs layoutNode={this.props.layoutNode} />
             case 'Stack':
-                return <Stack layoutNode={this.props.layoutNode} isVisible={this.props.isVisible} />
+                return <Stack layoutNode={this.props.layoutNode} />
             case 'Component':
-                return <ComponentScreen layoutNode={this.props.layoutNode} isVisible={this.props.isVisible} />
+                return <ComponentScreen layoutNode={this.props.layoutNode} />
         }
+
+        return <View />
     }
 }

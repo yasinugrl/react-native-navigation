@@ -10,7 +10,7 @@ export const Application = connect()(class extends Component {
     render() {
         return (
             <View>
-                <LayoutComponent layoutNode={store.getters.getLayout()} isVisible={!store.getters.getModals().length} />
+                <LayoutComponent layoutNode={store.getters.getLayout()} />
                 <Modals />
             </View>
         )
