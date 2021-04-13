@@ -1,11 +1,11 @@
 import React from 'react';
 import { fireEvent, render, within } from '@testing-library/react-native';
+import { initNavigationMock, ApplicationGenerator } from 'react-native-navigation';
 
 describe.only('testing that the environment is working properly', () => {
   let App;
   beforeEach(() => {
-    jest.mock('./../lib/src/adapters/NativeCommandsSender', () => require('./../lib/src/adapters/__mocks__/NativeCommandsSender.tsx'));
-    jest.mock('./../lib/src/adapters/NativeEventsReceiver', () => require('./../lib/src/adapters/__mocks__/NativeEventsReceiver.ts'));
+    initNavigationMock();
 
     const NativeModules = require('react-native').NativeModules;
     NativeModules.KeyboardTrackingViewTempManager = {};
@@ -14,7 +14,8 @@ describe.only('testing that the environment is working properly', () => {
     }
 
     require('../playground/index');
-    const { Application } = require('../lib/src/adapters/__mocks__/Application');
+
+    const Application = ApplicationGenerator();
     App = render(<Application />);
   });
 
@@ -68,7 +69,7 @@ describe.only('testing that the environment is working properly', () => {
     await App.findByTestId('lifecycleOverlay');
   });
 
-  it.only('send viewDidAppear', async () => {
+  it('send viewDidAppear', async () => {
     await fireEvent.press(App.getByTestId('NAVIGATION_TAB'));
     await fireEvent.press(getVisibleScreen().getByTestId('SHOW_STATIC_EVENTS_SCREEN'));
     await fireEvent.press(getVisibleScreen().getByTestId('STATIC_EVENTS_OVERLAY_BTN'));

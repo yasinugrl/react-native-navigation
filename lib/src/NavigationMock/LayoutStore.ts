@@ -3,6 +3,7 @@ import BottomTabsNode from "./Layouts/BottomTabsNode";
 import Node from "./Layouts/Node";
 import ParentNode from "./Layouts/ParentNode";
 import { events } from './EventsStore';
+import LayoutNodeFactory from "./Layouts/LayoutNodeFactory";
 
 const remx = require('remx');
 
@@ -16,9 +17,10 @@ const setters = remx.setters({
   setLayout(layout: ParentNode) {
     state.layout = layout;
   },
-  push(layoutId: string, child: ParentNode) {
-    getters.getLayoutById(layoutId).getStack().children.push(child);
-    console.log(child.data.name);
+  push(layoutId: string, layout: any) {
+    const stack = getters.getLayoutById(layoutId).getStack();
+    const child = LayoutNodeFactory.create(layout, stack);
+    stack.children.push(child);
     events.componentDidAppear({ componentName: child.data.name, componentId: child.nodeId, componentType: 'Component' });
   },
   pop(layoutId: string) {

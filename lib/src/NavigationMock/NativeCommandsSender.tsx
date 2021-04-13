@@ -39,9 +39,8 @@ export class NativeCommandsSender {
         // return this.nativeCommandsModule.mergeOptions(componentId, options);
     }
 
-    push(commandId: string, onComponentId: string, layout: ParentNode) {
-        const layoutNode = LayoutNodeFactory.create(layout);
-        store.setters.push(onComponentId, layoutNode);
+    push(commandId: string, onComponentId: string, layout: object) {
+        store.setters.push(onComponentId, layout);
     }
 
     pop(commandId: string, componentId: string, options?: object) {
