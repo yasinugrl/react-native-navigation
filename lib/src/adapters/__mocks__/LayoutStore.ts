@@ -2,12 +2,14 @@ import _ from "lodash";
 import BottomTabsNode from "./Layouts/BottomTabsNode";
 import Node from "./Layouts/Node";
 import ParentNode from "./Layouts/ParentNode";
+import { events } from './EventsStore';
 
 const remx = require('remx');
 
 const state = remx.state({
   layout: {},
-  modals: []
+  modals: [],
+  overlays: []
 });
 
 const setters = remx.setters({
@@ -15,13 +17,22 @@ const setters = remx.setters({
     state.layout = layout;
   },
   push(layoutId: string, child: ParentNode) {
-    findStack(layoutId, state.layout).children.push(child);
+    getters.getLayoutById(layoutId).getStack().children.push(child);
+    console.log(child.data.name);
+    events.componentDidAppear({ componentName: child.data.name, componentId: child.nodeId, componentType: 'Component' });
   },
   pop(layoutId: string) {
-    return getters.getStack(layoutId).children.pop();
+    return getters.getLayoutById(layoutId).getStack().children.pop();
   },
   showModal(modal: ParentNode) {
     state.modals.push(modal);
+  },
+  showOverlay(overlay: ParentNode) {
+    state.overlays.push(overlay);
+  },
+  dismissModal() {
+    // TODO: Impelment modals behavior
+    state.modals.pop();
   },
   selectTabIndex(layout: BottomTabsNode, index: number) {
     layout.selectedIndex = index;
@@ -43,6 +54,9 @@ const getters = remx.getters({
   },
   getModals() {
     return state.modals;
+  },
+  getOverlays() {
+    return state.overlays;
   },
   getLayoutById(layoutId: string) {
     return (findParentNode(layoutId, state.layout) || _.find(state.modals, (layout) => findParentNode(layoutId, layout)));

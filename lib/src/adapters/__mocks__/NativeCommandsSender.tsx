@@ -1,5 +1,6 @@
 // @ts-nocheck
 import store from './LayoutStore';
+import { events } from './EventsStore';
 import _ from 'lodash';
 import LayoutNodeFactory from './Layouts/LayoutNodeFactory';
 import ParentNode from './Layouts/ParentNode';
@@ -65,7 +66,7 @@ export class NativeCommandsSender {
     }
 
     dismissModal(commandId: string, componentId: string, options?: object) {
-        // return this.nativeCommandsModule.dismissModal(commandId, componentId, options);
+        store.setters.dismissModal(componentId);
     }
 
     dismissAllModals(commandId: string, options?: object) {
@@ -73,6 +74,8 @@ export class NativeCommandsSender {
     }
 
     showOverlay(commandId: string, layout: object) {
+        const layoutNode = LayoutNodeFactory.create(layout);
+        store.setters.showOverlay(layoutNode);
         // return this.nativeCommandsModule.showOverlay(commandId, layout);
     }
 

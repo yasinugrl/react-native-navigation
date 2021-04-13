@@ -1,9 +1,8 @@
-import Node from "./Node";
 import ParentNode from "./ParentNode";
 
 export default class BottomTabsNode extends ParentNode {
     selectedIndex: number = 0;
-    constructor(layout: any, parentNode?: Node) {
+    constructor(layout: any, parentNode?: ParentNode) {
         super(layout, 'BottomTabs', parentNode);
     }
 

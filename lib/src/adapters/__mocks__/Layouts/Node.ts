@@ -1,7 +1,9 @@
 import { Options } from "../../../index";
+import ParentNode from "./ParentNode";
 
 interface Data {
-    options: Options
+    options: Options;
+    name: string;
 }
 
 export type NodeType = 'Component' | 'ExternalComponent' | 'Stack' | 'BottomTabs' | 'TopTabs' | 'SideMenuRoot' | 'SideMenuLeft' | 'SideMenuRight' | 'SideMenuCenter' | 'SplitView';
@@ -9,10 +11,10 @@ export type NodeType = 'Component' | 'ExternalComponent' | 'Stack' | 'BottomTabs
 export default class Node {
     readonly nodeId: string;
     readonly data: Data;
-    readonly parentNode?: Node;
+    readonly parentNode?: ParentNode;
     readonly type: NodeType;
 
-    constructor(layout: any, type: NodeType, parentNode?: Node) {
+    constructor(layout: any, type: NodeType, parentNode?: ParentNode) {
         this.nodeId = layout.id;
         this.data = layout.data;
         this.parentNode = parentNode;
@@ -26,5 +28,9 @@ export default class Node {
     resolveOptions(): Options {
         // this.parentNode?.resolveOptions();
         return this.data.options;
+    }
+
+    getStack() {
+        return this.parentNode?.getStack();
     }
 }

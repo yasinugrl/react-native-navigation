@@ -4,10 +4,9 @@ import Stack from "./StackNode";
 import ParentNode from "./ParentNode";
 
 export default class LayoutNodeFactory {
-    static create(layout: any, parentNode?: ParentNode) {
+    static create(layout: any, parentNode: ParentNode) {
         switch (layout.type) {
-            case 'Component':
-                return new ComponentNode(layout, parentNode);
+            case 'Component': return new ComponentNode(layout, parentNode);
             case 'BottomTabs': return new BottomTabs(layout, parentNode);
             case 'Stack': return new Stack(layout, parentNode);
         }

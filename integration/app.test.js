@@ -46,11 +46,6 @@ describe.only('testing that the environment is working properly', () => {
     await getVisibleScreen().findByTestId('PUSH_LIFECYCLE_BTN');
   });
 
-  it('dismissModal', async () => {
-    await fireEvent.press(getVisibleScreen().getByTestId('STACK_BUTTON'));
-    await getVisibleScreen().findByTestId('PUSH_LIFECYCLE_BTN');
-  });
-
   it('switch tab', async () => {
     await expect(getVisibleScreen().getByTestId('WELCOME_SCREEN_HEADER')).toBeDefined();
     await fireEvent.press(App.getByTestId('OPTIONS_TAB'));
@@ -59,8 +54,27 @@ describe.only('testing that the environment is working properly', () => {
     await expect(getVisibleScreen().getByTestId('NAVIGATION_SCREEN')).toBeDefined();
   });
 
-  // it.only('setRoot -> invoke componentDidAppear', async () => {
-  //   await fireEvent.press(getVisibleScreen().getByTestId('PUSH_BUTTON'));
-  //   await getVisibleScreen().findByTestId('PUSH_BUTTON');
-  // });
+  it('topBar button dismissModal', async () => {
+    await fireEvent.press(getVisibleScreen().getByTestId('STACK_BUTTON'));
+    await getVisibleScreen().findByTestId('PUSH_LIFECYCLE_BTN');
+    await fireEvent.press(App.getByTestId('dismissModalButton'));
+    await getVisibleScreen().findByTestId('STACK_BUTTON');
+  });
+
+  it('show overlay', async () => {
+    await fireEvent.press(App.getByTestId('NAVIGATION_TAB'));
+    await fireEvent.press(getVisibleScreen().getByTestId('SHOW_STATIC_EVENTS_SCREEN'));
+    await fireEvent.press(getVisibleScreen().getByTestId('STATIC_EVENTS_OVERLAY_BTN'));
+    await App.findByTestId('lifecycleOverlay');
+  });
+
+  it.only('send viewDidAppear', async () => {
+    await fireEvent.press(App.getByTestId('NAVIGATION_TAB'));
+    await fireEvent.press(getVisibleScreen().getByTestId('SHOW_STATIC_EVENTS_SCREEN'));
+    await fireEvent.press(getVisibleScreen().getByTestId('STATIC_EVENTS_OVERLAY_BTN'));
+    await App.findByTestId('lifecycleOverlay');
+
+    await fireEvent.press(getVisibleScreen().getByTestId('PUSH_BUTTON'));
+    await App.findByText('componentDidAppear | Pushed | Component');
+  });
 });

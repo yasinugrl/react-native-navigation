@@ -1,8 +1,7 @@
 import ParentNode from './ParentNode';
-import Node from './Node';
 
 export default class StackNode extends ParentNode {
-    constructor(layout: any, parentNode?: Node) {
+    constructor(layout: any, parentNode?: ParentNode) {
         super(layout, 'Stack', parentNode);
     }
 

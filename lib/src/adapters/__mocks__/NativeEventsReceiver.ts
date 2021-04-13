@@ -18,52 +18,72 @@ import {
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
 } from '../../interfaces/Events';
+import { events } from './EventsStore';
 
 export class NativeEventsReceiver {
+  navigationButtonPressedCallback: (event: NavigationButtonPressedEvent) => void;
+
   public registerAppLaunchedListener(callback: () => void): EmitterSubscription {
-    // return this.emitter.addListener('RNN.AppLaunched', callback);
+    callback();
   }
 
   public registerComponentWillAppearListener(
     callback: (event: ComponentWillAppearEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.ComponentWillAppear', callback);
+    return {
+      remove: () => { }
+    }
   }
 
   public registerComponentDidAppearListener(
     callback: (event: ComponentDidAppearEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.ComponentDidAppear', callback);
+    events.componentDidAppear = callback;
+    return {
+      remove: () => { }
+    }
   }
 
   public registerComponentDidDisappearListener(
     callback: (event: ComponentDidDisappearEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.ComponentDidDisappear', callback);
+    return {
+      remove: () => { }
+    }
   }
 
   public registerNavigationButtonPressedListener(
     callback: (event: NavigationButtonPressedEvent) => void
   ): EmitterSubscription {
+    events.navigationButtonPressed = callback;
+    return {
+      remove: () => { }
+    }
     // return this.emitter.addListener('RNN.NavigationButtonPressed', callback);
   }
 
   public registerBottomTabPressedListener(
     callback: (data: BottomTabPressedEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.BottomTabPressed', callback);
+    return {
+      remove: () => { }
+    }
   }
 
   public registerModalDismissedListener(
     callback: (event: ModalDismissedEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.ModalDismissed', callback);
+    return {
+      remove: () => { }
+    }
   }
 
   public registerModalAttemptedToDismissListener(
     callback: (event: ModalAttemptedToDismissEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.ModalAttemptedToDismiss', callback);
+    return {
+      remove: () => { }
+    }
   }
 
   public registerSearchBarUpdatedListener(
@@ -87,7 +107,9 @@ export class NativeEventsReceiver {
   public registerCommandCompletedListener(
     callback: (data: CommandCompletedEvent) => void
   ): EmitterSubscription {
-    // return this.emitter.addListener('RNN.CommandCompleted', callback);
+    return {
+      remove: () => { }
+    }
   }
 
   public registerBottomTabSelectedListener(

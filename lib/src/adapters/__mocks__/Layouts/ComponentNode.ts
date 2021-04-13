@@ -1,7 +1,7 @@
-import Node from "./Node";
+import ParentNode from "./ParentNode";
 
-export default class ComponentNode extends Node {
-    constructor(layout: any, parentNode?: Node) {
+export default class ComponentNode extends ParentNode {
+    constructor(layout: any, parentNode?: ParentNode) {
         super(layout, 'Component', parentNode);
     }
 

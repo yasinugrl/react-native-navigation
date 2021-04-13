@@ -22,9 +22,9 @@ function start() {
   addProcessors();
   setDefaultOptions();
   Navigation.dismissAllModals();
-  setRoot();
-  // Navigation.events().registerAppLaunchedListener(async () => {
-  // });
+  Navigation.events().registerAppLaunchedListener(async () => {
+    setRoot();
+  });
 }
 
 function setRoot() {
