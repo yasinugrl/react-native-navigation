@@ -6,16 +6,21 @@ import store from './LayoutStore';
 const { connect } = require('remx');
 
 export const BottomTabs = connect()(class extends Component<ComponentProps> {
+
     renderTabBar() {
+        const buttons = this.props.layoutNode!.children!.map((child, i) => {
+            const bottomTabOptions = child.resolveOptions().bottomTab;
+            return <Button
+                key={`tab-${i}`}
+                testID={bottomTabOptions?.testID}
+                title={bottomTabOptions?.text || ''}
+                onPress={() => store.setters.selectTabIndex(this.props.layoutNode, i)} />
+        });
+
         return (
-            this.props.layoutNode!.children!.map((child, i) => {
-                const bottomTabOptions = child.resolveOptions().bottomTab;
-                return <Button
-                    key={`tab-${i}`}
-                    testID={bottomTabOptions?.testID}
-                    title={bottomTabOptions?.text || ''}
-                    onPress={() => store.setters.selectTabIndex(this.props.layoutNode, i)} />
-            })
+            <View testID={'BottomTabs_Mock'}>
+                {buttons}
+            </View >
         );
     }
 

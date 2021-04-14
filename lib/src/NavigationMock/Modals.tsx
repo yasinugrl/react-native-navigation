@@ -8,6 +8,7 @@ const { connect } = require('remx');
 export const Modals = connect()(class extends Component<ComponentProps> {
     render() {
         const children = store.getters.getModals();
+        console.log(children);
         return children.map((child: ParentNode) => {
             return <LayoutComponent layoutNode={child} />
         })

@@ -11,13 +11,13 @@ import {
   ModalDismissedEvent,
   ScreenPoppedEvent,
   ModalAttemptedToDismissEvent,
-} from '../../interfaces/ComponentEvents';
+} from '../interfaces/ComponentEvents';
 import {
   CommandCompletedEvent,
   BottomTabSelectedEvent,
   BottomTabLongPressedEvent,
   BottomTabPressedEvent,
-} from '../../interfaces/Events';
+} from '../interfaces/Events';
 import { events } from './EventsStore';
 
 export class NativeEventsReceiver {
@@ -40,13 +40,16 @@ export class NativeEventsReceiver {
   ): EmitterSubscription {
     events.componentDidAppear = callback;
     return {
-      remove: () => { }
+      remove: () => {
+
+      }
     }
   }
 
   public registerComponentDidDisappearListener(
     callback: (event: ComponentDidDisappearEvent) => void
   ): EmitterSubscription {
+    events.componentDidDisappear = callback;
     return {
       remove: () => { }
     }

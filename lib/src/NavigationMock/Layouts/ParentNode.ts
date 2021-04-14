@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { LayoutStack } from "react-native-navigation/interfaces/Layout";
-import { Options } from "../../../index";
+import { Options } from "../../index";
 import LayoutNodeFactory from "./LayoutNodeFactory";
 import Node, { NodeType } from "./Node";
 

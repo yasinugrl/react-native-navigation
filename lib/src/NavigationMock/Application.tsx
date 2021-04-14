@@ -10,7 +10,7 @@ const { connect } = require('remx');
 export const Application = connect()(class extends Component {
     render() {
         return (
-            <View>
+            <View testID={'Application'}>
                 <LayoutComponent layoutNode={store.getters.getLayout()} />
                 <Modals />
                 <Overlays />

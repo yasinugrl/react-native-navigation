@@ -36,19 +36,29 @@ export class NativeCommandsSender {
     }
 
     mergeOptions(componentId: string, options: object) {
+        store.setters.mergeOptions(componentId, options);
         // return this.nativeCommandsModule.mergeOptions(componentId, options);
     }
 
     push(commandId: string, onComponentId: string, layout: object) {
-        store.setters.push(onComponentId, layout);
+        return new Promise((resolve) => {
+            store.setters.push(onComponentId, layout);
+            resolve(layout.id);
+        });
     }
 
     pop(commandId: string, componentId: string, options?: object) {
-        store.setters.pop(componentId);
+        return new Promise((resolve) => {
+            store.setters.pop(componentId);
+            resolve(componentId);
+        });
     }
 
     popTo(commandId: string, componentId: string, options?: object) {
-        // return this.nativeCommandsModule.popTo(commandId, componentId, options);
+        return new Promise((resolve) => {
+            store.setters.popTo(componentId);
+            resolve(componentId);
+        });
     }
 
     popToRoot(commandId: string, componentId: string, options?: object) {
@@ -56,6 +66,7 @@ export class NativeCommandsSender {
     }
 
     setStackRoot(commandId: string, onComponentId: string, layout: object) {
+        store.setters.setStackRoot(onComponentId, layout);
         // return this.nativeCommandsModule.setStackRoot(commandId, onComponentId, layout);
     }
 
@@ -74,6 +85,7 @@ export class NativeCommandsSender {
 
     showOverlay(commandId: string, layout: object) {
         const layoutNode = LayoutNodeFactory.create(layout);
+        console.log(layout);
         store.setters.showOverlay(layoutNode);
         // return this.nativeCommandsModule.showOverlay(commandId, layout);
     }
