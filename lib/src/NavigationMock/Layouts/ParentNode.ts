@@ -16,6 +16,11 @@ export default class ParentNode extends Node {
         return this.children[this.children.length - 1].getVisibleLayout();
     }
 
+    getTopParent(): Node {
+        if (this.parentNode) return this.parentNode.getTopParent();
+        return this;
+    }
+
     resolveOptions(): Options {
         return _.merge(_.cloneDeep(this.data.options), this.getVisibleLayout().data.options);
     }

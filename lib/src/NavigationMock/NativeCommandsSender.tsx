@@ -71,12 +71,19 @@ export class NativeCommandsSender {
     }
 
     showModal(commandId: string, layout: object) {
-        const layoutNode = LayoutNodeFactory.create(layout);
-        store.setters.showModal(layoutNode);
+        return new Promise((resolve) => {
+            const layoutNode = LayoutNodeFactory.create(layout);
+            store.setters.showModal(layoutNode);
+            resolve(layoutNode.nodeId);
+        });
     }
 
     dismissModal(commandId: string, componentId: string, options?: object) {
-        store.setters.dismissModal(componentId);
+        return new Promise((resolve) => {
+            const modal = store.getters.getModalById(componentId).getTopParent();
+            store.setters.dismissModal(componentId);
+            resolve(modal.nodeId);
+        });
     }
 
     dismissAllModals(commandId: string, options?: object) {

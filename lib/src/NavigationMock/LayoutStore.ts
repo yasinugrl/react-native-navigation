@@ -48,12 +48,13 @@ const setters = remx.setters({
     state.modals.push(modal);
   },
   dismissModal(componentId: string) {
-    // TODO: Impelment modals behavior
     const modal = getters.getModalById(componentId);
     if (modal) {
       const child = modal.getVisibleLayout();
+      const topParent = child.getTopParent();
       events.componentDidDisappear({ componentName: child.data.name, componentId: child.nodeId, componentType: 'Component' });
-      _.remove(state.modals, (modal: ParentNode) => modal.nodeId === child.nodeId);
+      _.remove(state.modals, (modal: ParentNode) => modal.nodeId === topParent.nodeId);
+      events.modalDismissed({ componentName: child.data.name, componentId: topParent.nodeId, modalsDismissed: 1 });
     }
   },
   selectTabIndex(layout: BottomTabsNode, index: number) {

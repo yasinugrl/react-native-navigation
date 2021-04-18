@@ -1,8 +1,9 @@
-import { ComponentDidDisappearEvent } from "react-native-navigation/interfaces/ComponentEvents";
+import { ComponentDidDisappearEvent, ModalDismissedEvent } from "react-native-navigation/interfaces/ComponentEvents";
 import { ComponentDidAppearEvent, NavigationButtonPressedEvent } from "../index";
 
 export const events = {
   navigationButtonPressed: (_event: NavigationButtonPressedEvent) => { },
   componentDidAppear: (_event: ComponentDidAppearEvent) => { },
-  componentDidDisappear: (_event: ComponentDidDisappearEvent) => { }
+  componentDidDisappear: (_event: ComponentDidDisappearEvent) => { },
+  modalDismissed: (_event: ModalDismissedEvent) => { }
 }

@@ -78,6 +78,7 @@ export class NativeEventsReceiver {
   public registerModalDismissedListener(
     callback: (event: ModalDismissedEvent) => void
   ): EmitterSubscription {
+    events.modalDismissed = callback;
     return {
       remove: () => { }
     }

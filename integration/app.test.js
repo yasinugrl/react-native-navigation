@@ -269,7 +269,7 @@ describe.only('testing that the environment is working properly', () => {
 
     it('push into modal', async () => {
       await elementById(TestIDs.PUSH_BTN).tap();
-      await expect(elementByLabel('Pushed Screen')).toBeVisible();
+      await expect(elementByLabel('Stack Position: 1')).toBeVisible();
     });
 
     it('present modal multiple times', async () => {
@@ -286,18 +286,10 @@ describe.only('testing that the environment is working properly', () => {
 
     it('dismissModal promise is resolved with root ViewController id', async () => {
       await elementById(TestIDs.MODAL_COMMANDS_BTN).tap();
-      // console.log(App.debug());
-      // await elementById(TestIDs.MODAL_BTN).tap();
-
-      await expect(element(by.id(TestIDs.SHOW_MODAL_PROMISE_RESULT))).toHaveText(
-        'showModal promise resolved with: UniqueStackId'
-      );
-      await expect(element(by.id(TestIDs.MODAL_DISMISSED_LISTENER_RESULT))).toHaveText(
-        'modalDismissed listener called with with: UniqueStackId'
-      );
-      await expect(element(by.id(TestIDs.DISMISS_MODAL_PROMISE_RESULT))).toHaveText(
-        'dismissModal promise resolved with: UniqueStackId'
-      );
+      await elementById(TestIDs.MODAL_BTN).tap();
+      await expect(elementByLabel('showModal promise resolved with: UniqueStackId')).toBeVisible();
+      await expect(elementByLabel('modalDismissed listener called with with: UniqueStackId')).toBeVisible();
+      await expect(elementByLabel('dismissModal promise resolved with: UniqueStackId')).toBeVisible();
     });
   });
 
