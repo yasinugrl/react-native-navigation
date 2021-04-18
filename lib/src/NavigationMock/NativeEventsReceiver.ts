@@ -41,7 +41,7 @@ export class NativeEventsReceiver {
     events.componentDidAppear = callback;
     return {
       remove: () => {
-
+        events.componentDidAppear = undefined;
       }
     }
   }
@@ -51,7 +51,7 @@ export class NativeEventsReceiver {
   ): EmitterSubscription {
     events.componentDidDisappear = callback;
     return {
-      remove: () => { }
+      remove: () => { events.componentDidDisappear = undefined }
     }
   }
 
@@ -60,7 +60,9 @@ export class NativeEventsReceiver {
   ): EmitterSubscription {
     events.navigationButtonPressed = callback;
     return {
-      remove: () => { }
+      remove: () => {
+        events.navigationButtonPressed = undefined;
+      }
     }
     // return this.emitter.addListener('RNN.NavigationButtonPressed', callback);
   }

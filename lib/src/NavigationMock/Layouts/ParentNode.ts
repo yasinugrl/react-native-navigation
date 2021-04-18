@@ -5,7 +5,7 @@ import LayoutNodeFactory from "./LayoutNodeFactory";
 import Node, { NodeType } from "./Node";
 
 export default class ParentNode extends Node {
-    children: [ParentNode];
+    children: ParentNode[];
 
     constructor(layout: any, type: NodeType, parentNode?: ParentNode) {
         super(layout, type, parentNode);

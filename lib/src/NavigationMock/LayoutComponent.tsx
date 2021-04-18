@@ -18,8 +18,4 @@ export default class LayoutComponent extends Component<ComponentProps> {
 
         return <View />
     }
-
-    // componentWillUnmount() {
-    //     console.log(this.props.layoutNode.data.name);
-    // }
 }

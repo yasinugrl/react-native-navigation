@@ -85,7 +85,6 @@ export class NativeCommandsSender {
 
     showOverlay(commandId: string, layout: object) {
         const layoutNode = LayoutNodeFactory.create(layout);
-        console.log(layout);
         store.setters.showOverlay(layoutNode);
         // return this.nativeCommandsModule.showOverlay(commandId, layout);
     }

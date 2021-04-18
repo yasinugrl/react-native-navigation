@@ -18,7 +18,7 @@ export const BottomTabs = connect()(class extends Component<ComponentProps> {
         });
 
         return (
-            <View testID={'BottomTabs_Mock'}>
+            <View>
                 {buttons}
             </View >
         );
@@ -34,7 +34,7 @@ export const BottomTabs = connect()(class extends Component<ComponentProps> {
 
     render() {
         return (
-            <View>
+            <View testID={'BottomTabs_Mock'}>
                 {this.renderScreens()}
                 {this.renderTabBar()}
             </View>

@@ -15,10 +15,6 @@ export const ComponentScreen = connect()(class extends Component<ComponentProps>
         events.componentDidAppear({ componentName: this.props.layoutNode.data.name, componentId: this.props.layoutNode.nodeId, componentType: 'Component' });
     }
 
-    // componentDidUnmount() {
-    //     events.componentDidDisappear({ componentName: this.props.layoutNode.data.name, componentId: this.props.layoutNode.nodeId, componentType: 'Component' });
-    // }
-
     render() {
         //@ts-ignore
         const Component = Navigation.store.getWrappedComponent(this.props.layoutNode.data.name);
