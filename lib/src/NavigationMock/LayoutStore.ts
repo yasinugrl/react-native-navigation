@@ -105,7 +105,6 @@ const getters = remx.getters({
 
 function findParentNode(layoutId: string, layout: ParentNode): any | ParentNode {
   if (layoutId === layout.nodeId) {
-    console.log(layout);
     return layout;
   } else if (layout.children) {
     for (let i = 0; i < layout.children.length; i += 1) {
@@ -113,7 +112,6 @@ function findParentNode(layoutId: string, layout: ParentNode): any | ParentNode 
       const result = findParentNode(layoutId, child);
 
       if (result !== false) {
-        console.log(result);
         return result;
       }
     }

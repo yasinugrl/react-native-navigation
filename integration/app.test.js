@@ -299,13 +299,13 @@ describe.only('testing that the environment is working properly', () => {
       await expect(elementByLabel('First Tab')).toBeVisible();
     });
 
-    it.only('switch to tab by index', async () => {
+    it('switch to tab by index', async () => {
       await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
       await expect(elementByLabel('First Tab')).toBeNotVisible();
       await expect(elementByLabel('Second Tab')).toBeVisible();
     });
 
-    it.only('switch to tab by componentId', async () => {
+    it('switch to tab by componentId', async () => {
       await elementById(TestIDs.SWITCH_TAB_BY_COMPONENT_ID_BTN).tap();
       await expect(elementByLabel('First Tab')).toBeNotVisible();
       await expect(elementByLabel('Second Tab')).toBeVisible();
@@ -319,17 +319,17 @@ describe.only('testing that the environment is working properly', () => {
 
     it('set Tab Bar badge on current Tab', async () => {
       await elementById(TestIDs.SET_BADGE_BTN).tap();
-      await expect(element(by.text('NEW'))).toBeVisible();
+      await expect(elementByLabel('NEW')).toBeVisible();
     });
 
     it('set empty string badge on a current Tab should clear badge', async () => {
       await elementById(TestIDs.SET_BADGE_BTN).tap();
-      await expect(element(by.text('NEW'))).toBeVisible();
+      await expect(elementByLabel('NEW')).toBeVisible();
       await elementById(TestIDs.CLEAR_BADGE_BTN).tap();
-      await expect(element(by.text('NEW'))).toBeNotVisible();
+      await expect(elementByLabel('NEW')).toBeNotVisible();
     });
 
-    it('merge options correctly in SideMenu inside BottomTabs layout', async () => {
+    xit('merge options correctly in SideMenu inside BottomTabs layout', async () => {
       await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
       await elementById(TestIDs.SIDE_MENU_INSIDE_BOTTOM_TABS_BTN).tap();
       await elementById(TestIDs.OPEN_LEFT_SIDE_MENU_BTN).tap();
@@ -351,40 +351,40 @@ describe.only('testing that the environment is working properly', () => {
       await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
     });
 
-    it('hide Tab Bar on push', async () => {
-      await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
-      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-      await elementById(TestIDs.POP_BTN).tap();
-      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
-    });
+    // it('hide Tab Bar on push', async () => {
+    //   await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    //   await elementById(TestIDs.POP_BTN).tap();
+    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+    // });
 
-    it('hide Tab Bar on push from second bottomTabs screen', async () => {
-      await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
-      await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
-      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-      await elementById(TestIDs.POP_BTN).tap();
-      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
-    });
+    // it('hide Tab Bar on push from second bottomTabs screen', async () => {
+    //   await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
+    //   await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    //   await elementById(TestIDs.POP_BTN).tap();
+    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+    // });
 
-    it('hide Tab Bar on push from second bottomTabs screen - deep stack', async () => {
-      await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
-      await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
-      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-      await elementById(TestIDs.PUSH_BTN).tap();
-      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
-      await elementById(TestIDs.POP_BTN).tap();
-      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-      await elementById(TestIDs.POP_BTN).tap();
-      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
-    });
+    // it('hide Tab Bar on push from second bottomTabs screen - deep stack', async () => {
+    //   await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
+    //   await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    //   await elementById(TestIDs.PUSH_BTN).tap();
+    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+    //   await elementById(TestIDs.POP_BTN).tap();
+    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    //   await elementById(TestIDs.POP_BTN).tap();
+    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+    // });
 
-    it('hide Tab Bar on second tab after pressing the tab', async () => {
-      await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
-      await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
-      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-      await elementById(TestIDs.POP_BTN).tap();
-      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
-    });
+    // it('hide Tab Bar on second tab after pressing the tab', async () => {
+    //   await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
+    //   await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+    //   await elementById(TestIDs.POP_BTN).tap();
+    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+    // });
   });
 
 
@@ -416,58 +416,4 @@ describe.only('testing that the environment is working properly', () => {
     await elementById(TestIDs.PUSH_BTN).tap();
     await App.findByText('componentDidAppear | Pushed | Component');
   });
-
-  // it('Screen popped event', async () => {
-  //   await elementById(TestIDs.PUSH_LIFECYCLE_BTN).tap();
-  //   await elementById(TestIDs.SCREEN_POPPED_BTN).tap();
-  //   await expect(elementByLabel('Screen popped event')).toBeVisible();
-  // });
-
-  // it('setRoot', async () => {
-  //   await elementById('STACK_BUTTON').tap();
-  // });
-
-  // it('push and pop screen', async () => {
-  //   await elementById(TestIDs.STACK_BTN).tap();
-  //   await elementById(TestIDs.PUSH_BTN).tap();
-  //   await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
-  //   await elementById(TestIDs.POP_BTN).tap();
-  //   await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
-  // });
-
-  // it('push and pop', async () => {
-  //   await assertElementById(TestIDs.WELCOME_SCREEN_HEADER);
-  //   await elementById(TestIDs.PUSH_BTN).tap();
-  //   await expect(elementById(TestIDs.WELCOME_SCREEN_HEADER)).toBeInvisible();
-  //   await expect(getVisibleScreen().queryByTestId(TestIDs.PUSHED_SCREEN_HEADER)).toBeDefined();
-  //   await elementById(TestIDs.POP_BTN).tap();
-  //   await expect(getVisibleScreen().queryByTestId(TestIDs.PUSHED_SCREEN_HEADER)).toBe(null);
-  //   await expect(getVisibleScreen().getByTestId(TestIDs.WELCOME_SCREEN_HEADER)).toBeDefined();
-  // });
-
-  // it('push identical components', async () => {
-  //   await fireEvent.press(getVisibleScreen().getByTestId(TestIDs.PUSH_BTN));
-  //   await getVisibleScreen().findByTestId(TestIDs.PUSH_BTN);
-  // });
-
-  it('showModal', async () => {
-    await elementById(TestIDs.STACK_BTN).tap();
-    await expect(elementById(TestIDs.PUSH_LIFECYCLE_BTN)).toBeVisible();
-  });
-
-  // it('switch tab', async () => {
-  //   await expect(getVisibleScreen().getByTestId(TestIDs.WELCOME_SCREEN_HEADER)).toBeDefined();
-  //   await elementById(TestIDs.OPTIONS_TAB).tap();
-  //   await expect(getVisibleScreen().queryByTestId(TestIDs.WELCOME_SCREEN_HEADER)).toBe(null);
-  //   await elementById(TestIDs.NAVIGATION_TAB).tap();
-  //   await expect(getVisibleScreen().getByTestId(TestIDs.NAVIGATION_SCREEN)).toBeDefined();
-  // });
-
-  // it('topBar button dismissModal', async () => {
-  //   await elementById(TestIDs.STACK_BTN).tap();
-  //   await getVisibleScreen().findByTestId(TestIDs.PUSH_LIFECYCLE_BTN);
-  //   await elementById('dismissModalButton').tap();
-  //   await getVisibleScreen().findByTestId(TestIDs.STACK_BTN);
-  // });
-
 });

@@ -8,6 +8,9 @@ const { connect } = require('remx');
 export const BottomTabs = connect()(class extends Component<ComponentProps> {
 
     renderTabBar() {
+        const bottomTabsOptions = this.props.layoutNode.getVisibleLayout().resolveOptions().bottomTabs;
+        if (bottomTabsOptions?.visible === false) return <View />
+
         const buttons = this.props.layoutNode!.children!.map((child, i) => {
             const bottomTabOptions = child.resolveOptions().bottomTab;
             return <Button

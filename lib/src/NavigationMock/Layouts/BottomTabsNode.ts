@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { Options } from "../../index";
-import LayoutStore from "../LayoutStore";
 import ParentNode from "./ParentNode";
 
 export default class BottomTabsNode extends ParentNode {
@@ -14,9 +13,8 @@ export default class BottomTabsNode extends ParentNode {
         if (options.bottomTabs?.currentTabIndex)
             this.selectedIndex = options.bottomTabs?.currentTabIndex;
         if (options.bottomTabs?.currentTabId) {
-            this.selectedIndex = 1
-            const l = LayoutStore.getters.getLayoutById(options.bottomTabs.currentTabId);
-            if (l) this.selectedIndex = this.children.indexOf(l);
+            const index = _.findIndex(this.children, (child) => child.nodeId === options?.bottomTabs?.currentTabId);
+            if (index !== -1) this.selectedIndex = index;
         }
     }
 
