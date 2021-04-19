@@ -61,8 +61,8 @@ const setters = remx.setters({
     layout.selectedIndex = index;
   },
   mergeOptions(componentId: string, options: Options) {
-    getters.getLayoutById(componentId).data.options = _.merge(getters.getLayoutById(componentId).data.options, options);
-    getters.getLayoutById(componentId).id = _.clone(getters.getLayoutById(componentId).id);
+    const layout = getters.getLayoutById(componentId);
+    layout.mergeOptions(options);
   }
 });
 
@@ -87,6 +87,12 @@ const getters = remx.getters({
     return (findParentNode(layoutId, state.layout) || getters.getModalById(layoutId));
   },
   getModalById(layoutId: string) {
+    // for (let i = 0; i < state.modals.length; i++) {
+    //   const modal = state.modals[i];
+    //   if (modal.nodeId === layoutId) {
+    //     return modal
+    //   } else if (findParentNode(layoutId, modal)) return findParentNode(layoutId, modal)
+    // }
     return _.find(state.modals, (layout) => findParentNode(layoutId, layout));
   },
   getLayoutChildren(layoutId: string) {
@@ -99,6 +105,7 @@ const getters = remx.getters({
 
 function findParentNode(layoutId: string, layout: ParentNode): any | ParentNode {
   if (layoutId === layout.nodeId) {
+    console.log(layout);
     return layout;
   } else if (layout.children) {
     for (let i = 0; i < layout.children.length; i += 1) {
@@ -106,6 +113,7 @@ function findParentNode(layoutId: string, layout: ParentNode): any | ParentNode 
       const result = findParentNode(layoutId, child);
 
       if (result !== false) {
+        console.log(result);
         return result;
       }
     }

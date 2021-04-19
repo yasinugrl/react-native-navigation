@@ -18,7 +18,7 @@ export const BottomTabs = connect()(class extends Component<ComponentProps> {
         });
 
         return (
-            <View>
+            <View testID={store.getters.isVisibleLayout(this.props.layoutNode.getVisibleLayout()) ? 'BottomTabs_Mock' : undefined}>
                 {buttons}
             </View >
         );
@@ -34,7 +34,7 @@ export const BottomTabs = connect()(class extends Component<ComponentProps> {
 
     render() {
         return (
-            <View testID={'BottomTabs_Mock'}>
+            <View>
                 {this.renderScreens()}
                 {this.renderTabBar()}
             </View>

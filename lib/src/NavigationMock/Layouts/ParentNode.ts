@@ -21,6 +21,11 @@ export default class ParentNode extends Node {
         return this;
     }
 
+    mergeOptions(options: Options) {
+        this.data.options = _.merge(this.data.options, options);
+        this.parentNode?.mergeOptions(options);
+    }
+
     resolveOptions(): Options {
         return _.merge(_.cloneDeep(this.data.options), this.getVisibleLayout().data.options);
     }
