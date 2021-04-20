@@ -9,15 +9,15 @@ import { Options } from "react-native-navigation/interfaces/Options";
 const remx = require('remx');
 
 const state = remx.state({
-  layout: {},
+  root: {},
   modals: [],
   overlays: []
 });
 
 const setters = remx.setters({
-  setLayout(layout: ParentNode) {
+  setRoot(layout: ParentNode) {
     state.modals = [];
-    state.layout = layout;
+    state.root = layout;
   },
   push(layoutId: string, layout: any) {
     const stack = getters.getLayoutById(layoutId).getStack();
@@ -68,11 +68,11 @@ const setters = remx.setters({
 
 const getters = remx.getters({
   getLayout() {
-    return state.layout;
+    return state.root;
   },
   getVisibleLayout() {
     if (state.modals.length > 0) return _.last<Node>(state.modals)!.getVisibleLayout();
-    else return state.layout.getVisibleLayout();
+    else return state.root.getVisibleLayout();
   },
   isVisibleLayout(layout: Node) {
     return getters.getVisibleLayout() && getters.getVisibleLayout().nodeId === layout.nodeId;
@@ -84,7 +84,7 @@ const getters = remx.getters({
     return state.overlays;
   },
   getLayoutById(layoutId: string) {
-    return (findParentNode(layoutId, state.layout) || getters.getModalById(layoutId));
+    return (findParentNode(layoutId, state.root) || getters.getModalById(layoutId));
   },
   getModalById(layoutId: string) {
     // for (let i = 0; i < state.modals.length; i++) {
@@ -99,7 +99,7 @@ const getters = remx.getters({
     return getters.getLayoutById(layoutId).children;
   },
   getStack(layoutId: string) {
-    return findStack(layoutId, state.layout) || _.find(state.modals, (layout) => findStack(layoutId, layout));
+    return findStack(layoutId, state.root) || _.find(state.modals, (layout) => findStack(layoutId, layout));
   },
 });
 

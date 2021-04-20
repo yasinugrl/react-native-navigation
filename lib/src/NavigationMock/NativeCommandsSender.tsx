@@ -28,7 +28,7 @@ export class NativeCommandsSender {
 
     setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
         const layoutNode = LayoutNodeFactory.create(layout.root);
-        store.setters.setLayout(layoutNode);
+        store.setters.setRoot(layoutNode);
     }
 
     setDefaultOptions(options: object) {

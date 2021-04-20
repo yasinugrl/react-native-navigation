@@ -1,12 +1,12 @@
 import React from 'react';
 import { fireEvent, render, within } from '@testing-library/react-native';
-import { initNavigationMock, ApplicationGenerator } from 'react-native-navigation';
+import { MockNavigation } from 'react-native-navigation';
 import TestIDs from '../playground/src/TestIDs';
 
 describe.only('testing that the environment is working properly', () => {
   let App;
   beforeEach(() => {
-    initNavigationMock();
+    const Application = MockNavigation();
 
     const NativeModules = require('react-native').NativeModules;
     NativeModules.KeyboardTrackingViewTempManager = {};
@@ -30,7 +30,6 @@ describe.only('testing that the environment is working properly', () => {
 
     jest.spyOn(global, 'alert');
 
-    const Application = ApplicationGenerator();
     App = render(<Application />);
   });
 
@@ -351,12 +350,14 @@ describe.only('testing that the environment is working properly', () => {
       await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
     });
 
-    // it('hide Tab Bar on push', async () => {
-    //   await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
-    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-    //   await elementById(TestIDs.POP_BTN).tap();
-    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
-    // });
+    it('hide Tab Bar on push', async () => {
+      // await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+      await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+      console.log(App.debug());
+      // await elementById(TestIDs.POP_BTN).tap();
+      // await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+    });
 
     // it('hide Tab Bar on push from second bottomTabs screen', async () => {
     //   await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
