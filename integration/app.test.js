@@ -14,33 +14,32 @@ describe.only('testing that the environment is working properly', () => {
       getHeight: () => 40,
     };
 
-    require('../playground/index');
-
     const origExpect = expect;
     expect = (e) => {
       const match = origExpect(e);
-      match.toBeNotVisible = () => match.toBe(null);
-      match.toBeVisible = () => match.toBeDefined();
+      match.toBeNotVisible = () => {
+        return match.toBe(null);
+      };
+      match.toBeVisible = () => match.toBeTruthy();
       return match;
-    }
+    };
 
     setTimeout = (func) => {
       func();
-    }
+    };
+
+    App = render(<Application entryPoint={() => require('../playground/index')} />);
 
     jest.spyOn(global, 'alert');
-
-    App = render(<Application />);
   });
 
   function findElementById(id) {
     let element = null;
-    if (App.queryByTestId('VISIBLE_SCREEN') && within(App.getByTestId('VISIBLE_SCREEN')).queryByTestId(id)) {
+    if (
+      App.queryByTestId('VISIBLE_SCREEN') &&
+      within(App.getByTestId('VISIBLE_SCREEN')).queryByTestId(id)
+    ) {
       element = within(App.getByTestId('VISIBLE_SCREEN')).getByTestId(id);
-    } else if (App.queryByTestId('BottomTabs_Mock') && within(App.getByTestId('BottomTabs_Mock')).queryByTestId(id)) {
-      element = within(App.getByTestId('BottomTabs_Mock')).getByTestId(id);
-    } else if (App.queryByTestId('TopBar_Mock') && within(App.getByTestId('TopBar_Mock')).queryByTestId(id)) {
-      element = within(App.getByTestId('TopBar_Mock')).getByTestId(id);
     }
 
     return element;
@@ -48,12 +47,11 @@ describe.only('testing that the environment is working properly', () => {
 
   function findElementByLabel(label) {
     let element = null;
-    if (App.queryByTestId('VISIBLE_SCREEN') && within(App.getByTestId('VISIBLE_SCREEN')).queryByText(label)) {
+    if (
+      App.queryByTestId('VISIBLE_SCREEN') &&
+      within(App.getByTestId('VISIBLE_SCREEN')).queryByText(label)
+    ) {
       element = within(App.getByTestId('VISIBLE_SCREEN')).getByText(label);
-    } else if (App.queryByTestId('BottomTabs_Mock') && within(App.getByTestId('BottomTabs_Mock')).queryByText(label)) {
-      element = within(App.getByTestId('BottomTabs_Mock')).getByText(label);
-    } else if (App.queryByTestId('TopBar_Mock') && within(App.getByTestId('TopBar_Mock')).queryByText(label)) {
-      element = within(App.getByTestId('TopBar_Mock')).getByText(label);
     }
 
     return element;
@@ -64,7 +62,7 @@ describe.only('testing that the environment is working properly', () => {
     if (element) {
       element.tap = () => {
         fireEvent.press(element);
-      }
+      };
     }
 
     return element;
@@ -75,7 +73,7 @@ describe.only('testing that the environment is working properly', () => {
     if (element) {
       element.tap = () => {
         fireEvent.press(element);
-      }
+      };
     }
 
     return element;
@@ -126,6 +124,7 @@ describe.only('testing that the environment is working properly', () => {
     });
 
     it('pop to root', async () => {
+      await expect(elementById(TestIDs.STACK_SCREEN_HEADER)).toBeVisible();
       await elementById(TestIDs.PUSH_BTN).tap();
       await elementById(TestIDs.PUSH_BTN).tap();
       await elementById(TestIDs.PUSH_BTN).tap();
@@ -144,19 +143,19 @@ describe.only('testing that the environment is working properly', () => {
       await expect(elementByLabel('Subtitle')).toBeVisible();
     });
 
-    it('does not crash when setting the stack root to an existing component id', async () => {
-      await elementById(TestIDs.SET_STACK_ROOT_WITH_ID_BTN).tap();
-      await elementById(TestIDs.SET_STACK_ROOT_WITH_ID_BTN).tap();
-    });
+    // it.only('does not crash when setting the stack root to an existing component id', async () => {
+    //   await elementById(TestIDs.SET_STACK_ROOT_WITH_ID_BTN).tap();
+    //   await elementById(TestIDs.SET_STACK_ROOT_WITH_ID_BTN).tap();
+    // });
 
-    it(':ios: set stack root component should be first in stack', async () => {
-      await elementById(TestIDs.PUSH_BTN).tap();
-      await expect(elementByLabel('Stack Position: 1')).toBeVisible();
-      await elementById(TestIDs.SET_STACK_ROOT_BUTTON).tap();
-      await expect(elementByLabel('Stack Position: 2')).toBeVisible();
-      await elementById(TestIDs.POP_BTN).tap();
-      await expect(elementByLabel('Stack Position: 2')).toBeVisible();
-    });
+    // it(':ios: set stack root component should be first in stack', async () => {
+    //   await elementById(TestIDs.PUSH_BTN).tap();
+    //   await expect(elementByLabel('Stack Position: 1')).toBeVisible();
+    //   await elementById(TestIDs.SET_STACK_ROOT_BUTTON).tap();
+    //   await expect(elementByLabel('Stack Position: 2')).toBeVisible();
+    //   await elementById(TestIDs.POP_BTN).tap();
+    //   await expect(elementByLabel('Stack Position: 2')).toBeVisible();
+    // });
 
     it('push promise is resolved with pushed ViewController id', async () => {
       await elementById(TestIDs.STACK_COMMANDS_BTN).tap();
@@ -170,7 +169,7 @@ describe.only('testing that the environment is working properly', () => {
       await expect(elementByLabel('didAppear')).toBeVisible();
 
       await elementById(TestIDs.PUSH_TO_TEST_DID_DISAPPEAR_BTN).tap();
-      expect(global.alert).toHaveBeenCalledWith('didDisappear')
+      await expect(global.alert).toHaveBeenCalledWith('didDisappear');
     });
   });
 
@@ -195,8 +194,8 @@ describe.only('testing that the environment is working properly', () => {
       await elementById(TestIDs.MODAL_LIFECYCLE_BTN).tap();
       await expect(elementByLabel('didAppear')).toBeVisible();
       await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
-      expect(global.alert).toHaveBeenCalledWith('componentWillUnmount');
-      expect(global.alert).toHaveBeenCalledWith('didDisappear');
+      await expect(global.alert).toHaveBeenCalledWith('componentWillUnmount');
+      await expect(global.alert).toHaveBeenCalledWith('didDisappear');
     });
 
     it('show multiple modals', async () => {
@@ -287,8 +286,12 @@ describe.only('testing that the environment is working properly', () => {
       await elementById(TestIDs.MODAL_COMMANDS_BTN).tap();
       await elementById(TestIDs.MODAL_BTN).tap();
       await expect(elementByLabel('showModal promise resolved with: UniqueStackId')).toBeVisible();
-      await expect(elementByLabel('modalDismissed listener called with with: UniqueStackId')).toBeVisible();
-      await expect(elementByLabel('dismissModal promise resolved with: UniqueStackId')).toBeVisible();
+      await expect(
+        elementByLabel('modalDismissed listener called with with: UniqueStackId')
+      ).toBeVisible();
+      await expect(
+        elementByLabel('dismissModal promise resolved with: UniqueStackId')
+      ).toBeVisible();
     });
   });
 
@@ -316,17 +319,17 @@ describe.only('testing that the environment is working properly', () => {
       await expect(elementById(TestIDs.PUSHED_BOTTOM_TABS)).toBeVisible();
     });
 
-    it('set Tab Bar badge on current Tab', async () => {
-      await elementById(TestIDs.SET_BADGE_BTN).tap();
-      await expect(elementByLabel('NEW')).toBeVisible();
-    });
+    // it('set Tab Bar badge on current Tab', async () => {
+    //   await elementById(TestIDs.SET_BADGE_BTN).tap();
+    //   await expect(elementByLabel('NEW')).toBeVisible();
+    // });
 
-    it('set empty string badge on a current Tab should clear badge', async () => {
-      await elementById(TestIDs.SET_BADGE_BTN).tap();
-      await expect(elementByLabel('NEW')).toBeVisible();
-      await elementById(TestIDs.CLEAR_BADGE_BTN).tap();
-      await expect(elementByLabel('NEW')).toBeNotVisible();
-    });
+    // it('set empty string badge on a current Tab should clear badge', async () => {
+    //   await elementById(TestIDs.SET_BADGE_BTN).tap();
+    //   await expect(elementByLabel('NEW')).toBeVisible();
+    //   await elementById(TestIDs.CLEAR_BADGE_BTN).tap();
+    //   await expect(elementByLabel('NEW')).toBeNotVisible();
+    // });
 
     xit('merge options correctly in SideMenu inside BottomTabs layout', async () => {
       await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
@@ -351,54 +354,115 @@ describe.only('testing that the environment is working properly', () => {
     });
 
     it('hide Tab Bar on push', async () => {
-      // await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
       await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
       await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-      console.log(App.debug());
-      // await elementById(TestIDs.POP_BTN).tap();
-      // await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
     });
 
-    // it('hide Tab Bar on push from second bottomTabs screen', async () => {
-    //   await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
-    //   await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
-    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-    //   await elementById(TestIDs.POP_BTN).tap();
-    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
-    // });
+    it('hide Tab Bar on push from second bottomTabs screen', async () => {
+      await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
+      await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+    });
 
-    // it('hide Tab Bar on push from second bottomTabs screen - deep stack', async () => {
-    //   await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
-    //   await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
-    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-    //   await elementById(TestIDs.PUSH_BTN).tap();
-    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
-    //   await elementById(TestIDs.POP_BTN).tap();
-    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-    //   await elementById(TestIDs.POP_BTN).tap();
-    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
-    // });
+    it('hide Tab Bar on push from second bottomTabs screen - deep stack', async () => {
+      await elementById(TestIDs.SWITCH_TAB_BY_INDEX_BTN).tap();
+      await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+    });
 
-    // it('hide Tab Bar on second tab after pressing the tab', async () => {
-    //   await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
-    //   await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
-    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
-    //   await elementById(TestIDs.POP_BTN).tap();
-    //   await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
-    // });
+    it('hide Tab Bar on second tab after pressing the tab', async () => {
+      await elementById(TestIDs.SECOND_TAB_BAR_BTN).tap();
+      await elementById(TestIDs.HIDE_TABS_PUSH_BTN).tap();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeNotVisible();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementById(TestIDs.BOTTOM_TABS)).toBeVisible();
+    });
   });
 
+  describe('Overlay', () => {
+    beforeEach(async () => {
+      await elementById(TestIDs.NAVIGATION_TAB).tap();
+      await elementById(TestIDs.OVERLAY_BTN).tap();
+    });
 
+    it('show and dismiss overlay', async () => {
+      await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
+      await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
+      await elementById(TestIDs.DISMISS_BTN).tap();
+      await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeNotVisible();
+    });
 
+    it('overlay pass touches - true', async () => {
+      await elementById(TestIDs.SHOW_TOUCH_THROUGH_OVERLAY_BTN).tap();
+      await expect(elementById(TestIDs.SHOW_OVERLAY_BTN)).toBeVisible();
+      await elementById(TestIDs.ALERT_BUTTON).tap();
+      await expect(elementByLabel('Alert displayed')).toBeVisible();
+    });
 
+    it('setRoot should not remove overlay', async () => {
+      await elementById(TestIDs.SHOW_TOUCH_THROUGH_OVERLAY_BTN).tap();
+      await elementById(TestIDs.SET_ROOT_BTN).tap();
+      await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
+    });
+
+    it('nested touchables work as expected', async () => {
+      await elementById(TestIDs.TOAST_BTN).tap();
+      await elementById(TestIDs.TOAST_OK_BTN_INNER).tap();
+      await expect(elementByLabel('Inner button clicked')).toBeVisible();
+      await elementById(TestIDs.OK_BUTTON).tap();
+
+      await elementById(TestIDs.TOAST_BTN).tap();
+      await elementById(TestIDs.TOAST_OK_BTN_OUTER).tap();
+      await expect(elementByLabel('Outer button clicked')).toBeVisible();
+    });
+
+    xtest('overlay pass touches - false', async () => {
+      await elementById(TestIDs.SHOW_OVERLAY_BUTTON).tap();
+      await expect(elementById(TestIDs.SHOW_OVERLAY_BUTTON)).toBeVisible();
+      await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
+      await elementById(TestIDs.HIDE_TOP_BAR_BUTTON).tap();
+      await expect(elementById(TestIDs.TOP_BAR_ELEMENT)).toBeVisible();
+    });
+  });
+
+  describe('Overlay Dismiss all', () => {
+    beforeEach(async () => {
+      await elementById(TestIDs.NAVIGATION_TAB).tap();
+      await elementById(TestIDs.OVERLAY_BTN).tap();
+    });
+
+    // it('dismissAllOverlays should dismiss all opened overlays', async () => {
+    //   await elementById(TestIDs.SHOW_FULLSCREEN_OVERLAY_BTN).tap();
+    //   await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
+    //   await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
+    //   await expect(elementById(TestIDs.OVERLAY_DISMISSED_COUNT)).toHaveText('2');
+    // });
+
+    // it('dismissAllOverlays should be able to dismiss only one overlay', async () => {
+    //   await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
+    //   await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
+    //   await expect(elementById(TestIDs.OVERLAY_DISMISSED_COUNT)).toHaveText('1');
+    // })
+  });
 
   /// Remove below
   it('hides TopBar when pressing on Hide TopBar and shows it when pressing on Show TopBar', async () => {
     await elementById(TestIDs.OPTIONS_TAB).tap();
     await elementById(TestIDs.HIDE_TOP_BAR_BTN).tap();
-    await expect(elementById('TopBar_Mock')).toBeNotVisible();
+    await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
     await elementById(TestIDs.SHOW_TOP_BAR_BTN).tap();
-    await expect(elementById('TopBar_Mock')).toBeVisible();
+    await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
   });
   it('show overlay', async () => {
     await elementById(TestIDs.NAVIGATION_TAB).tap();

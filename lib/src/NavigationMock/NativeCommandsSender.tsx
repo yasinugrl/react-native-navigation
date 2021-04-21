@@ -1,110 +1,89 @@
-// @ts-nocheck
 import store from './LayoutStore';
-import { events } from './EventsStore';
-import _ from 'lodash';
 import LayoutNodeFactory from './Layouts/LayoutNodeFactory';
-import ParentNode from './Layouts/ParentNode';
-
-interface NativeCommandsModule {
-    setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }): Promise<any>;
-    setDefaultOptions(options: object): void;
-    mergeOptions(componentId: string, options: object): void;
-    push(commandId: string, onComponentId: string, layout: object): Promise<any>;
-    pop(commandId: string, componentId: string, options?: object): Promise<any>;
-    popTo(commandId: string, componentId: string, options?: object): Promise<any>;
-    popToRoot(commandId: string, componentId: string, options?: object): Promise<any>;
-    setStackRoot(commandId: string, onComponentId: string, layout: object): Promise<any>;
-    showModal(commandId: string, layout: object): Promise<any>;
-    dismissModal(commandId: string, componentId: string, options?: object): Promise<any>;
-    dismissAllModals(commandId: string, options?: object): Promise<any>;
-    showOverlay(commandId: string, layout: object): Promise<any>;
-    dismissOverlay(commandId: string, componentId: string): Promise<any>;
-    dismissAllOverlays(commandId: string): Promise<any>;
-    getLaunchArgs(commandId: string): Promise<any>;
-}
+import { LayoutNode } from 'react-native-navigation/commands/LayoutTreeCrawler';
 
 export class NativeCommandsSender {
-    constructor() { }
+  constructor() {}
 
-    setRoot(commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
-        const layoutNode = LayoutNodeFactory.create(layout.root);
-        store.setters.setRoot(layoutNode);
-    }
+  setRoot(_commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
+    const layoutNode = LayoutNodeFactory.create(layout.root);
+    store.setters.setRoot(layoutNode);
+  }
 
-    setDefaultOptions(options: object) {
-        // return this.nativeCommandsModule.setDefaultOptions(options);
-    }
+  setDefaultOptions(_options: object) {
+    // return this.nativeCommandsModule.setDefaultOptions(options);
+  }
 
-    mergeOptions(componentId: string, options: object) {
-        store.setters.mergeOptions(componentId, options);
-        // return this.nativeCommandsModule.mergeOptions(componentId, options);
-    }
+  mergeOptions(componentId: string, options: object) {
+    store.setters.mergeOptions(componentId, options);
+    // return this.nativeCommandsModule.mergeOptions(componentId, options);
+  }
 
-    push(commandId: string, onComponentId: string, layout: object) {
-        return new Promise((resolve) => {
-            store.setters.push(onComponentId, layout);
-            resolve(layout.id);
-        });
-    }
+  push(_commandId: string, onComponentId: string, layout: LayoutNode) {
+    return new Promise((resolve) => {
+      store.setters.push(onComponentId, layout);
+      resolve(layout.id);
+    });
+  }
 
-    pop(commandId: string, componentId: string, options?: object) {
-        return new Promise((resolve) => {
-            store.setters.pop(componentId);
-            resolve(componentId);
-        });
-    }
+  pop(_commandId: string, componentId: string, _options?: object) {
+    return new Promise((resolve) => {
+      store.setters.pop(componentId);
+      resolve(componentId);
+    });
+  }
 
-    popTo(commandId: string, componentId: string, options?: object) {
-        return new Promise((resolve) => {
-            store.setters.popTo(componentId);
-            resolve(componentId);
-        });
-    }
+  popTo(_commandId: string, componentId: string, _options?: object) {
+    return new Promise((resolve) => {
+      store.setters.popTo(componentId);
+      resolve(componentId);
+    });
+  }
 
-    popToRoot(commandId: string, componentId: string, options?: object) {
-        // return this.nativeCommandsModule.popToRoot(commandId, componentId, options);
-    }
+  popToRoot(_commandId: string, componentId: string, _options?: object) {
+    store.setters.popToRoot(componentId);
+  }
 
-    setStackRoot(commandId: string, onComponentId: string, layout: object) {
-        store.setters.setStackRoot(onComponentId, layout);
-        // return this.nativeCommandsModule.setStackRoot(commandId, onComponentId, layout);
-    }
+  setStackRoot(_commandId: string, onComponentId: string, layout: object) {
+    store.setters.setStackRoot(onComponentId, layout);
+  }
 
-    showModal(commandId: string, layout: object) {
-        return new Promise((resolve) => {
-            const layoutNode = LayoutNodeFactory.create(layout);
-            store.setters.showModal(layoutNode);
-            resolve(layoutNode.nodeId);
-        });
-    }
+  showModal(_commandId: string, layout: object) {
+    return new Promise((resolve) => {
+      const layoutNode = LayoutNodeFactory.create(layout);
+      store.setters.showModal(layoutNode);
+      resolve(layoutNode.nodeId);
+    });
+  }
 
-    dismissModal(commandId: string, componentId: string, options?: object) {
-        return new Promise((resolve) => {
-            const modal = store.getters.getModalById(componentId).getTopParent();
-            store.setters.dismissModal(componentId);
-            resolve(modal.nodeId);
-        });
-    }
+  dismissModal(_commandId: string, componentId: string, _options?: object) {
+    return new Promise((resolve) => {
+      const modal = store.getters.getModalById(componentId).getTopParent();
+      store.setters.dismissModal(componentId);
+      resolve(modal.nodeId);
+    });
+  }
 
-    dismissAllModals(commandId: string, options?: object) {
-        // return this.nativeCommandsModule.dismissAllModals(commandId, options);
-    }
+  dismissAllModals(_commandId: string, _options?: object) {
+    store.setters.dismissAllModals();
+  }
 
-    showOverlay(commandId: string, layout: object) {
-        const layoutNode = LayoutNodeFactory.create(layout);
-        store.setters.showOverlay(layoutNode);
-        // return this.nativeCommandsModule.showOverlay(commandId, layout);
-    }
+  showOverlay(_commandId: string, layout: object) {
+    const layoutNode = LayoutNodeFactory.create(layout);
+    store.setters.showOverlay(layoutNode);
+  }
 
-    dismissOverlay(commandId: string, componentId: string) {
-        // return this.nativeCommandsModule.dismissOverlay(commandId, componentId);
-    }
+  dismissOverlay(_commandId: string, componentId: string) {
+    store.setters.dismissOverlay(componentId);
+    // return this.nativeCommandsModule.dismissOverlay(commandId, componentId);
+  }
 
-    dismissAllOverlays(commandId: string) {
-        // return this.nativeCommandsModule.dismissAllOverlays(commandId);
-    }
+  dismissAllOverlays(_commandId: string) {
+    store.setters.dismissAllOverlays();
+    // return this.nativeCommandsModule.dismissAllOverlays(commandId);
+  }
 
-    getLaunchArgs(commandId: string) {
-        // return this.nativeCommandsModule.getLaunchArgs(commandId);
-    }
+  getLaunchArgs(_commandId: string) {
+    // return this.nativeCommandsModule.getLaunchArgs(commandId);
+  }
 }

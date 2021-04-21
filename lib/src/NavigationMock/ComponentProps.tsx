@@ -1,5 +1,7 @@
-import ParentNode from "./Layouts/ParentNode";
+import ParentNode from './Layouts/ParentNode';
 
 export interface ComponentProps {
-    layoutNode: ParentNode;
+  layoutNode: ParentNode;
+  bottomTabs?: ParentNode;
+  stack?: ParentNode;
 }

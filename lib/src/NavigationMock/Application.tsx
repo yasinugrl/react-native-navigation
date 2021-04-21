@@ -1,20 +1,29 @@
-import React, { Component } from "react";
-import { View } from "react-native";
-import LayoutComponent from "./LayoutComponent";
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import LayoutComponent from './LayoutComponent';
 import store from './LayoutStore';
-import { Modals } from "./Modals";
-import { Overlays } from "./Overlays";
+import { Modals } from './Modals';
 
 const { connect } = require('remx');
 
-export const Application = connect()(class extends Component {
-    render() {
-        return (
-            <View testID={'Application'}>
-                <LayoutComponent layoutNode={store.getters.getLayout()} />
-                <Modals />
-                <Overlays />
-            </View>
-        )
+interface ApplicationProps {
+  entryPoint: () => void;
+}
+
+export const Application = connect()(
+  class extends Component<ApplicationProps> {
+    constructor(props: ApplicationProps) {
+      super(props);
+      props.entryPoint();
     }
-});
+
+    render() {
+      return (
+        <View testID={'Application'}>
+          <LayoutComponent layoutNode={store.getters.getLayout()} />
+          <Modals />
+        </View>
+      );
+    }
+  }
+);

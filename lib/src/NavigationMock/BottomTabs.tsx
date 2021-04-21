@@ -1,46 +1,26 @@
-import React, { Component } from "react";
-import { Button, View } from "react-native";
-import LayoutComponent from "./LayoutComponent";
-import { ComponentProps } from "./ComponentProps";
-import store from './LayoutStore';
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import LayoutComponent from './LayoutComponent';
+import { ComponentProps } from './ComponentProps';
 const { connect } = require('remx');
 
-export const BottomTabs = connect()(class extends Component<ComponentProps> {
-
-    renderTabBar() {
-        const bottomTabsOptions = this.props.layoutNode.getVisibleLayout().resolveOptions().bottomTabs;
-        if (bottomTabsOptions?.visible === false) return <View />
-
-        const buttons = this.props.layoutNode!.children!.map((child, i) => {
-            const bottomTabOptions = child.resolveOptions().bottomTab;
-            return <Button
-                key={`tab-${i}`}
-                testID={bottomTabOptions?.testID}
-                title={bottomTabOptions?.text || ''}
-                onPress={() => store.setters.selectTabIndex(this.props.layoutNode, i)} />
-        });
-
-        return (
-            <View testID={store.getters.isVisibleLayout(this.props.layoutNode.getVisibleLayout()) ? 'BottomTabs_Mock' : undefined}>
-                {buttons}
-            </View >
-        );
-    }
-
+export const BottomTabs = connect()(
+  class extends Component<ComponentProps> {
     renderScreens() {
+      return this.props.layoutNode.children.map((child) => {
         return (
-            this.props.layoutNode.children.map((child) => {
-                return <LayoutComponent key={child.nodeId} layoutNode={child} />
-            })
+          <LayoutComponent
+            key={child.nodeId}
+            layoutNode={child}
+            bottomTabs={this.props.layoutNode}
+            stack={this.props.stack}
+          />
         );
+      });
     }
 
     render() {
-        return (
-            <View>
-                {this.renderScreens()}
-                {this.renderTabBar()}
-            </View>
-        );
+      return <View>{this.renderScreens()}</View>;
     }
-});
+  }
+);
