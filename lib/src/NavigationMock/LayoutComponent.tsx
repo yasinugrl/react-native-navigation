@@ -24,6 +24,7 @@ export default class LayoutComponent extends Component<ComponentProps> {
             layoutNode={this.props.layoutNode}
             bottomTabs={this.props.bottomTabs}
             stack={this.props.stack}
+            backButton={this.props.backButton}
           />
         );
     }

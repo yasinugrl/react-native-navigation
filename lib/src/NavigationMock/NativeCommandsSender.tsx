@@ -3,7 +3,7 @@ import LayoutNodeFactory from './Layouts/LayoutNodeFactory';
 import { LayoutNode } from 'react-native-navigation/commands/LayoutTreeCrawler';
 
 export class NativeCommandsSender {
-  constructor() {}
+  constructor() { }
 
   setRoot(_commandId: string, layout: { root: any; modals: any[]; overlays: any[] }) {
     const layoutNode = LayoutNodeFactory.create(layout.root);

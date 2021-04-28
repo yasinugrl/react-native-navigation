@@ -5,3 +5,4 @@ export const MockNavigation = () => {
     return require('./Application').Application;
 };
 
+export const VisibleScreenID = 'VISIBLE_SCREEN';

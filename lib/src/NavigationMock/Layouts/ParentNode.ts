@@ -22,7 +22,11 @@ export default class ParentNode extends Node {
     }
 
     mergeOptions(options: Options) {
-        this.data.options = _.merge(this.data.options, options);
+        this.data.options = _.mergeWith(this.data.options, options, (objValue, srcValue) => {
+            if (_.isArray(objValue)) {
+                return srcValue;
+            }
+        });
         this.parentNode?.mergeOptions(options);
     }
 

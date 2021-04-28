@@ -12,6 +12,8 @@ module.exports = function (wallaby) {
       'lib/src/**/*.js',
       'lib/src/**/*.ts',
       'lib/src/**/*.tsx',
+      'playground/src/**/*.ts',
+      'playground/src/**/*.tsx',
       '!lib/src/**/*.test.tsx',
       '!lib/src/**/*.test.js',
       '!lib/src/**/*.test.ts',

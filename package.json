@@ -117,6 +117,7 @@
     "roots": [
       "<rootDir>/node_modules/",
       "<rootDir>/lib/src/",
+      "<rootDir>/playground/src/",
       "<rootDir>/integration/",
       "<rootDir>/scripts/"
     ],

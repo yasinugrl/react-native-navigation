@@ -1,13 +1,12 @@
 import React from 'react';
 import { fireEvent, render, within } from '@testing-library/react-native';
-import { MockNavigation } from 'react-native-navigation';
+import { MockNavigation, VisibleScreenID } from 'react-native-navigation';
 import TestIDs from '../playground/src/TestIDs';
 
 describe.only('testing that the environment is working properly', () => {
   let App;
   beforeEach(() => {
     const Application = MockNavigation();
-
     const NativeModules = require('react-native').NativeModules;
     NativeModules.KeyboardTrackingViewTempManager = {};
     NativeModules.StatusBarManager = {
@@ -21,6 +20,7 @@ describe.only('testing that the environment is working properly', () => {
         return match.toBe(null);
       };
       match.toBeVisible = () => match.toBeTruthy();
+      match.toExist = match.toBeVisible;
       return match;
     };
 
@@ -35,11 +35,8 @@ describe.only('testing that the environment is working properly', () => {
 
   function findElementById(id) {
     let element = null;
-    if (
-      App.queryByTestId('VISIBLE_SCREEN') &&
-      within(App.getByTestId('VISIBLE_SCREEN')).queryByTestId(id)
-    ) {
-      element = within(App.getByTestId('VISIBLE_SCREEN')).getByTestId(id);
+    if (within(App.getByTestId(VisibleScreenID)).queryByTestId(id)) {
+      element = within(App.getByTestId(VisibleScreenID)).getByTestId(id);
     }
 
     return element;
@@ -47,11 +44,8 @@ describe.only('testing that the environment is working properly', () => {
 
   function findElementByLabel(label) {
     let element = null;
-    if (
-      App.queryByTestId('VISIBLE_SCREEN') &&
-      within(App.getByTestId('VISIBLE_SCREEN')).queryByText(label)
-    ) {
-      element = within(App.getByTestId('VISIBLE_SCREEN')).getByText(label);
+    if (within(App.getByTestId(VisibleScreenID)).queryByText(label)) {
+      element = within(App.getByTestId(VisibleScreenID)).getByText(label);
     }
 
     return element;
@@ -455,6 +449,102 @@ describe.only('testing that the environment is working properly', () => {
     //   await expect(elementById(TestIDs.OVERLAY_DISMISSED_COUNT)).toHaveText('1');
     // })
   });
+
+
+  describe('Buttons', () => {
+    beforeEach(async () => {
+      await elementById(TestIDs.OPTIONS_TAB).tap();
+      await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
+    });
+
+    it(':android: should not effect left buttons when hiding back button', async () => {
+      await elementById(TestIDs.TOGGLE_BACK).tap();
+      await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
+      await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+      await expect(elementById(TestIDs.BACK_BUTTON)).toBeVisible();
+
+      await elementById(TestIDs.TOGGLE_BACK).tap();
+      await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
+      await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+    });
+
+    it('sets right buttons', async () => {
+      await expect(elementById(TestIDs.BUTTON_ONE)).toBeVisible();
+      await expect(elementById(TestIDs.ROUND_BUTTON)).toBeVisible();
+    });
+
+    it('set left buttons', async () => {
+      await expect(elementById(TestIDs.LEFT_BUTTON)).toBeVisible();
+    });
+
+    it('pass props to custom button component', async () => {
+      await expect(elementByLabel('Two')).toBeVisible();
+    });
+
+    it('pass props to custom button component should exist after push pop', async () => {
+      await expect(elementByLabel('Two')).toBeVisible();
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementByLabel('Two')).toBeVisible();
+    });
+
+    it('custom button is clickable', async () => {
+      await elementByLabel('Two').tap();
+      await expect(elementByLabel('Times created: 1')).toExist();
+    });
+
+    it('Resetting buttons should unmount button react view', async () => {
+      await elementById(TestIDs.SHOW_LIFECYCLE_BTN).tap();
+      await elementById(TestIDs.RESET_BUTTONS).tap();
+      await expect(elementByLabel('Button component unmounted')).toBeVisible();
+    });
+
+    it('change button props without rendering all buttons', async () => {
+      await elementById(TestIDs.CHANGE_BUTTON_PROPS).tap();
+      await expect(elementByLabel('Three')).toBeVisible();
+    });
+
+    it('pop using back button', async () => {
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await elementById(TestIDs.BACK_BUTTON).tap();
+      await expect(elementByLabel('Buttons')).toBeVisible();
+    });
+
+    it('resizes title component when a button is added with mergeOptions', async () => {
+      await elementById(TestIDs.RESET_BUTTONS).tap();
+      await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
+      await elementById(TestIDs.BUTTON_THREE).tap();
+    });
+
+    // it('Button component is not recreated if it has a predefined componentId', async () => {
+    //   await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
+    //   await elementById(TestIDs.ROUND_BUTTON).tap();
+    //   await expect(elementByLabel('Times created: 1')).toBeVisible();
+    //   await elementById(TestIDs.OK_BUTTON).tap();
+
+    //   await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
+    //   await elementById(TestIDs.ROUND_BUTTON).tap();
+    //   await expect(elementByLabel('Times created: 1')).toBeVisible();
+    //   await elementById(TestIDs.OK_BUTTON).tap();
+
+    //   await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
+    //   await elementById(TestIDs.ROUND_BUTTON).tap();
+    //   await expect(elementByLabel('Times created: 1')).toBeVisible();
+    // });
+
+    it('Accepts textual left button', async () => {
+      await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
+    });
+
+    it('Updates left button', async () => {
+      await elementById(TestIDs.ADD_COMPONENT_BUTTON).tap();
+      await expect(elementById('leftButton0')).toBeVisible();
+
+      await elementById(TestIDs.ADD_COMPONENT_BUTTON).tap();
+      await expect(elementById('leftButton1')).toBeVisible();
+    });
+  });
+
 
   /// Remove below
   it('hides TopBar when pressing on Hide TopBar and shows it when pressing on Show TopBar', async () => {
