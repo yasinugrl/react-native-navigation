@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import BottomTabsNode from './Layouts/BottomTabsNode';
-import Node from './Layouts/Node';
 import ParentNode from './Layouts/ParentNode';
-import { events } from './EventsStore';
 import LayoutNodeFactory from './Layouts/LayoutNodeFactory';
 import { Options } from 'react-native-navigation/interfaces/Options';
+import StackNode from './Layouts/StackNode';
 
 const remx = require('remx');
 
@@ -19,25 +18,18 @@ const setters = remx.setters({
     state.modals = [];
     state.root = layout;
   },
-  push(layoutId: string, layout: any) {
-    const stack = getters.getLayoutById(layoutId).getStack();
-    const child = LayoutNodeFactory.create(layout, stack);
-    const currentChild = stack.getVisibleLayout();
-    events.componentDidDisappear({
-      componentName: currentChild.data.name,
-      componentId: currentChild.nodeId,
-      componentType: 'Component',
-    });
-    stack.children.push(child);
+  push(layout: ParentNode, stack: StackNode) {
+    stack.children.push(layout);
   },
   pop(layoutId: string) {
-    const child = getters.getLayoutById(layoutId).getStack().children.pop();
-    events.componentDidDisappear({
-      componentName: child.data.name,
-      componentId: child.nodeId,
-      componentType: 'Component',
-    });
-    return child;
+    // const stack = store.getters.getLayoutById(componentId).getStack();
+    // const poppedChild = stack.getVisibleLayout();
+    const stack = getters.getLayoutById(layoutId).getStack();
+    const poppedChild = stack.children.pop();
+    const newVisibleChild = stack.getVisibleLayout();
+    poppedChild.componentDidDisappear();
+    newVisibleChild.componentDidAppear();
+    return _.clone(poppedChild.nodeId);
   },
   popTo(layoutId: string) {
     const stack = getters.getLayoutById(layoutId).getStack();
@@ -72,17 +64,7 @@ const setters = remx.setters({
     if (modal) {
       const child = modal.getVisibleLayout();
       const topParent = child.getTopParent();
-      events.componentDidDisappear({
-        componentName: child.data.name,
-        componentId: child.nodeId,
-        componentType: 'Component',
-      });
       _.remove(state.modals, (modal: ParentNode) => modal.nodeId === topParent.nodeId);
-      events.modalDismissed({
-        componentName: child.data.name,
-        componentId: topParent.nodeId,
-        modalsDismissed: 1,
-      });
     }
   },
   dismissAllModals() {
@@ -95,7 +77,7 @@ const setters = remx.setters({
   mergeOptions(componentId: string, options: Options) {
     const layout = getters.getLayoutById(componentId);
     layout.mergeOptions(options);
-  },
+  }
 });
 
 const getters = remx.getters({
@@ -104,10 +86,10 @@ const getters = remx.getters({
   },
   getVisibleLayout() {
     if (state.modals.length > 0) {
-      return _.last<Node>(state.modals)!.getVisibleLayout();
-    } else return state.root.getVisibleLayout();
+      return _.last<ParentNode>(state.modals)!.getVisibleLayout();
+    } else if (!_.isEqual(state.root, {})) return state.root.getVisibleLayout();
   },
-  isVisibleLayout(layout: Node) {
+  isVisibleLayout(layout: ParentNode) {
     return getters.getVisibleLayout() && getters.getVisibleLayout().nodeId === layout.nodeId;
   },
   getModals() {
@@ -123,12 +105,6 @@ const getters = remx.getters({
     );
   },
   getModalById(layoutId: string) {
-    // for (let i = 0; i < state.modals.length; i++) {
-    //   const modal = state.modals[i];
-    //   if (modal.nodeId === layoutId) {
-    //     return modal
-    //   } else if (findParentNode(layoutId, modal)) return findParentNode(layoutId, modal)
-    // }
     return _.find(state.modals, (layout) => findParentNode(layoutId, layout));
   },
   getLayoutChildren(layoutId: string) {
@@ -139,7 +115,7 @@ const getters = remx.getters({
       findStack(layoutId, state.root) ||
       _.find(state.modals, (layout) => findStack(layoutId, layout))
     );
-  },
+  }
 });
 
 function findParentNode(layoutId: string, layout: ParentNode): any | ParentNode {
@@ -176,7 +152,15 @@ function findStack(layoutId: string, layout: ParentNode): any | ParentNode {
   return false;
 }
 
+let defaultOptions: Options;
+
 export default {
   setters,
   getters,
+  setDefaultOptions(options: Options) {
+    defaultOptions = options;
+  },
+  getDefaultOptions() {
+    return defaultOptions;
+  }
 };

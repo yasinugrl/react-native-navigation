@@ -119,6 +119,7 @@
       "<rootDir>/lib/src/",
       "<rootDir>/playground/src/",
       "<rootDir>/integration/",
+      "<rootDir>/e2e/",
       "<rootDir>/scripts/"
     ],
     "moduleNameMapper": {
@@ -131,6 +132,7 @@
       "lib/src/**/*.ts",
       "lib/src/**/*.tsx",
       "integration/**/*.js",
+      "e2e/**/*.js",
       "!lib/dist/index.js",
       "!lib/dist/Navigation.js",
       "!lib/dist/adapters/**/*",

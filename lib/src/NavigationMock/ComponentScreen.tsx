@@ -3,10 +3,9 @@ import { Button, View, Text } from 'react-native';
 import { Navigation, OptionsTopBarButton } from 'react-native-navigation';
 import { ComponentProps } from './ComponentProps';
 import store from './LayoutStore';
-import { events } from './EventsStore';
-import { Overlays } from './Overlays';
 import LayoutStore from './LayoutStore';
-import { VisibleScreenID } from '.';
+import { VISIBLE_SCREEN } from '.';
+import { NavigationButton } from './NavigationButton';
 
 const { connect } = require('remx');
 
@@ -14,14 +13,6 @@ export const ComponentScreen = connect()(
   class extends Component<ComponentProps> {
     constructor(props: ComponentProps) {
       super(props);
-    }
-
-    componentDidMount() {
-      events.componentDidAppear({
-        componentName: this.props.layoutNode.data.name,
-        componentId: this.props.layoutNode.nodeId,
-        componentType: 'Component',
-      });
     }
 
     isVisible(): boolean {
@@ -61,7 +52,9 @@ export const ComponentScreen = connect()(
             <Text>{topBarOptions?.subtitle?.text}</Text>
             {this.renderButtons(topBarOptions?.leftButtons)}
             {this.renderButtons(topBarOptions?.rightButtons)}
-            {component && this.renderComponent(component.componentId!, component.name)}
+            {component &&
+              //@ts-ignore
+              this.renderComponent(component.componentId!, component.name)}
           </View>
         );
       }
@@ -69,23 +62,7 @@ export const ComponentScreen = connect()(
 
     renderButtons(buttons: OptionsTopBarButton[] = []) {
       return buttons.map((button) => {
-        if (button.component) {
-          return this.renderComponent(button.component.componentId, button.component.name, button.testID)
-        }
-
-        return (
-          <Button
-            testID={button.testID}
-            key={button.id}
-            title={button.text || ''}
-            onPress={() =>
-              events.navigationButtonPressed({
-                buttonId: button.id,
-                componentId: this.props.layoutNode.getVisibleLayout().nodeId,
-              })
-            }
-          />
-        );
+        return <NavigationButton button={button} componentId={this.props.layoutNode.nodeId} />
       });
     }
 
@@ -103,11 +80,13 @@ export const ComponentScreen = connect()(
     }
 
     renderComponent(id: string, name: string, testID?: string) {
+      //@ts-ignore
       const Component = Navigation.store.getComponentClassForName(name)!();
+      //@ts-ignore
       const props = Navigation.store.getPropsForId(id);
       return (
-        <View testID={testID}>
-          <Component key={id} {...props} componentId={id} />
+        <View key={id} testID={testID}>
+          <Component {...props} componentId={id} />
         </View>
       );
     }
@@ -116,13 +95,13 @@ export const ComponentScreen = connect()(
       //@ts-ignore
       const Component = Navigation.store.getWrappedComponent(this.props.layoutNode.data.name);
       return (
-        <View testID={this.isVisible() ? VisibleScreenID : undefined}>
+        <View testID={this.isVisible() ? VISIBLE_SCREEN : undefined}>
           {this.props.backButton && this.renderBackButton()}
           {this.renderTopBar()}
           {this.renderTabBar()}
           {this.isVisible() && (
             <View>
-              <Overlays />
+              {/* <Overdlays /> */}
             </View>
           )}
           <Component componentId={this.props.layoutNode.nodeId} />

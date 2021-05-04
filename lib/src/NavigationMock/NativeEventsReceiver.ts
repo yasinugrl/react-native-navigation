@@ -30,18 +30,21 @@ export class NativeEventsReceiver {
   public registerComponentWillAppearListener(
     callback: (event: ComponentWillAppearEvent) => void
   ): EmitterSubscription {
+    events.componentWillAppear.push(callback);
     return {
-      remove: () => { }
+      remove: () => {
+        callback = undefined
+      }
     }
   }
 
   public registerComponentDidAppearListener(
     callback: (event: ComponentDidAppearEvent) => void
   ): EmitterSubscription {
-    events.componentDidAppear = callback;
+    events.componentDidAppear.push(callback);
     return {
       remove: () => {
-        events.componentDidAppear = undefined;
+        callback = undefined;
       }
     }
   }
@@ -49,19 +52,19 @@ export class NativeEventsReceiver {
   public registerComponentDidDisappearListener(
     callback: (event: ComponentDidDisappearEvent) => void
   ): EmitterSubscription {
-    events.componentDidDisappear = callback;
+    events.componentDidDisappear.push(callback);
     return {
-      remove: () => { events.componentDidDisappear = undefined }
+      remove: () => { callback = undefined }
     }
   }
 
   public registerNavigationButtonPressedListener(
     callback: (event: NavigationButtonPressedEvent) => void
   ): EmitterSubscription {
-    events.navigationButtonPressed = callback;
+    events.navigationButtonPressed.push(callback);
     return {
       remove: () => {
-        events.navigationButtonPressed = undefined;
+        callback = undefined;
       }
     }
     // return this.emitter.addListener('RNN.NavigationButtonPressed', callback);
@@ -78,9 +81,9 @@ export class NativeEventsReceiver {
   public registerModalDismissedListener(
     callback: (event: ModalDismissedEvent) => void
   ): EmitterSubscription {
-    events.modalDismissed = callback;
+    events.modalDismissed.push(callback);
     return {
-      remove: () => { }
+      remove: () => { callback = undefined }
     }
   }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, within } from '@testing-library/react-native';
-import { MockNavigation, VisibleScreenID } from 'react-native-navigation';
+import { MockNavigation, VISIBLE_SCREEN, VISIBLE_OVERLAY } from 'react-native-navigation';
 import TestIDs from '../playground/src/TestIDs';
 
 describe.only('testing that the environment is working properly', () => {
@@ -33,42 +33,34 @@ describe.only('testing that the environment is working properly', () => {
     jest.spyOn(global, 'alert');
   });
 
-  function findElementById(id) {
-    let element = null;
-    if (within(App.getByTestId(VisibleScreenID)).queryByTestId(id)) {
-      element = within(App.getByTestId(VisibleScreenID)).getByTestId(id);
-    }
-
-    return element;
-  }
-
-  function findElementByLabel(label) {
-    let element = null;
-    if (within(App.getByTestId(VisibleScreenID)).queryByText(label)) {
-      element = within(App.getByTestId(VisibleScreenID)).getByText(label);
-    }
-
-    return element;
-  }
-
   function elementById(id) {
-    const element = findElementById(id);
-    if (element) {
+    let element = null;
+    if (within(App.getByTestId(VISIBLE_SCREEN)).queryByTestId(id)) {
+      element = within(App.getByTestId(VISIBLE_SCREEN)).getByTestId(id);
+    } else if (within(App.getByTestId(VISIBLE_OVERLAY)).queryByTestId(id)) {
+      element = within(App.getByTestId(VISIBLE_OVERLAY)).getByTestId(id);
+    }
+
+    if (element)
       element.tap = () => {
         fireEvent.press(element);
       };
-    }
 
     return element;
   }
 
   function elementByLabel(label) {
-    const element = findElementByLabel(label);
-    if (element) {
+    let element = null;
+    if (within(App.getByTestId(VISIBLE_SCREEN)).queryByText(label)) {
+      element = within(App.getByTestId(VISIBLE_SCREEN)).getByText(label);
+    } else if (within(App.getByTestId(VISIBLE_OVERLAY)).queryByText(label)) {
+      element = within(App.getByTestId(VISIBLE_OVERLAY)).getByText(label);
+    }
+
+    if (element)
       element.tap = () => {
         fireEvent.press(element);
       };
-    }
 
     return element;
   }
@@ -167,7 +159,7 @@ describe.only('testing that the environment is working properly', () => {
     });
   });
 
-  describe('modal', () => {
+  describe('Modals', () => {
     beforeEach(async () => {
       await elementById(TestIDs.NAVIGATION_TAB).tap();
       await elementById(TestIDs.MODAL_BTN).tap();
@@ -516,21 +508,21 @@ describe.only('testing that the environment is working properly', () => {
       await elementById(TestIDs.BUTTON_THREE).tap();
     });
 
-    // it('Button component is not recreated if it has a predefined componentId', async () => {
-    //   await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
-    //   await elementById(TestIDs.ROUND_BUTTON).tap();
-    //   await expect(elementByLabel('Times created: 1')).toBeVisible();
-    //   await elementById(TestIDs.OK_BUTTON).tap();
+    it('Button component is not recreated if it has a predefined componentId', async () => {
+      await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
+      await elementById(TestIDs.ROUND_BUTTON).tap();
+      await expect(elementByLabel('Times created: 1')).toBeVisible();
+      await elementById(TestIDs.OK_BUTTON).tap();
 
-    //   await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
-    //   await elementById(TestIDs.ROUND_BUTTON).tap();
-    //   await expect(elementByLabel('Times created: 1')).toBeVisible();
-    //   await elementById(TestIDs.OK_BUTTON).tap();
+      await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
+      await elementById(TestIDs.ROUND_BUTTON).tap();
+      await expect(elementByLabel('Times created: 1')).toBeVisible();
+      await elementById(TestIDs.OK_BUTTON).tap();
 
-    //   await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
-    //   await elementById(TestIDs.ROUND_BUTTON).tap();
-    //   await expect(elementByLabel('Times created: 1')).toBeVisible();
-    // });
+      await elementById(TestIDs.SET_RIGHT_BUTTONS).tap();
+      await elementById(TestIDs.ROUND_BUTTON).tap();
+      await expect(elementByLabel('Times created: 1')).toBeVisible();
+    });
 
     it('Accepts textual left button', async () => {
       await expect(elementById(TestIDs.TEXTUAL_LEFT_BUTTON)).toBeVisible();
@@ -544,6 +536,222 @@ describe.only('testing that the environment is working properly', () => {
       await expect(elementById('leftButton1')).toBeVisible();
     });
   });
+
+  describe('SetRoot', () => {
+    beforeEach(async () => {
+      await elementById(TestIDs.NAVIGATION_TAB).tap();
+      await elementById(TestIDs.SET_ROOT_BTN).tap();
+    });
+
+    it('set root multiple times with the same componentId', async () => {
+      await elementById(TestIDs.SET_MULTIPLE_ROOTS_BTN).tap();
+      await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+    });
+
+    it('set root hides bottomTabs', async () => {
+      await elementById(TestIDs.SET_ROOT_HIDES_BOTTOM_TABS_BTN).tap();
+      await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeNotVisible();
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeVisible();
+    });
+
+    it('set root with deep stack hides bottomTabs', async () => {
+      await elementById(TestIDs.SET_ROOT_WITH_STACK_HIDES_BOTTOM_TABS_BTN).tap();
+      await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeNotVisible();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeVisible();
+    });
+
+    it('set root without stack hides bottomTabs', async () => {
+      await elementById(TestIDs.SET_ROOT_WITHOUT_STACK_HIDES_BOTTOM_TABS_BTN).tap();
+      await expect(elementById(TestIDs.LAYOUTS_TAB)).toBeNotVisible();
+    });
+  });
+
+  describe('Options', () => {
+    beforeEach(async () => {
+      await elementById(TestIDs.OPTIONS_TAB).tap();
+    });
+
+    it('declare options on a component', async () => {
+      await expect(elementByLabel('Styling Options')).toBeVisible();
+    });
+
+    it('change title on component component', async () => {
+      await expect(elementByLabel('Styling Options')).toBeVisible();
+      await elementById(TestIDs.CHANGE_TITLE_BTN).tap();
+      await expect(elementByLabel('Title Changed')).toBeVisible();
+    });
+
+    it('hides TopBar when pressing on Hide TopBar and shows it when pressing on Show TopBar', async () => {
+      await elementById(TestIDs.HIDE_TOP_BAR_BTN).tap();
+      await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
+      await elementById(TestIDs.SHOW_TOP_BAR_BTN).tap();
+      await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
+    });
+
+    it('default options should apply to all screens in stack', async () => {
+      await elementById(TestIDs.HIDE_TOPBAR_DEFAULT_OPTIONS).tap();
+      await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeNotVisible();
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await expect(elementById(TestIDs.PUSHED_SCREEN_HEADER)).toBeNotVisible();
+    });
+
+    it('default options should not override static options', async () => {
+      await elementById(TestIDs.HIDE_TOPBAR_DEFAULT_OPTIONS).tap();
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
+      await expect(elementByLabel('Styling Options')).toBeVisible();
+    });
+
+    it('set title component', async () => {
+      await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
+      await expect(elementByLabel('Press Me')).toBeVisible();
+    });
+
+    it('set title after setting react component', async () => {
+      await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
+      await expect(elementByLabel('Press Me')).toBeVisible();
+      await elementById(TestIDs.CHANGE_TITLE_BTN).tap();
+      await expect(elementByLabel('Title Changed')).toBeVisible();
+    });
+
+    it('Popping screen with yellow box should not crash', async () => {
+      await elementById(TestIDs.SHOW_YELLOW_BOX_BTN).tap();
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementByLabel('Styling Options')).toBeVisible();
+    });
+
+    it('Merging options to invisible component in stack should not affect current component', async () => {
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await elementById(TestIDs.HIDE_PREVIOUS_SCREEN_TOP_BAR).tap();
+      await expect(elementByLabel('Pushed Screen')).toBeVisible();
+    });
+
+    it('Merging options to invisible component should affect the invisible component', async () => {
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await elementById(TestIDs.HIDE_PREVIOUS_SCREEN_TOP_BAR).tap();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementByLabel('Styling Options')).toBeNotVisible();
+    });
+
+    xit('hides topBar onScroll down and shows it on scroll up', async () => {
+      await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
+      await elementById(TestIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
+      await elementById(TestIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL).tap();
+      await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
+      await element(by.id(TestIDs.SCROLLVIEW_ELEMENT)).swipe('up', 'slow');
+      await expect(elementById(TestIDs.TOP_BAR)).toBeNotVisible();
+      await element(by.id(TestIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'fast');
+      await expect(elementById(TestIDs.TOP_BAR)).toBeVisible();
+    });
+  });
+
+
+  describe('static lifecycle events', () => {
+    beforeEach(async () => {
+      await elementById(TestIDs.NAVIGATION_TAB).tap();
+      await elementById(TestIDs.SHOW_STATIC_EVENTS_SCREEN).tap();
+      await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
+      await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
+      await expect(elementByLabel('componentWillAppear | EventsOverlay | Component')).toBeVisible();
+      await expect(elementByLabel('componentDidAppear | EventsOverlay | Component')).toBeVisible();
+      await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+    });
+
+    it('willAppear didAppear didDisappear', async () => {
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await expect(elementByLabel('componentWillAppear | Pushed | Component')).toBeVisible();
+      await expect(elementByLabel('componentDidAppear | Pushed | Component')).toBeVisible();
+      await expect(elementByLabel('componentDidDisappear | EventsScreen | Component')).toBeVisible();
+    });
+
+    it('pushing and popping screen dispatch static event', async () => {
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await expect(elementByLabel('push')).toBeVisible();
+      await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+      await elementById(TestIDs.POP_BTN).tap();
+      await expect(elementByLabel('pop')).toBeVisible();
+    });
+
+    it('showModal and dismissModal dispatch static event', async () => {
+      await elementById(TestIDs.MODAL_BTN).tap();
+      await expect(elementByLabel('showModal')).toBeVisible();
+      await expect(elementByLabel('componentWillAppear | Modal | Component')).toBeVisible();
+      await expect(elementByLabel('componentDidAppear | Modal | Component')).toBeVisible();
+      await expect(elementByLabel('componentDidDisappear | EventsScreen | Component')).toBeVisible();
+      await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+      await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
+      await expect(elementByLabel('dismissModal')).toBeVisible();
+      await expect(elementByLabel('componentWillAppear | EventsScreen | Component')).toBeVisible();
+      await expect(elementByLabel('componentDidAppear | EventsScreen | Component')).toBeVisible();
+      await expect(elementByLabel('componentDidDisappear | Modal | Component')).toBeVisible();
+    });
+
+    it('unmounts when dismissed', async () => {
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await elementById(TestIDs.DISMISS_BTN).tap();
+      await expect(elementByLabel('Overlay Unmounted')).toBeVisible();
+      await elementByLabel('OK').tap();
+    });
+
+    it('top bar buttons willAppear didAppear didDisappear', async () => {
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
+      await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+      await elementById(TestIDs.GOTO_BUTTONS_SCREEN).tap();
+      await expect(
+        elementByLabel('componentWillAppear | CustomRoundedButton | TopBarButton')
+      ).toBeVisible();
+      await expect(
+        elementByLabel('componentDidAppear | CustomRoundedButton | TopBarButton')
+      ).toBeVisible();
+      await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+      await elementById(TestIDs.RESET_BUTTONS).tap();
+      await expect(
+        elementByLabel('componentDidDisappear | CustomRoundedButton | TopBarButton')
+      ).toBeVisible();
+    });
+
+    it('top bar title willAppear didAppear didDisappear', async () => {
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await elementById(TestIDs.PUSH_OPTIONS_BUTTON).tap();
+      await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+      await elementById(TestIDs.SET_REACT_TITLE_VIEW).tap();
+      await expect(elementByLabel('componentWillAppear | ReactTitleView | TopBarTitle')).toBeVisible();
+      await expect(elementByLabel('componentDidAppear | ReactTitleView | TopBarTitle')).toBeVisible();
+      await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await expect(
+        elementByLabel('componentDidDisappear | ReactTitleView | TopBarTitle')
+      ).toBeVisible();
+    });
+
+    xit('unmounts previous root before resolving setRoot promise', async () => {
+      await elementById(TestIDs.SET_ROOT_BTN).tap();
+      await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+      await elementById(TestIDs.SET_ROOT_BTN).tap();
+      await expect(elementByLabel('setRoot complete - previous root is unmounted')).toBeVisible();
+    });
+
+    it('top bar custom button willAppear didAppear after pop, on a root screen', async () => {
+      await elementById(TestIDs.SHOW_RIGHT_BUTTON).tap();
+      await elementById(TestIDs.PUSH_BTN).tap();
+      await elementById(TestIDs.CLEAR_OVERLAY_EVENTS_BTN).tap();
+      await elementById(TestIDs.BACK_BUTTON).tap();
+      await expect(
+        elementByLabel('componentWillAppear | CustomRoundedButton | TopBarButton')
+      ).toBeVisible();
+      await expect(
+        elementByLabel('componentDidAppear | CustomRoundedButton | TopBarButton')
+      ).toBeVisible();
+    })
+  });
+
 
 
   /// Remove below
@@ -567,8 +775,8 @@ describe.only('testing that the environment is working properly', () => {
     await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
     await App.findByTestId('lifecycleOverlay');
 
-    await elementById(TestIDs.STATIC_EVENTS_OVERLAY_BTN).tap();
     await elementById(TestIDs.PUSH_BTN).tap();
     await App.findByText('componentDidAppear | Pushed | Component');
   });
 });
+

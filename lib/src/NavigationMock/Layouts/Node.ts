@@ -21,18 +21,14 @@ export type NodeType =
 export default class Node {
   readonly nodeId: string;
   readonly data: Data;
-  readonly parentNode?: ParentNode;
   readonly type: NodeType;
+  parentNode?: ParentNode;
 
   constructor(layout: any, type: NodeType, parentNode?: ParentNode) {
     this.nodeId = layout.id;
     this.data = layout.data;
     this.parentNode = parentNode;
     this.type = type;
-  }
-
-  getVisibleLayout(): Node {
-    return this;
   }
 
   resolveOptions(): Options {
