@@ -62,7 +62,7 @@ export const ComponentScreen = connect()(
 
     renderButtons(buttons: OptionsTopBarButton[] = []) {
       return buttons.map((button) => {
-        return <NavigationButton button={button} componentId={this.props.layoutNode.nodeId} />
+        return <NavigationButton button={button} key={button.id} componentId={this.props.layoutNode.nodeId} />
       });
     }
 

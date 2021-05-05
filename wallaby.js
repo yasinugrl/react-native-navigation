@@ -27,7 +27,6 @@ module.exports = function (wallaby) {
       'lib/src/**/*.test.ts',
       'lib/src/**/*.test.tsx',
       'integration/**/*.test.js',
-      'e2e/**/*.test.js',
       'scripts/**/*.test.js',
     ],
 
