@@ -27,12 +27,14 @@ export const ComponentScreen = connect()(
       const buttons = this.props.bottomTabs!.children!.map((child, i) => {
         const bottomTabOptions = child.resolveOptions().bottomTab;
         return (
-          <Button
-            key={`tab-${i}`}
-            testID={bottomTabOptions?.testID}
-            title={bottomTabOptions?.text || ''}
-            onPress={() => store.setters.selectTabIndex(this.props.bottomTabs, i)}
-          />
+          <View key={`tab-${i}`}>
+            <Button
+              testID={bottomTabOptions?.testID}
+              title={bottomTabOptions?.text || ''}
+              onPress={() => store.setters.selectTabIndex(this.props.bottomTabs, i)}
+            />
+            <Text>{bottomTabOptions?.badge}</Text>
+          </View>
         );
       });
 
@@ -62,7 +64,13 @@ export const ComponentScreen = connect()(
 
     renderButtons(buttons: OptionsTopBarButton[] = []) {
       return buttons.map((button) => {
-        return <NavigationButton button={button} key={button.id} componentId={this.props.layoutNode.nodeId} />
+        return (
+          <NavigationButton
+            button={button}
+            key={button.id}
+            componentId={this.props.layoutNode.nodeId}
+          />
+        );
       });
     }
 
@@ -73,7 +81,7 @@ export const ComponentScreen = connect()(
           testID={backButtonOptions?.testID}
           title={backButtonOptions && backButtonOptions.title ? backButtonOptions.title : ''}
           onPress={() => {
-            LayoutStore.setters.pop(this.props.layoutNode.nodeId)
+            LayoutStore.setters.pop(this.props.layoutNode.nodeId);
           }}
         />
       );
@@ -99,11 +107,7 @@ export const ComponentScreen = connect()(
           {this.props.backButton && this.renderBackButton()}
           {this.renderTopBar()}
           {this.renderTabBar()}
-          {this.isVisible() && (
-            <View>
-              {/* <Overdlays /> */}
-            </View>
-          )}
+          {this.isVisible() && <View>{/* <Overdlays /> */}</View>}
           <Component componentId={this.props.layoutNode.nodeId} />
         </View>
       );

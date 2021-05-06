@@ -36,7 +36,7 @@ describe('Overlay', () => {
     await expect(elementById(TestIDs.OVERLAY_ALERT_HEADER)).toBeVisible();
   });
 
-  fit('nested touchables work as expected', async () => {
+  it('nested touchables work as expected', async () => {
     await elementById(TestIDs.TOAST_BTN).tap();
     await elementById(TestIDs.TOAST_OK_BTN_INNER).tap();
     await expect(elementByLabel('Inner button clicked')).toBeVisible();
@@ -63,14 +63,14 @@ describe('Overlay Dismiss all', () => {
     await elementById(TestIDs.OVERLAY_BTN).tap();
   });
 
-  it('dismissAllOverlays should dismiss all opened overlays', async() => {
+  it('dismissAllOverlays should dismiss all opened overlays', async () => {
     await elementById(TestIDs.SHOW_FULLSCREEN_OVERLAY_BTN).tap();
     await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
     await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
     await expect(elementById(TestIDs.OVERLAY_DISMISSED_COUNT)).toHaveText('2');
   });
 
-  it('dismissAllOverlays should be able to dismiss only one overlay', async() => {
+  it('dismissAllOverlays should be able to dismiss only one overlay', async () => {
     await elementById(TestIDs.SHOW_OVERLAY_BTN).tap();
     await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
     await expect(elementById(TestIDs.OVERLAY_DISMISSED_COUNT)).toHaveText('1');
