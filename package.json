@@ -115,7 +115,7 @@
       "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
     },
     "setupFilesAfterEnv": [
-      "/Users/yogevbd/Projects/react-native-navigation/lib/src/NavigationMock/jest-setup.ts"
+      "<rootDir>/lib/src/NavigationMock/jest-setup.ts"
     ],
     "roots": [
       "<rootDir>/node_modules/",
