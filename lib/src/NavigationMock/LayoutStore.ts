@@ -77,7 +77,7 @@ const setters = remx.setters({
   mergeOptions(componentId: string, options: Options) {
     const layout = getters.getLayoutById(componentId);
     layout.mergeOptions(options);
-  }
+  },
 });
 
 const getters = remx.getters({
@@ -115,7 +115,7 @@ const getters = remx.getters({
       findStack(layoutId, state.root) ||
       _.find(state.modals, (layout) => findStack(layoutId, layout))
     );
-  }
+  },
 });
 
 function findParentNode(layoutId: string, layout: ParentNode): any | ParentNode {
@@ -154,13 +154,13 @@ function findStack(layoutId: string, layout: ParentNode): any | ParentNode {
 
 let defaultOptions: Options;
 
-export default {
-  setters,
-  getters,
+export const LayoutStore = {
+  ...getters,
+  ...setters,
   setDefaultOptions(options: Options) {
     defaultOptions = options;
   },
   getDefaultOptions() {
     return defaultOptions;
-  }
+  },
 };

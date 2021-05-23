@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import LayoutComponent from './LayoutComponent';
-import store from './LayoutStore';
+import { VISIBLE_SCREEN_TEST_ID } from './ComponentScreen';
+import { LayoutComponent } from './LayoutComponent';
+import { LayoutStore } from './LayoutStore';
 import { Modals } from './Modals';
-import { Overlays } from './Overlays';
+import { Overlays, VISIBLE_OVERLAY_TEST_ID } from './Overlays';
 
 const { connect } = require('remx');
 
@@ -21,7 +22,7 @@ export const Application = connect()(
     render() {
       return (
         <View testID={'Application'}>
-          <LayoutComponent layoutNode={store.getters.getLayout()} />
+          <LayoutComponent layoutNode={LayoutStore.getLayout()} />
           <Modals />
           <Overlays />
         </View>
@@ -29,3 +30,6 @@ export const Application = connect()(
     }
   }
 );
+
+Application.VISIBLE_SCREEN_TEST_ID = VISIBLE_SCREEN_TEST_ID;
+Application.VISIBLE_OVERLAY_TEST_ID = VISIBLE_OVERLAY_TEST_ID;

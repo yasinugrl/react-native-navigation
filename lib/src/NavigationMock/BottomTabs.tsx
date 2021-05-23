@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import LayoutComponent from './LayoutComponent';
+import { LayoutComponent } from './LayoutComponent';
 import { ComponentProps } from './ComponentProps';
 const { connect } = require('remx');
 

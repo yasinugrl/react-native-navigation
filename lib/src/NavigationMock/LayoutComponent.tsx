@@ -5,7 +5,7 @@ import { ComponentProps } from './ComponentProps';
 import { ComponentScreen } from './ComponentScreen';
 import { Stack } from './Stack';
 
-export default class LayoutComponent extends Component<ComponentProps> {
+export const LayoutComponent = class extends Component<ComponentProps> {
   render() {
     switch (this.props.layoutNode.type) {
       case 'BottomTabs':
@@ -31,4 +31,4 @@ export default class LayoutComponent extends Component<ComponentProps> {
 
     return <View />;
   }
-}
+};

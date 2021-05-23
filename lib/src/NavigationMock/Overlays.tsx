@@ -1,25 +1,23 @@
-import React, { Component } from "react";
-import { View } from "react-native";
-import { VISIBLE_OVERLAY } from ".";
-import { ComponentProps } from "./ComponentProps";
-import LayoutComponent from "./LayoutComponent";
-import ParentNode from "./Layouts/ParentNode";
-import store from './LayoutStore';
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { ComponentProps } from './ComponentProps';
+import { LayoutComponent } from './LayoutComponent';
+import ParentNode from './Layouts/ParentNode';
+import { LayoutStore } from './LayoutStore';
 const { connect } = require('remx');
 
-export const Overlays = connect()(class extends Component<ComponentProps> {
+export const VISIBLE_OVERLAY_TEST_ID = 'VISIBLE_OVERLAY_TEST_ID';
+export const Overlays = connect()(
+  class extends Component<ComponentProps> {
     render() {
-        return (
-            <View testID={VISIBLE_OVERLAY}>
-                {this.renderOverlays()}
-            </View>
-        )
+      return <View testID={VISIBLE_OVERLAY_TEST_ID}>{this.renderOverlays()}</View>;
     }
 
     renderOverlays() {
-        const children = store.getters.getOverlays();
-        return children.map((child: ParentNode) => {
-            return <LayoutComponent key={child.nodeId} layoutNode={child} />
-        })
+      const children = LayoutStore.getOverlays();
+      return children.map((child: ParentNode) => {
+        return <LayoutComponent key={child.nodeId} layoutNode={child} />;
+      });
     }
-});
+  }
+);

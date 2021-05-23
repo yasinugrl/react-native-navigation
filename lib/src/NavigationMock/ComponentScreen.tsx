@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { Button, View, Text } from 'react-native';
 import { Navigation, OptionsTopBarButton } from 'react-native-navigation';
 import { ComponentProps } from './ComponentProps';
-import store from './LayoutStore';
-import LayoutStore from './LayoutStore';
-import { VISIBLE_SCREEN } from '.';
+import { LayoutStore } from './LayoutStore';
 import { NavigationButton } from './NavigationButton';
 
 const { connect } = require('remx');
-
+export const VISIBLE_SCREEN_TEST_ID = 'VISIBLE_SCREEN_TEST_ID';
 export const ComponentScreen = connect()(
   class extends Component<ComponentProps> {
     constructor(props: ComponentProps) {
@@ -16,7 +14,7 @@ export const ComponentScreen = connect()(
     }
 
     isVisible(): boolean {
-      return store.getters.isVisibleLayout(this.props.layoutNode);
+      return LayoutStore.isVisibleLayout(this.props.layoutNode);
     }
 
     renderTabBar() {
@@ -31,7 +29,7 @@ export const ComponentScreen = connect()(
             <Button
               testID={bottomTabOptions?.testID}
               title={bottomTabOptions?.text || ''}
-              onPress={() => store.setters.selectTabIndex(this.props.bottomTabs, i)}
+              onPress={() => LayoutStore.selectTabIndex(this.props.bottomTabs, i)}
             />
             <Text>{bottomTabOptions?.badge}</Text>
           </View>
@@ -81,7 +79,7 @@ export const ComponentScreen = connect()(
           testID={backButtonOptions?.testID}
           title={backButtonOptions && backButtonOptions.title ? backButtonOptions.title : ''}
           onPress={() => {
-            LayoutStore.setters.pop(this.props.layoutNode.nodeId);
+            LayoutStore.pop(this.props.layoutNode.nodeId);
           }}
         />
       );
@@ -103,7 +101,7 @@ export const ComponentScreen = connect()(
       //@ts-ignore
       const Component = Navigation.store.getWrappedComponent(this.props.layoutNode.data.name);
       return (
-        <View testID={this.isVisible() ? VISIBLE_SCREEN : undefined}>
+        <View testID={this.isVisible() ? VISIBLE_SCREEN_TEST_ID : undefined}>
           {this.props.backButton && this.renderBackButton()}
           {this.renderTopBar()}
           {this.renderTabBar()}

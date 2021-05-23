@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { ComponentProps } from './ComponentProps';
-import LayoutComponent from './LayoutComponent';
+import { LayoutComponent } from './LayoutComponent';
 import ParentNode from './Layouts/ParentNode';
 const { connect } = require('remx');
 
