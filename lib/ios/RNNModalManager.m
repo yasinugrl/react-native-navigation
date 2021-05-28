@@ -62,12 +62,15 @@
         viewController.presentationController.delegate = self;
     }
 
-    if ([self canAnimate:viewController] &&
-        viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
+    if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
         ViewAnimationOptions *viewAnimationOptions =
             viewController.resolveOptionsWithDefault.animations.showModal;
+        ViewAnimationOptions *contentTransition =
+            [self canAnimate:viewController] ? viewAnimationOptions
+                                             : [ViewAnimationOptions init]; // empty animations
+
         _showModalTransitionDelegate = [[ScreenAnimationController alloc]
-            initWithContentTransition:viewAnimationOptions
+            initWithContentTransition:contentTransition
                    elementTransitions:viewAnimationOptions.elementTransitions
              sharedElementTransitions:viewAnimationOptions.sharedElementTransitions
                              duration:viewAnimationOptions.maxDuration
@@ -100,9 +103,13 @@
     if (root.presentedViewController) {
         ViewAnimationOptions *dismissModalOptions =
             root.presentedViewController.resolveOptionsWithDefault.animations.dismissModal;
-        if ([self canAnimate:root.presentedViewController] && dismissModalOptions.hasAnimation) {
+        if (dismissModalOptions.hasAnimation) {
+            RNNEnterExitAnimation *contentTransition =
+                [self canAnimate:root.presentedViewController]
+                    ? dismissModalOptions
+                    : [RNNEnterExitAnimation init]; // empty animations
             _dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
-                initWithContentTransition:dismissModalOptions
+                initWithContentTransition:contentTransition
                        elementTransitions:dismissModalOptions.elementTransitions
                  sharedElementTransitions:dismissModalOptions.sharedElementTransitions
                                  duration:dismissModalOptions.maxDuration
@@ -146,12 +153,15 @@
 
     UIViewController *topPresentedVC = [self topPresentedVC];
 
-    if ([self canAnimate:topPresentedVC] &&
-        optionsWithDefault.animations.dismissModal.hasAnimation) {
+    if (optionsWithDefault.animations.dismissModal.hasAnimation) {
         ViewAnimationOptions *viewAnimationOptions =
             modalToDismiss.resolveOptionsWithDefault.animations.dismissModal;
+        ViewAnimationOptions *contentTransition =
+            [self canAnimate:topPresentedVC] ? viewAnimationOptions
+                                             : [ViewAnimationOptions init]; // empty animations
+
         _dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
-            initWithContentTransition:viewAnimationOptions
+            initWithContentTransition:contentTransition
                    elementTransitions:viewAnimationOptions.elementTransitions
              sharedElementTransitions:viewAnimationOptions.sharedElementTransitions
                              duration:viewAnimationOptions.maxDuration
