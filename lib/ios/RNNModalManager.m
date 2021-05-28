@@ -33,6 +33,13 @@
     return self;
 }
 
+- (BOOL)canAnimate:(UIViewController *)viewController {
+    // formSheet and pageSheet modals have a custom slide-from-bottom animation. Applying any custom
+    // animation here will break that default iOS animation.
+    return viewController.modalPresentationStyle != UIModalPresentationFormSheet &&
+           viewController.modalPresentationStyle != UIModalPresentationPageSheet;
+}
+
 - (void)showModal:(UIViewController<RNNLayoutProtocol> *)viewController
          animated:(BOOL)animated
        completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
@@ -55,7 +62,8 @@
         viewController.presentationController.delegate = self;
     }
 
-    if (viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
+    if ([self canAnimate:viewController] &&
+        viewController.resolveOptionsWithDefault.animations.showModal.hasAnimation) {
         ViewAnimationOptions *viewAnimationOptions =
             viewController.resolveOptionsWithDefault.animations.showModal;
         _showModalTransitionDelegate = [[ScreenAnimationController alloc]
@@ -92,7 +100,7 @@
     if (root.presentedViewController) {
         ViewAnimationOptions *dismissModalOptions =
             root.presentedViewController.resolveOptionsWithDefault.animations.dismissModal;
-        if (dismissModalOptions.hasAnimation) {
+        if ([self canAnimate:root.presentedViewController] && dismissModalOptions.hasAnimation) {
             _dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
                 initWithContentTransition:dismissModalOptions
                        elementTransitions:dismissModalOptions.elementTransitions
@@ -138,7 +146,8 @@
 
     UIViewController *topPresentedVC = [self topPresentedVC];
 
-    if (optionsWithDefault.animations.dismissModal.hasAnimation) {
+    if ([self canAnimate:topPresentedVC] &&
+        optionsWithDefault.animations.dismissModal.hasAnimation) {
         ViewAnimationOptions *viewAnimationOptions =
             modalToDismiss.resolveOptionsWithDefault.animations.dismissModal;
         _dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
