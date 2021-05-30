@@ -66,8 +66,9 @@
         ViewAnimationOptions *viewAnimationOptions =
             viewController.resolveOptionsWithDefault.animations.showModal;
         ViewAnimationOptions *contentTransition =
-            [self canAnimate:viewController] ? viewAnimationOptions
-                                             : [ViewAnimationOptions init]; // empty animations
+            [self canAnimate:viewController]
+                ? viewAnimationOptions
+                : [[ViewAnimationOptions alloc] init]; // empty animations
 
         _showModalTransitionDelegate = [[ScreenAnimationController alloc]
             initWithContentTransition:contentTransition
@@ -107,7 +108,7 @@
             RNNEnterExitAnimation *contentTransition =
                 [self canAnimate:root.presentedViewController]
                     ? dismissModalOptions
-                    : [RNNEnterExitAnimation init]; // empty animations
+                    : [[RNNEnterExitAnimation alloc] init]; // empty animations
             _dismissModalTransitionDelegate = [[ScreenAnimationController alloc]
                 initWithContentTransition:contentTransition
                        elementTransitions:dismissModalOptions.elementTransitions
@@ -157,8 +158,9 @@
         ViewAnimationOptions *viewAnimationOptions =
             modalToDismiss.resolveOptionsWithDefault.animations.dismissModal;
         ViewAnimationOptions *contentTransition =
-            [self canAnimate:topPresentedVC] ? viewAnimationOptions
-                                             : [ViewAnimationOptions init]; // empty animations
+            [self canAnimate:topPresentedVC]
+                ? viewAnimationOptions
+                : [[ViewAnimationOptions alloc] init]; // empty animations
 
         _dismissModalTransitionDelegate = [[ScreenReversedAnimationController alloc]
             initWithContentTransition:contentTransition
