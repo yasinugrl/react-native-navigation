@@ -61,7 +61,7 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
 
     implementation project(':react-native-fast-image')
-    def hermesPath = "../../node_modules/hermes-engine/android/";
+    def hermesPath = "../../../node_modules/hermes-engine/android/";
     debugImplementation files(hermesPath + "hermes-debug.aar")
     releaseImplementation files(hermesPath + "hermes-release.aar")
 
