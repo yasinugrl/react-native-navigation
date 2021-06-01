@@ -5,12 +5,14 @@ import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.params.Fraction
 import com.reactnativenavigation.options.params.NullColor
 import com.reactnativenavigation.options.params.NullFraction
+import com.reactnativenavigation.options.parsers.ColorParser
 import com.reactnativenavigation.options.parsers.FractionParser
 import org.json.JSONObject
 
 
 fun parseShadowOptions(context: Context?, shadowJson: JSONObject?): ShadowOptions = shadowJson?.let { json ->
-    ShadowOptions(ColorParser.parse(context, json, "color"), FractionParser.parse(json, "radius"), FractionParser.parse(json, "opacity"))
+    ShadowOptions(ColorParser.parse(context, json, "color"), FractionParser.parse(json, "radius"), FractionParser.parse(json,
+            "opacity"))
 } ?: NullShadowOptions
 
 object NullShadowOptions : ShadowOptions() {

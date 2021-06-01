@@ -6,6 +6,7 @@ import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullNumber;
 import com.reactnativenavigation.options.params.Number;
+import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.NumberParser;
 
 import org.json.JSONObject;
