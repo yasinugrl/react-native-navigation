@@ -7,7 +7,6 @@ import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.parsers.BoolParser;
-import com.reactnativenavigation.options.parsers.ColorParser;
 
 import org.json.JSONObject;
 

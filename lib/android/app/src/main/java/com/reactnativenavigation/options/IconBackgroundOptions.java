@@ -8,7 +8,6 @@ import com.reactnativenavigation.options.params.Colour;
 import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullDensityPixel;
 import com.reactnativenavigation.options.params.DensityPixel;
-import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.DensityPixelParser;
 
 import org.json.JSONObject;

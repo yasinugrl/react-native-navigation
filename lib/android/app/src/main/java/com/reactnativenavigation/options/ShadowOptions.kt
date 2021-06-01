@@ -5,7 +5,6 @@ import com.reactnativenavigation.options.params.Colour
 import com.reactnativenavigation.options.params.Fraction
 import com.reactnativenavigation.options.params.NullColor
 import com.reactnativenavigation.options.params.NullFraction
-import com.reactnativenavigation.options.parsers.ColorParser
 import com.reactnativenavigation.options.parsers.FractionParser
 import org.json.JSONObject
 

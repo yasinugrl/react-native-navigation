@@ -6,7 +6,6 @@ import com.reactnativenavigation.options.params.Bool;
 import com.reactnativenavigation.options.params.NullBool;
 import com.reactnativenavigation.options.params.Text;
 import com.reactnativenavigation.options.parsers.BoolParser;
-import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.TextParser;
 import com.reactnativenavigation.react.Constants;
 

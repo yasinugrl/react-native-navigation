@@ -15,7 +15,6 @@ import static org.mockito.Mockito.verify;
 
 public class YellowBoxDelegateTest extends BaseTest {
     private YellowBoxDelegate uut;
-    private YellowBoxHelper yellowBoxHelper;
     private View yellowBox;
     private ViewGroup parent;
 
@@ -24,8 +23,7 @@ public class YellowBoxDelegateTest extends BaseTest {
         Activity context = newActivity();
         yellowBox = new View(context);
         parent = new FrameLayout(context);
-        yellowBoxHelper = Mockito.mock(YellowBoxHelper.class);
-        uut = new YellowBoxDelegate(context, yellowBoxHelper);
+        uut = new YellowBoxDelegate(context);
         parent.addView(new View(context)); // We assume view at index 0 is not a yellow box
         parent.addView(yellowBox);
     }
@@ -54,7 +52,7 @@ public class YellowBoxDelegateTest extends BaseTest {
     public void onChildViewAdded() {
         uut.onChildViewAdded(parent, yellowBox);
         dispatchPreDraw(yellowBox);
-        verify(yellowBoxHelper).isYellowBox(parent, yellowBox);
+        verify(uut).isYellowBox(parent, yellowBox);
     }
 
     @Test

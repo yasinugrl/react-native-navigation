@@ -8,7 +8,6 @@ import com.reactnativenavigation.options.params.NullColor;
 import com.reactnativenavigation.options.params.NullFraction;
 import com.reactnativenavigation.options.params.NullText;
 import com.reactnativenavigation.options.params.Text;
-import com.reactnativenavigation.options.parsers.ColorParser;
 import com.reactnativenavigation.options.parsers.FontParser;
 import com.reactnativenavigation.options.parsers.FractionParser;
 import com.reactnativenavigation.options.parsers.TextParser;
