@@ -8,7 +8,7 @@ import styles from './styles.module.css';
 import apps from '../../data/apps';
 
 const TITLE = 'Showcase';
-const DESCRIPTION = 'See the awesome websites people are building with Docusaurus';
+const DESCRIPTION = 'See the awesome apps people are building with React Native Navigation';
 const EDIT_URL = 'https://forms.gle/pyP8w73hNUhoReQ3A';
 
 function Showcase() {
@@ -34,8 +34,8 @@ function Showcase() {
                   </div>
                   <div className={styles.content}>
                     <h4 className={styles.appName}>{app.title}</h4>
-                    <small className={styles.appSubtitle}>{app.description}</small>
-                    <div className="card__footer">
+                    <p className={styles.appDescription}>{app.description}</p>
+                    <div className={styles.cardFooter}>
                       <div className="button-group button-group--block">
                         {app.appStore && (
                           <a
@@ -60,38 +60,6 @@ function Showcase() {
                       </div>
                     </div>
                   </div>
-                  {/* <div className={'card__body'}>
-                    <div className="avatar">
-                      <div className="avatar__intro">
-                        <h4 className="avatar__name">{app.title}</h4>
-                        <small className="avatar__subtitle">{app.description}</small>
-                      </div>
-                    </div>
-                    <div className="card__footer">
-                      <div className="button-group button-group--block">
-                        {app.appStore && (
-                          <a
-                            className="button button--small button--secondary button--block"
-                            href={app.appStore}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                          >
-                            App Store
-                          </a>
-                        )}
-                        {app.playStore && (
-                          <a
-                            className="button button--small button--secondary button--block"
-                            href={app.playStore}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                          >
-                            Play Store
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div> */}
                 </div>
               );
             })}

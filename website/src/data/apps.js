@@ -1,14 +1,22 @@
 const apps = [
   {
-    title: 'Wix.com',
+    title: 'Spaces by Wix',
     description:
-      'Use the Wix mobile app to build & customize a website and mobile app experience for your business and community.',
-    image: require('./showcase/wix.png'),
+      'Spaces by Wix, the place to connect with your favorite online store, business, website or community',
+    image: require('./showcase/spaces.png'),
     playStore: 'https://play.google.com/store/apps/details?id=com.wix.android',
-    appStore: 'https://apps.apple.com/us/app/wix-website-app-builder/id1099748482',
+    appStore: 'https://apps.apple.com/us/app/wix/id1099748482',
   },
   {
-    title: 'Feastr',
+    title: 'Wix Owner',
+    description:
+      'Use the Wix Owner app to build, customize and manage a website and mobile app experience for your business and community.',
+    image: require('./showcase/owner.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.wix.admin',
+    appStore: 'https://apps.apple.com/us/app/wix-owner-websites-apps/id1545924344',
+  },
+  {
+    title: 'feastr',
     description: 'Weight loss meal plan.',
     image: require('./showcase/feastr.png'),
     playStore: 'https://play.google.com/store/apps/details?id=de.feastr.plan',
@@ -22,6 +30,14 @@ const apps = [
     appStore: 'https://apps.apple.com/au/app/amber-bitcoin-made-easy/id1410639317',
   },
   {
+    title: 'Klarna',
+    description:
+      'Try before you buy and make hassle-free returns, without taking money out of your pocket in the meantime.',
+    image: require('./showcase/klarna.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.myklarnamobile',
+    appStore: 'https://apps.apple.com/app/klarna-smoooth-shopping/id1115120118',
+  },
+  {
     title: 'Delta',
     description: 'Investment Portfolio Tracker',
     image: require('./showcase/delta.png'),
@@ -29,11 +45,47 @@ const apps = [
     appStore: 'https://apps.apple.com/us/app/apple-store/id1288676542',
   },
   {
+    title: 'Squarespace Scheduling',
+    description: `The Squarespace Scheduling app is your appointment-scheduling assistant that helps manage your calendar anytime, anywhere.`,
+    image: require('./showcase/acuity.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.acuityscheduling.app.android',
+    appStore: 'https://apps.apple.com/us/app/acuity-schedule-admin/id1179146771',
+  },
+  {
+    title: 'Cookomix',
+    description: `Cookomix est une application d'échange de recettes adaptées au Thermomix ®. Découvrez-y les meilleures recettes Thermomix ® écrites et commentées par la communauté et présentées de manière simple et lisible comme sur votre sur votre appareil !`,
+    image: require('./showcase/cookomix.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.cookomix.mobile',
+    appStore: 'https://itunes.apple.com/fr/app/cookomix/id1353826313',
+  },
+  {
+    title: 'Nifty',
+    description: `Nifty helps you simplify your teams’ workflow by consolidating all phases of your project's lifecycle into one powerful and intuitive tool.`,
+    image: require('./showcase/nifty.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.niftypm',
+    appStore: 'https://apps.apple.com/us/app/nifty-manage-projects-tasks/id1366408429',
+  },
+  {
     title: 'Clubhouse',
     description: 'Clubhouse is collaborative project management without all the management.',
     image: require('./showcase/clubhouse.png'),
     playStore: 'https://play.google.com/store/apps/details?id=io.clubhouse.clubhouse',
     appStore: 'https://apps.apple.com/us/app/clubhouse/id1193784808',
+  },
+  {
+    title: 'Nox',
+    description: 'AI Powered Dream Journal',
+    image: require('./showcase/Nox.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.aspect.nox',
+    appStore: 'https://apps.apple.com/zw/app/nox-ai-powered-dream-journal/id1543257201',
+  },
+  {
+    title: 'Obitrain',
+    description:
+      'Create your own exercises and training sessions, track your progress and share it with your community.',
+    image: require('./showcase/obitrain.png'),
+    playStore: 'https://play.google.com/store/apps/details?id=com.obitrain.obiapp',
+    appStore: 'https://apps.apple.com/us/app/obitrain/id1462514186',
   },
   {
     title: 'Arkham Cards',
@@ -72,23 +124,25 @@ const apps = [
   {
     title: 'Deevent',
     description:
-      'Deevent is a Swiss application highlighting the best attractions, places, museums and monuments in the biggest cities!',
+      'Highlight the best attractions, places, museums and monuments in the biggest cities!',
     image: require('./showcase/deevent.png'),
     playStore: 'https://play.google.com/store/apps/details?id=app.deevent',
     appStore: 'https://apps.apple.com/us/app/deevent/id1519499216',
+  },
+  {
+    title: 'Cinepicks',
+    description:
+      'Browse a huge list of movies and see which ones are available on popular streaming services.',
+    image: require('./showcase/cinepicks.png'),
+    playStore:
+      'https://play.google.com/store/apps/details?id=co.uk.jaygould.cinepicks&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1',
+    appStore: 'https://apps.apple.com/gb/app/cinepicks-find-swipe-films/id1534621509',
   },
   {
     title: 'StretchMinder',
     description: 'StretchMinder helps to increase productivity while keeping your health in check.',
     image: require('./showcase/stretchminder.png'),
     appStore: 'https://apps.apple.com/us/app/stretchminder-stand-up-move/id1518522560',
-  },
-  {
-    title: 'Obitrain',
-    description:
-      'Obitrain is a platform where you can create your own exercises and training sessions, track your progress and share it with your community.',
-    image: require('./showcase/obitrain.png'),
-    playStore: 'https://play.google.com/store/apps/details?id=com.obitrain.obiapp',
   },
   {
     title: 'Подарки и Одежда на Новый Го‪д‬',
