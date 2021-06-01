@@ -13,6 +13,7 @@ open class YellowBoxDelegate(private val context: Context) {
 
     var parent: ViewGroup? = null
         private set
+
     @get:RestrictTo(RestrictTo.Scope.TESTS)
     val yellowBoxes: List<View>
         get() = yellowBoxViews
@@ -40,7 +41,7 @@ open class YellowBoxDelegate(private val context: Context) {
         if (yellowBoxViews.isNotEmpty()) yellowBoxViews.forEach { parent?.addView(it) }
     }
 
-     fun isYellowBox(parent: View?, child: View?): Boolean {
+    fun isYellowBox(parent: View?, child: View?): Boolean {
         return parent is ViewGroup &&
                 child is ViewGroup && parent.indexOfChild(child) >= 1
     }

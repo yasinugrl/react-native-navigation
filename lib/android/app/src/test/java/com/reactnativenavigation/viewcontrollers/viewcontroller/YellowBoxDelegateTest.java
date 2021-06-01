@@ -8,9 +8,9 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.BaseTest;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 public class YellowBoxDelegateTest extends BaseTest {
@@ -50,6 +50,7 @@ public class YellowBoxDelegateTest extends BaseTest {
 
     @Test
     public void onChildViewAdded() {
+        uut = spy(uut);
         uut.onChildViewAdded(parent, yellowBox);
         dispatchPreDraw(yellowBox);
         verify(uut).isYellowBox(parent, yellowBox);
