@@ -1,6 +1,7 @@
 #import "RNNCommandsHandler.h"
 #import "RNNAssert.h"
 #import "RNNComponentViewController.h"
+#import "RNNConvert.h"
 #import "RNNDefaultOptionsHelper.h"
 #import "RNNErrorHandler.h"
 #import "React/RCTI18nUtil.h"
@@ -307,13 +308,22 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
     [vc mergeOptions:options];
 
-    [vc.stack popTo:vc
-           animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
-         completion:^(NSArray *poppedViewControllers) {
-           [self->_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId];
-           completion();
-         }
-          rejection:rejection];
+    if (vc) {
+        [vc.stack popTo:vc
+               animated:[vc.resolveOptionsWithDefault.animations.pop.enable withDefault:YES]
+             completion:^(NSArray *poppedViewControllers) {
+               [self->_eventEmitter sendOnNavigationCommandCompletion:popTo commandId:commandId];
+               completion();
+             }
+              rejection:rejection];
+    } else {
+        [RNNErrorHandler
+                      reject:rejection
+               withErrorCode:1012
+            errorDescription:
+                [NSString stringWithFormat:@"PopTo component failed - componentId '%@' not found",
+                                           componentId]];
+    }
 }
 
 - (void)popToRoot:(NSString *)componentId
@@ -359,6 +369,12 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
     __weak UIViewController *weakNewVC = newVc;
     newVc.waitForRender =
         [newVc.resolveOptionsWithDefault.animations.showModal shouldWaitForRender];
+    newVc.modalPresentationStyle =
+        [RNNConvert UIModalPresentationStyle:[newVc.resolveOptionsWithDefault.modalPresentationStyle
+                                                 withDefault:@"default"]];
+    newVc.modalTransitionStyle =
+        [RNNConvert UIModalTransitionStyle:[newVc.resolveOptionsWithDefault.modalTransitionStyle
+                                               withDefault:@"coverVertical"]];
     [newVc setReactViewReadyCallback:^{
       [self->_modalManager
            showModal:weakNewVC
@@ -385,21 +401,26 @@ static NSString *const setDefaultOptions = @"setDefaultOptions";
         (UIViewController *)[_layoutManager findComponentForId:componentId];
 
     if (!modalToDismiss.isModal) {
-        [RNNErrorHandler reject:reject
-                  withErrorCode:1013
-               errorDescription:@"component is not a modal"];
+        [RNNErrorHandler
+                      reject:reject
+               withErrorCode:1013
+            errorDescription:[NSString stringWithFormat:@"component with id: '%@' is not a modal",
+                                                        componentId]];
         return;
     }
 
     RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
     [modalToDismiss.presentedComponentViewController mergeOptions:options];
 
-    [_modalManager dismissModal:modalToDismiss
-                     completion:^{
-                       [self->_eventEmitter sendOnNavigationCommandCompletion:dismissModal
-                                                                    commandId:commandId];
-                       completion(modalToDismiss.topMostViewController.layoutInfo.componentId);
-                     }];
+    [_modalManager
+        dismissModal:modalToDismiss
+            animated:[modalToDismiss.resolveOptionsWithDefault.animations.dismissModal.exit.enable
+                         withDefault:YES]
+          completion:^{
+            [self->_eventEmitter sendOnNavigationCommandCompletion:dismissModal
+                                                         commandId:commandId];
+            completion(modalToDismiss.topMostViewController.layoutInfo.componentId);
+          }];
 }
 
 - (void)dismissAllModals:(NSDictionary *)mergeOptions
