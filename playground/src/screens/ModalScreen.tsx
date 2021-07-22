@@ -131,18 +131,19 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
         />
 
         <Modal visible={this.state.reactNativeModalVisible} animationType={'slide'}>
-          <Root>
+          <Root componentId={this.props.componentId} footer={`ReactNative modal in action!`}>
             <Button label="Toggle react-native modal" onPress={this.toggleModal} />
+            <Button label="Show overlay" onPress={this.showOverlay} />
             <Button
               label="Present another modal and dismiss current modal"
               testID={SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL}
               onPress={async () => {
+                this.toggleModal();
                 await Navigation.showModal({
                   component: {
                     name: Screens.Modal,
                   },
                 });
-                this.toggleModal();
               }}
             />
           </Root>
@@ -151,6 +152,13 @@ export default class ModalScreen extends NavigationComponent<Props, State> {
     );
   }
 
+  showOverlay = async () => {
+    await Navigation.showOverlay({
+      component: {
+        name: Screens.OverlayAlert,
+      },
+    });
+  };
   toggleModal = () =>
     this.setState({ reactNativeModalVisible: !this.state.reactNativeModalVisible });
 

@@ -161,4 +161,11 @@ describe('modal', () => {
     await elementById(TestIDs.DISMISS_MODAL_BTN).tap();
     await expect(elementById(TestIDs.MODAL_SCREEN_HEADER)).toBeVisible();
   });
+
+  it.only('overlay should be clickable when using react-native modal', async () => {
+    await elementById(TestIDs.TOGGLE_REACT_NATIVE_MODAL).tap();
+    await elementById(TestIDs.SHOW_MODAL_AND_DISMISS_REACT_NATIVE_MODAL).tap();
+    await elementById(TestIDs.DISMISS_ALL_OVERLAYS_BUTTON).tap();
+    await expect(elementByLabel('ReactNative modal in action!')).toBeVisible();
+  });
 });
