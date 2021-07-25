@@ -15,17 +15,17 @@ import androidx.annotation.NonNull;
 
 public abstract class NavigationApplication extends Application implements ReactApplication {
 
-	private ReactGateway reactGateway;
-	public static NavigationApplication instance;
-	final Map<String, ExternalComponentCreator> externalComponents = new HashMap<>();
+    private ReactGateway reactGateway;
+    public static NavigationApplication instance;
+    final Map<String, ExternalComponentCreator> externalComponents = new HashMap<>();
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
+    @Override
+    public void onCreate() {
+        super.onCreate();
         instance = this;
         SoLoader.init(this, false);
         reactGateway = createReactGateway();
-	}
+    }
 
     /**
      * Subclasses of NavigationApplication may override this method to create the singleton instance
@@ -36,13 +36,13 @@ public abstract class NavigationApplication extends Application implements React
      *
      * @return a singleton {@link ReactGateway}
      */
-	protected ReactGateway createReactGateway() {
-	    return new ReactGateway(getReactNativeHost());
+    protected ReactGateway createReactGateway() {
+        return new ReactGateway(getReactNativeHost());
     }
-    
-	public ReactGateway getReactGateway() {
-		return reactGateway;
-	}
+
+    public ReactGateway getReactGateway() {
+        return reactGateway;
+    }
 
     /**
      * Generally no need to override this; override for custom permission handling.
