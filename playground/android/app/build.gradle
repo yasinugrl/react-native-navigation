@@ -2,6 +2,7 @@ apply plugin: "com.android.application"
 
 project.ext.react = [
         root              : "../../../",
+        cliPath           : "node_modules/react-native/cli.js",
         entryFile         : "index.js",
         bundleAssetName   : "index.android.bundle",
         bundleInAlpha     : true,
@@ -12,7 +13,7 @@ project.ext.react = [
         hermesCommand     : "../../../node_modules/hermes-engine/%OS-BIN%/hermesc",
 ]
 
-
+apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
     compileSdkVersion 29
