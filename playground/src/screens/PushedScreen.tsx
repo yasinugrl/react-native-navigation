@@ -64,6 +64,14 @@ export default class PushedScreen extends NavigationComponent<Props> {
     Navigation.events().bindComponent(this);
   }
 
+  componentDidMount() {
+    console.log(`componentDidMount: ${this.props.componentId}`);
+    Navigation.pop(this.props.componentId);
+  }
+  componentDidAppear() {
+    // Navigation.pop(this.props.componentId);
+  }
+
   navigationButtonPressed({ buttonId }: NavigationButtonPressedEvent) {
     if (buttonId === 'backPress') alert('back button clicked');
   }
