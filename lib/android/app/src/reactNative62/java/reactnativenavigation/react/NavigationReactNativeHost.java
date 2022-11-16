@@ -41,7 +41,6 @@ public abstract class NavigationReactNativeHost extends ReactNativeHost implemen
                 .setUseDeveloperSupport(getUseDeveloperSupport())
                 .setRedBoxHandler(getRedBoxHandler())
                 .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
-                .setUIImplementationProvider(getUIImplementationProvider())
                 .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
                 .setJSIModulesPackage(getJSIModulePackage())
                 .setDevBundleDownloadListener(getDevBundleDownloadListener());
