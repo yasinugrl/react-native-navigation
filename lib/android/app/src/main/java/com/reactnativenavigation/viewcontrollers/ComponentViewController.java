@@ -12,6 +12,8 @@ import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -101,6 +103,11 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
+    public void applyBottomInset() {
+        if (view != null) presenter.applyBottomInset(view, getBottomInset());
+    }
+
+    @Override
     public void applyTopInset() {
         if (view != null) presenter.applyTopInsets(view, getTopInset());
     }
@@ -112,18 +119,43 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    public void applyBottomInset() {
-        if (view != null) presenter.applyBottomInset(view, getBottomInset());
+    protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
+        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        int systemWindowInsetTop = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top +
+                insets.getInsets(WindowInsetsCompat.Type.navigationBars()).top -
+                systemBarsInsets.top;
+        int systemWindowInsetBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom +
+                insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom -
+                systemBarsInsets.bottom;
+
+        WindowInsetsCompat finalInsets = new WindowInsetsCompat.Builder()
+                .setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
+                        Insets.of(systemBarsInsets.left,
+                                systemWindowInsetTop,
+                                systemBarsInsets.right,
+                                Math.max(systemWindowInsetBottom - getBottomInset(), 0)))
+                .build();
+        ViewCompat.onApplyWindowInsets(view.getView(), finalInsets);
+        return insets;
     }
 
-    @Override
-    protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
-        ViewCompat.onApplyWindowInsets(view.getView(), insets.replaceSystemWindowInsets(
-                insets.getSystemWindowInsetLeft(),
-                insets.getSystemWindowInsetTop(),
-                insets.getSystemWindowInsetRight(),
-                Math.max(insets.getSystemWindowInsetBottom() - getBottomInset(), 0)
-        ));
+    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+        final Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        int systemWindowInsetTop = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top +
+                insets.getInsets(WindowInsetsCompat.Type.navigationBars()).top -
+                systemBarsInsets.top;
+        int systemWindowInsetBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom +
+                insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom -
+                systemBarsInsets.bottom;
+
+        WindowInsetsCompat finalInsets = new WindowInsetsCompat.Builder()
+                .setInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime(),
+                        Insets.of(systemBarsInsets.left,
+                                systemWindowInsetTop,
+                                systemBarsInsets.right,
+                                Math.max(systemWindowInsetBottom - getBottomInset(), 0)))
+                .build();
+        ViewCompat.onApplyWindowInsets(view, finalInsets);
         return insets;
     }
 

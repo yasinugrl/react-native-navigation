@@ -1,5 +1,6 @@
 package com.reactnativenavigation.parse;
 
+import com.reactnativenavigation.options.layout.LayoutOptions;
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.utils.TypefaceLoader;

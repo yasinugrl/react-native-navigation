@@ -28,6 +28,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.Insets;
+import androidx.core.view.WindowInsetsCompat;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -210,6 +212,12 @@ public class BottomTabsController extends ParentController<BottomTabsLayout> imp
         getCurrentView().setVisibility(View.INVISIBLE);
         bottomTabs.setCurrentItem(newIndex, false);
         getCurrentView().setVisibility(View.VISIBLE);
+    }
+
+    protected WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+        Insets sysInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        view.setPaddingRelative(0, 0, 0, sysInsets.bottom);
+        return WindowInsetsCompat.CONSUMED;
     }
 
     @NonNull

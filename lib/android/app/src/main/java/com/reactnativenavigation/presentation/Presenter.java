@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 
@@ -14,6 +15,7 @@ import com.reactnativenavigation.parse.NavigationBarOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.StatusBarOptions;
+import com.reactnativenavigation.options.layout.LayoutInsets;
 import com.reactnativenavigation.parse.StatusBarOptions.TextColorScheme;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.utils.StatusBarUtils;
@@ -39,6 +41,7 @@ public class Presenter {
     public void mergeOptions(View view, Options options) {
         mergeStatusBarOptions(view, options.statusBar);
         mergeNavigationBarOptions(options.navigationBar);
+        //applyLayoutInsetsOnMostTopParent(viewController,withDefaults.layout.getInsets());
     }
 
     public void applyOptions(ViewController view, Options options) {
@@ -47,6 +50,21 @@ public class Presenter {
         applyViewOptions(view, withDefaultOptions);
         applyStatusBarOptions(withDefaultOptions);
         applyNavigationBarOptions(withDefaultOptions.navigationBar);
+        applyLayoutInsetsOnMostTopParent(view, options.layout.getInsets());
+    }
+
+    private void applyLayoutInsetsOnMostTopParent(ViewController viewController, LayoutInsets layoutInsets) {
+        final ViewController topMostParent = viewController.getTopMostParent();
+        applyLayoutInsets(topMostParent.getView(), layoutInsets);
+    }
+
+    private void applyLayoutInsets(ViewGroup view, LayoutInsets layoutInsets) {
+        if ( view!=null && layoutInsets.hasValue()) {
+            view.setPadding(layoutInsets.getLeft() == null ? view.getPaddingLeft() : layoutInsets.getLeft(),
+                    layoutInsets.getTop() == null ? view.getPaddingTop() : layoutInsets.getTop(),
+                    layoutInsets.getRight() == null ?view.getPaddingRight() : layoutInsets.getRight(),
+                    layoutInsets.getBottom() == null ? view.getPaddingBottom() : layoutInsets.getBottom());
+        }
     }
 
     public void onViewBroughtToFront(Options options) {

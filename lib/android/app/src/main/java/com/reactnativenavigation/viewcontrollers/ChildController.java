@@ -91,8 +91,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     private WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-        StatusBarUtils.saveStatusBarHeight(insets.getSystemWindowInsetTop());
-        return applyWindowInsets(findController(view), insets);
+        return insets;
     }
 
     protected WindowInsetsCompat applyWindowInsets(ViewController view, WindowInsetsCompat insets) {
