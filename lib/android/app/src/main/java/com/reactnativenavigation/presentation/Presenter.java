@@ -240,7 +240,7 @@ public class Presenter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && navigationBar.backgroundColor.canApplyValue()) {
             int defaultColor = activity.getWindow().getNavigationBarColor();
             int color = navigationBar.backgroundColor.get(defaultColor);
-            activity.getWindow().setNavigationBarColor(color);
+            //activity.getWindow().setNavigationBarColor(color);
             setNavigationBarButtonsColor(color);
         }
     }
