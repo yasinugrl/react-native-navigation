@@ -41,7 +41,7 @@ public class Presenter {
     public void mergeOptions(View view, Options options) {
         mergeStatusBarOptions(view, options.statusBar);
         mergeNavigationBarOptions(options.navigationBar);
-        //applyLayoutInsetsOnMostTopParent(viewController,withDefaults.layout.getInsets());
+        //applyLayoutInsetsOnMostTopParent(viewController, withDefaults.layout.getInsets());
     }
 
     public void applyOptions(ViewController view, Options options) {
@@ -138,15 +138,11 @@ public class Presenter {
     }
 
     private void setTextColorScheme(TextColorScheme scheme) {
-        final View view = activity.getWindow().getDecorView();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        if (scheme == TextColorScheme.Dark) {
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
-        } else {
-            clearDarkTextColorScheme(view);
-        }
+        final View view = activity.getWindow().getDecorView();
+        int flags = view.getSystemUiVisibility();
+        flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        view.setSystemUiVisibility(flags);
     }
 
     private void clearDarkTextColorScheme(View view) {
@@ -172,13 +168,9 @@ public class Presenter {
     private void mergeTextColorScheme(TextColorScheme scheme) {
         if (!scheme.hasValue() || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
         final View view = activity.getWindow().getDecorView();
-        if (scheme == TextColorScheme.Dark) {
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
-        } else {
-            clearDarkTextColorScheme(view);
-        }
+        int flags = view.getSystemUiVisibility();
+        flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        view.setSystemUiVisibility(flags);
     }
 
     private void mergeTranslucent(StatusBarOptions options) {
